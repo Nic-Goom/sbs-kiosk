@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Step by Step · Cubs Session</title>
+<style>
+@font-face {
+  font-family: 'Veneer';
+  src: url('project/assets/Veneer.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  --purple: #412576;
+  --lime:   #b3d12b;
+  --pink:   #e60d8c;
+  --yellow: #f4e600;
+  --black:  #111111;
+  --white:  #ffffff;
+  --display: 'Veneer', Impact, 'Arial Black', sans-serif;
+  --body: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: #000;
+  font-family: var(--body);
+  color: var(--black);
+  user-select: none; -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+/* === SCALE STAGE: design at 1920x1080, scale to viewport === */
+#stage-wrap {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  background: #000;
+}
+#stage {
+  width: 1920px; height: 1080px;
+  position: relative;
+  transform-origin: center center;
+  background: var(--white);
+  overflow: hidden;
+}
+
+/* === RAINBOW STRIPE === */
+.rainbow {
+  position: absolute; left: 0; right: 0; top: 0; height: 12px;
+  background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 33%, var(--lime) 66%, var(--yellow) 100%);
+  z-index: 200;
+}
+
+/* === HEADER STRIP (leader nav) === */
+header {
+  position: absolute; top: 12px; left: 0; right: 0; height: 84px;
+  display: flex; align-items: center; padding: 0 32px;
+  background: var(--white);
+  border-bottom: 2px solid #eee;
+  z-index: 150;
+}
+header .brand {
+  display: flex; align-items: center; gap: 18px;
+  font-family: var(--display); font-size: 32px; color: var(--purple);
+  letter-spacing: 0.02em; text-transform: uppercase;
+  cursor: pointer;
+}
+header .brand img { height: 56px; }
+header nav {
+  margin-left: auto;
+  display: flex; gap: 8px;
+}
+header nav button {
+  font-family: var(--display); font-size: 22px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: transparent; border: 2px solid transparent;
+  padding: 10px 18px; border-radius: 6px;
+  color: var(--purple); cursor: pointer;
+  transition: all 0.15s ease;
+}
+header nav button:hover, header nav button.active {
+  background: var(--purple); color: var(--white);
+}
+header nav button.home {
+  background: var(--lime); color: var(--black); border-color: var(--lime);
+}
+header nav button.home:hover { background: #9bba1e; }
+
+/* === SCREENS === */
+.screen {
+  position: absolute; top: 96px; left: 0; right: 0; bottom: 0;
+  padding: 40px 56px 56px;
+  background: var(--white);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+  overflow: hidden;
+}
+.screen.active { opacity: 1; pointer-events: auto; z-index: 10; }
+
+/* === BACKGROUND DECORATIONS === */
+.bg-dots {
+  position: absolute; pointer-events: none;
+  background-size: contain; background-repeat: no-repeat;
+  opacity: 0.55;
+}
+
+/* === BIG BUTTONS === */
+.big-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 16px;
+  font-family: var(--display); font-size: 42px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 22px 48px; border-radius: 9999px;
+  border: none; cursor: pointer;
+  background: var(--lime); color: var(--black);
+  box-shadow: 0 6px 0 #7e9520;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #7e9520; }
+.big-btn.purple { background: var(--purple); color: var(--white); box-shadow: 0 6px 0 #2a1850; }
+.big-btn.purple:active { box-shadow: 0 2px 0 #2a1850; }
+.big-btn.pink { background: var(--pink); color: var(--white); box-shadow: 0 6px 0 #95065a; }
+.big-btn.pink:active { box-shadow: 0 2px 0 #95065a; }
+
+/* ============== WELCOME ============== */
+#welcome {
+  background: var(--purple);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 60px;
+}
+#welcome h1 {
+  font-family: var(--display);
+  font-size: 220px;
+  color: var(--white);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+#welcome .amp {
+  font-family: var(--display); color: var(--lime); font-size: 220px;
+}
+#welcome .sub {
+  font-family: var(--display);
+  font-size: 64px;
+  color: var(--yellow);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 48px;
+}
+#welcome .strap {
+  font-family: var(--body); font-size: 28px; color: var(--white);
+  max-width: 1200px; line-height: 1.4;
+  margin-bottom: 64px;
+}
+#welcome .strap b { color: var(--lime); }
+#welcome .dots-1 {
+  width: 420px; height: 420px;
+  background-image: url('project/assets/dots-lime.png');
+  top: 8%; left: 4%;
+  opacity: 0.4;
+}
+#welcome .dots-2 {
+  width: 420px; height: 420px;
+  background-image: url('project/assets/dots-pink.png');
+  bottom: 8%; right: 4%;
+  opacity: 0.4;
+}
+#welcome .logo-w {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  height: 90px; opacity: 0.9;
+}
+
+/* ============== HERO REVEAL ============== */
+#hero-reveal {
+  background: var(--black);
+  display: flex; flex-direction: column;
+  padding: 60px 80px;
+}
+#hero-reveal .kicker {
+  font-family: var(--display); font-size: 38px;
+  color: var(--lime); letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+#hero-reveal h2 {
+  font-family: var(--display); font-size: 110px; color: var(--white);
+  line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 60px; max-width: 1500px;
+}
+#hero-reveal h2 em { font-style: normal; color: var(--yellow); }
+#hero-reveal .grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+  flex: 1;
+}
+#hero-reveal .letter {
+  border-radius: 18px;
+  padding: 36px 32px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+#hero-reveal .letter .L {
+  font-family: var(--display); font-size: 240px; line-height: 0.85;
+  letter-spacing: 0; text-transform: uppercase;
+}
+#hero-reveal .letter .word {
+  font-family: var(--display); font-size: 56px; line-height: 0.95;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  margin-top: -10px;
+}
+#hero-reveal .letter .desc {
+  font-family: var(--body); font-size: 22px; line-height: 1.4;
+  margin-top: 16px;
+}
+#hero-reveal .letter.h { background: var(--lime); color: var(--black); }
+#hero-reveal .letter.e { background: var(--pink); color: var(--white); }
+#hero-reveal .letter.r { background: var(--yellow); color: var(--black); }
+#hero-reveal .letter.o { background: var(--purple); color: var(--white); }
+
+/* ============== HERO HOUSE HUB ============== */
+#hub {
+  background: var(--white);
+  padding: 24px 48px 48px;
+  display: flex; flex-direction: column; align-items: center;
+}
+#hub .title {
+  font-family: var(--display); font-size: 56px;
+  color: var(--purple); letter-spacing: 0.02em; text-transform: uppercase;
+  text-align: center; margin-bottom: 8px;
+}
+#hub .sub {
+  font-family: var(--body); font-size: 22px; color: var(--black);
+  text-align: center; margin-bottom: 20px;
+}
+#hub .sub b { color: var(--pink); }
+#hub .house-wrap {
+  flex: 1; width: 100%;
+  display: grid; place-items: center;
+  position: relative;
+}
+
+/* The house */
+.house {
+  position: relative;
+  width: 1200px; height: 790px;
+}
+.house .roof {
+  position: absolute; top: 0; left: 0; right: 0; height: 210px;
+  z-index: 5;
+}
+.house .roof .tri {
+  position: absolute; inset: 0;
+  background: var(--purple);
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+.house .roof .label {
+  position: absolute; top: 80px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--display); font-size: 72px; color: var(--white);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  z-index: 5;
+}
+.house .body {
+  position: absolute; top: 192px; left: 30px; right: 30px; bottom: 0;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  border: 10px solid var(--black);
+  background: var(--black);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Photo rooms */
+.house .room {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.house .room .room-photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.house .room:hover .room-photo,
+.house .room:active .room-photo {
+  transform: scale(1.06);
+}
+.house .room .room-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 24px 20px;
+  transition: background 0.2s ease;
+}
+.house .room.home .room-overlay {
+  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+}
+.house .room.essentials .room-overlay {
+  background: linear-gradient(to top, rgba(230,13,140,0.82) 0%, rgba(230,13,140,0.25) 55%, transparent 100%);
+}
+.house .room.relationships .room-overlay {
+  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+}
+.house .room.opportunities .room-overlay {
+  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+}
+.house .room:hover .room-overlay { filter: brightness(1.1); }
+.house .room:active .room-overlay { filter: brightness(1.2); }
+.house .room .label {
+  font-family: var(--display); font-size: 58px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  line-height: 0.95;
+  color: var(--white);
+  text-shadow: 0 3px 12px rgba(0,0,0,0.6);
+}
+.house .room.home .label { color: var(--lime); }
+.house .room.essentials .label { color: var(--white); }
+.house .room.relationships .label { color: var(--yellow); }
+.house .room.opportunities .label { color: var(--white); }
+.house .room .tap {
+  font-family: var(--body); font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  margin-top: 8px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Colour badge top-left of each room */
+.house .room .badge {
+  position: absolute; top: 16px; left: 16px;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--display); font-size: 34px;
+  letter-spacing: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.house .room.home .badge        { background: var(--lime); color: var(--black); }
+.house .room.essentials .badge  { background: var(--pink); color: var(--white); }
+.house .room.relationships .badge { background: var(--yellow); color: var(--black); }
+.house .room.opportunities .badge { background: var(--purple); color: var(--white); }
+
+.house .door {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: 120px; height: 180px;
+  background: var(--purple);
+  border: 8px solid var(--black);
+  border-bottom: none;
+  border-radius: 60px 60px 0 0;
+  z-index: 10;
+}
+.house .door::after {
+  content: ''; position: absolute; right: 18px; top: 50%;
+  width: 12px; height: 12px; background: var(--lime); border-radius: 50%;
+}
+
+/* ============== HERO DETAIL ============== */
+.detail {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  height: 100%;
+  padding: 16px 16px 16px 16px;
+}
+.detail .left {
+  border-radius: 18px;
+  padding: 56px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.detail .left .kicker {
+  font-family: var(--display); font-size: 32px;
+  letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85;
+  margin-bottom: 12px;
+}
+.detail .left h2 {
+  font-family: var(--display); font-size: 130px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  line-height: 0.9; margin-bottom: 28px;
+}
+.detail .left p.lead {
+  font-family: var(--body); font-size: 32px; line-height: 1.35;
+  font-weight: bold; margin-bottom: 24px;
+}
+.detail .left p.body {
+  font-family: var(--body); font-size: 22px; line-height: 1.5;
+}
+
+/* Photo panel for detail screens */
+.detail .right {
+  display: flex; flex-direction: column; gap: 20px;
+}
+.detail .right .photo-panel {
+  flex: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  border: 4px solid var(--black);
+}
+.detail .right .photo-panel img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.detail .right .card {
+  flex: 1; background: var(--white);
+  border: 4px solid var(--black);
+  border-radius: 14px;
+  padding: 28px 32px;
+  display: flex; flex-direction: column;
+}
+.detail .right .card h3 {
+  font-family: var(--display); font-size: 38px;
+  color: var(--purple); letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.detail .right .card p {
+  font-family: var(--body); font-size: 21px; line-height: 1.45;
+}
+.detail .right .card .stat {
+  font-family: var(--display); font-size: 90px; line-height: 0.9;
+  margin-top: auto;
+}
+.detail .right .card .stat-label {
+  font-family: var(--body); font-size: 20px; line-height: 1.3; margin-top: 4px;
+}
+.detail.home .left { background: var(--lime); color: var(--black); }
+.detail.home .right .card .stat { color: var(--purple); }
+.detail.essentials .left { background: var(--pink); color: var(--white); }
+.detail.essentials .right .card .stat { color: var(--pink); }
+.detail.relationships .left { background: var(--yellow); color: var(--black); }
+.detail.relationships .right .card .stat { color: var(--pink); }
+.detail.opportunities .left { background: var(--purple); color: var(--white); }
+.detail.opportunities .right .card .stat { color: var(--purple); }
+
+.back-btn {
+  position: absolute; top: 16px; right: 24px; z-index: 50;
+  font-family: var(--display); font-size: 26px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: var(--black); color: var(--white);
+  border: none; padding: 14px 26px;
+  border-radius: 9999px; cursor: pointer;
+}
+.back-btn:hover { background: var(--purple); }
+
+/* ============== STEVIE / IMPACT VIDEO SCREENS ============== */
+.video-screen {
+  background: var(--black);
+  display: flex; gap: 48px; padding: 56px 64px;
+}
+.video-screen .text {
+  width: 520px; flex-shrink: 0;
+  color: var(--white);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.video-screen .text .kicker {
+  font-family: var(--display); font-size: 28px;
+  color: var(--lime); letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.video-screen .text h2 {
+  font-family: var(--display); font-size: 92px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  line-height: 0.95; margin-bottom: 32px;
+}
+.video-screen .text h2 em { font-style: normal; color: var(--yellow); }
+.video-screen .text p {
+  font-family: var(--body); font-size: 22px; line-height: 1.5;
+  margin-bottom: 16px;
+}
+.video-screen .player-wrap {
+  flex: 1; position: relative; display: grid; place-items: center;
+}
+.video-screen .player {
+  width: 100%; max-width: 1100px; aspect-ratio: 16/9;
+  background: #1a1a1a;
+  border: 6px solid var(--lime);
+  border-radius: 14px;
+  position: relative; overflow: hidden;
+  display: grid; place-items: center;
+}
+.video-screen .player video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+.video-screen .player .placeholder {
+  text-align: center; color: var(--white); padding: 40px;
+}
+.video-screen .player .placeholder .label {
+  font-family: var(--display); font-size: 56px; color: var(--yellow);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;
+}
+.video-screen .player .placeholder .filename {
+  font-family: monospace; font-size: 20px; color: var(--lime);
+  background: rgba(255,255,255,0.08); padding: 10px 18px;
+  border-radius: 6px; display: inline-block; margin-bottom: 12px;
+}
+.video-screen .player .placeholder .note {
+  font-family: var(--body); font-size: 18px; color: var(--white); opacity: 0.8;
+  max-width: 480px; line-height: 1.4; margin: 0 auto;
+}
+.video-screen .player .play-overlay {
+  position: absolute; inset: 0;
+  background: rgba(65, 37, 118, 0.55);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.video-screen .player .play-overlay.hidden { display: none; }
+.video-screen .player .play-overlay .circle {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: var(--lime);
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 16px rgba(179, 209, 43, 0.25);
+}
+.video-screen .player .play-overlay .circle::before {
+  content: ''; display: block;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 38px 0 38px 60px;
+  border-color: transparent transparent transparent var(--black);
+  margin-left: 14px;
+}
+.video-screen .player .play-overlay .label {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  font-family: var(--display); font-size: 36px; color: var(--white);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: rgba(0,0,0,0.6); padding: 8px 22px; border-radius: 9999px;
+}
+
+/* ============== SHOP CHALLENGE ============== */
+#shop {
+  background: var(--white);
+  padding: 32px 56px 48px;
+  display: flex; flex-direction: column;
+}
+#shop .head {
+  text-align: center; margin-bottom: 24px;
+}
+#shop .head .kicker {
+  font-family: var(--display); font-size: 32px; color: var(--pink);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px;
+}
+#shop .head h2 {
+  font-family: var(--display); font-size: 96px; color: var(--purple);
+  line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+}
+#shop .head h2 .pound {
+  background: var(--yellow); color: var(--black);
+  padding: 0 18px; border-radius: 8px;
+  display: inline-block; transform: rotate(-2deg);
+}
+#shop .body-row {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px;
+  flex: 1; margin-top: 12px;
+}
+#shop .rules {
+  background: var(--purple); color: var(--white);
+  border-radius: 18px; padding: 36px 40px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+#shop .rules h3 {
+  font-family: var(--display); font-size: 44px; color: var(--lime);
+  letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 4px;
+}
+#shop .rules ol {
+  list-style: none; counter-reset: step;
+  display: flex; flex-direction: column; gap: 14px;
+}
+#shop .rules ol li {
+  counter-increment: step;
+  font-family: var(--body); font-size: 22px; line-height: 1.4;
+  padding-left: 60px; position: relative;
+}
+#shop .rules ol li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: -2px;
+  width: 44px; height: 44px;
+  background: var(--lime); color: var(--black);
+  border-radius: 50%;
+  font-family: var(--display); font-size: 28px;
+  display: grid; place-items: center;
+}
+#shop .rules .note {
+  font-family: var(--body); font-size: 20px; color: var(--yellow);
+  font-style: italic; margin-top: 4px;
+}
+
+#shop .stations {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 16px;
+}
+#shop .station {
+  border-radius: 14px; padding: 20px 24px;
+  color: var(--white);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+#shop .station h4 {
+  font-family: var(--display); font-size: 36px; letter-spacing: 0.02em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+#shop .station p {
+  font-family: var(--body); font-size: 17px; line-height: 1.4;
+  opacity: 0.95;
+}
+#shop .station.home { background: var(--lime); color: var(--black); }
+#shop .station.essentials { background: var(--pink); }
+#shop .station.relationships { background: var(--yellow); color: var(--black); }
+#shop .station.opportunities { background: var(--purple); }
+
+#shop .footer-strip {
+  background: var(--black); color: var(--white);
+  border-radius: 12px;
+  margin-top: 24px;
+  padding: 22px 32px;
+  font-family: var(--display); font-size: 36px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  text-align: center;
+}
+#shop .footer-strip em { color: var(--yellow); font-style: normal; }
+
+/* ============== HERO MOMENT (JAMES) ============== */
+#hero-moment {
+  background: var(--purple);
+  color: var(--white);
+  padding: 56px 80px;
+  display: grid; grid-template-columns: 580px 1fr; gap: 56px;
+}
+#hero-moment .photo-wrap {
+  display: flex; flex-direction: column; gap: 24px;
+}
+#hero-moment .photo {
+  flex: 1;
+  background: var(--black);
+  border: 6px solid var(--lime);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+#hero-moment .photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  display: block;
+}
+#hero-moment .photo .ph-label {
+  font-family: var(--display); font-size: 40px; color: var(--yellow);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px;
+}
+#hero-moment .photo .ph-note {
+  font-family: var(--body); font-size: 18px; color: var(--white); opacity: 0.85;
+  max-width: 400px; line-height: 1.4;
+}
+#hero-moment .photo-placeholder {
+  display: grid; place-items: center; text-align: center; padding: 32px;
+  height: 100%;
+}
+#hero-moment .photo-cap {
+  background: var(--lime); color: var(--black);
+  padding: 14px 22px; border-radius: 12px; text-align: center;
+  font-family: var(--display); font-size: 32px; letter-spacing: 0.04em; text-transform: uppercase;
+  flex-shrink: 0;
+}
+#hero-moment .text {
+  display: flex; flex-direction: column; justify-content: center;
+}
+#hero-moment .text .kicker {
+  font-family: var(--display); font-size: 32px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;
+}
+#hero-moment .text h2 {
+  font-family: var(--display); font-size: 110px; color: var(--white);
+  line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 32px;
+}
+#hero-moment .text h2 em { font-style: normal; color: var(--yellow); }
+#hero-moment .quote {
+  font-family: var(--body); font-size: 26px; line-height: 1.5;
+  border-left: 6px solid var(--lime);
+  padding: 8px 0 8px 28px;
+  margin-bottom: 28px;
+}
+#hero-moment .signoff {
+  font-family: var(--display); font-size: 38px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 32px;
+}
+#hero-moment .question {
+  background: var(--lime); color: var(--black);
+  padding: 24px 32px; border-radius: 12px;
+  font-family: var(--display); font-size: 44px; line-height: 1;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* ============== HOME / Index buttons === */
+#welcome .actions { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+/* === Helpers === */
+.fade-in { animation: fadeUp 0.5s ease both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.stagger > * { opacity: 0; animation: fadeUp 0.55s ease both; }
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.20s; }
+.stagger > *:nth-child(3) { animation-delay: 0.35s; }
+.stagger > *:nth-child(4) { animation-delay: 0.50s; }
+</style>
+</head>
+<body>
+
+<div id="stage-wrap">
+  <div id="stage" data-screen-label="Cubs Tablet">
+
+    <div class="rainbow"></div>
+
+    <header>
+      <div class="brand" data-go="welcome">
+        <img src="project/assets/logo-secondary-white.png" alt="Step by Step" style="height:54px;filter:brightness(0) saturate(100%) invert(13%) sepia(72%) saturate(2078%) hue-rotate(257deg) brightness(94%) contrast(96%);">
+      </div>
+      <nav>
+        <button data-go="welcome" class="home">★ Home</button>
+        <button data-go="hero-reveal">HERO</button>
+        <button data-go="hub">House</button>
+        <button data-go="stevie">Stevie</button>
+        <button data-go="shop">£50 Shop</button>
+        <button data-go="impact">Impact</button>
+        <button data-go="hero-moment">Hero Moment</button>
+      </nav>
+    </header>
+
+    <!-- ============ WELCOME ============ -->
+    <section id="welcome" class="screen active" data-screen-label="01 Welcome">
+      <div class="bg-dots dots-1"></div>
+      <div class="bg-dots dots-2"></div>
+      <h1>STANLEYS OWN CUBS</h1>
+      <div class="sub">Welcome to Step by Step</div>
+      <p class="strap">Tonight we're talking about <b>what every person needs</b> to live well — and what happens when some of those things are missing. We help young people who are going through hard times. <b>Tonight, you're going to help us.</b></p>
+      <div class="actions">
+        <button class="big-btn" data-go="hero-reveal">Let's Go ▶</button>
+      </div>
+      <img class="logo-w" src="project/assets/logo-primary-white.png" alt="Step by Step">
+    </section>
+
+    <!-- ============ HERO REVEAL ============ -->
+    <section id="hero-reveal" class="screen" data-screen-label="02 HERO Reveal">
+      <div class="kicker">Everyone needs four things</div>
+      <h2>We call them <em>HERO</em></h2>
+      <div class="grid stagger">
+        <div class="letter h">
+          <div>
+            <div class="L">H</div>
+            <div class="word">Home</div>
+          </div>
+          <div class="desc">A safe place to sleep with a door you can close.</div>
+        </div>
+        <div class="letter e">
+          <div>
+            <div class="L">E</div>
+            <div class="word">Essentials</div>
+          </div>
+          <div class="desc">Food, clothes, and the things you need to stay healthy.</div>
+        </div>
+        <div class="letter r">
+          <div>
+            <div class="L">R</div>
+            <div class="word">Relationships</div>
+          </div>
+          <div class="desc">People who care about you and have your back.</div>
+        </div>
+        <div class="letter o">
+          <div>
+            <div class="L">O</div>
+            <div class="word">Opportunities</div>
+          </div>
+          <div class="desc">Chances to learn, grow, and look forward.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HERO HOUSE HUB ============ -->
+    <section id="hub" class="screen" data-screen-label="03 HERO House">
+      <div class="title">Tap a room to see what we do</div>
+      <div class="sub">Step by Step helps young people with <b>all four</b> — not just one.</div>
+      <div class="house-wrap">
+        <div class="house">
+          <div class="roof">
+            <div class="tri"></div>
+            <div class="label">HERO</div>
+          </div>
+          <div class="body">
+            <div class="room home" data-go="detail-home">
+              <img class="room-photo" src="project/assets/home-photo.jpg" alt="Home — safe housing">
+              <div class="room-overlay">
+                <div class="badge">H</div>
+                <div class="label">Home</div>
+                <div class="tap">Tap to find out more</div>
+              </div>
+            </div>
+            <div class="room essentials" data-go="detail-essentials">
+              <img class="room-photo" src="project/assets/essentials-photo.jpg" alt="Essentials — everyday needs">
+              <div class="room-overlay">
+                <div class="badge">E</div>
+                <div class="label">Essentials</div>
+                <div class="tap">Tap to find out more</div>
+              </div>
+            </div>
+            <div class="room relationships" data-go="detail-relationships">
+              <img class="room-photo" src="project/assets/relationships-photo.jpg" alt="Relationships — people who care">
+              <div class="room-overlay">
+                <div class="badge">R</div>
+                <div class="label">Relationships</div>
+                <div class="tap">Tap to find out more</div>
+              </div>
+            </div>
+            <div class="room opportunities" data-go="detail-opportunities">
+              <img class="room-photo" src="project/assets/opportunities-photo.jpg" alt="Opportunities — chances to grow">
+              <div class="room-overlay">
+                <div class="badge">O</div>
+                <div class="label">Opportunities</div>
+                <div class="tap">Tap to find out more</div>
+              </div>
+            </div>
+          </div>
+          <div class="door"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DETAIL: HOME ============ -->
+    <section id="detail-home" class="screen" data-screen-label="04 HERO · Home">
+      <button class="back-btn" data-go="hub">◀ Back to House</button>
+      <div class="detail home">
+        <div class="left">
+          <div>
+            <div class="kicker">H is for</div>
+            <h2>Home</h2>
+            <p class="lead">Somewhere safe to live and sleep.</p>
+            <p class="body">Some young people don't have a safe home. That's where Step by Step come in. We don't just hand someone a key — we help them build a place where they can feel settled, safe, and themselves.</p>
+          </div>
+          <p class="body" style="opacity:0.85;font-style:italic;">"Step by Step gave me a home I feel comfortable in." — young person we support</p>
+        </div>
+        <div class="right">
+          <div class="photo-panel">
+            <img src="project/assets/home-foyer.jpg" alt="Step by Step Aldershot Foyer">
+          </div>
+          <div class="card">
+            <h3>Supported Lodgings &amp; The Foyer</h3>
+            <p>A young person moves in with a family who has a spare room — or into our Aldershot Foyer, a building of small flats with staff on hand 24/7.</p>
+            <div class="stat">325</div>
+            <div class="stat-label">young people given a safe home last year</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DETAIL: ESSENTIALS ============ -->
+    <section id="detail-essentials" class="screen" data-screen-label="04 HERO · Essentials">
+      <button class="back-btn" data-go="hub">◀ Back to House</button>
+      <div class="detail essentials">
+        <div class="left">
+          <div>
+            <div class="kicker">E is for</div>
+            <h2>Essentials</h2>
+            <p class="lead">The everyday things you need to stay well.</p>
+            <p class="body">Food. Toiletries. Clothes for school. A bus fare. A heating bill that gets paid. When you're trying to live on your own at 17 or 18, the basics can quickly become impossible.</p>
+          </div>
+          <p class="body" style="opacity:0.9;font-style:italic;">"The funding helped me look for rooms more efficiently — I had the option before some others." — Bradley, Opportunities Fund</p>
+        </div>
+        <div class="right">
+          <div class="photo-panel">
+            <img src="project/assets/georgie-cooking.jpg" alt="Learning to cook with Step by Step">
+          </div>
+          <div class="card">
+            <h3>Opportunities Fund</h3>
+            <p>Small grants for big differences — bus passes, bikes, a deposit, work boots. Whatever a young person needs to take their next step.</p>
+            <div class="stat">149</div>
+            <div class="stat-label">young people supported with an Opportunities Fund grant last year</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DETAIL: RELATIONSHIPS ============ -->
+    <section id="detail-relationships" class="screen" data-screen-label="04 HERO · Relationships">
+      <button class="back-btn" data-go="hub">◀ Back to House</button>
+      <div class="detail relationships">
+        <div class="left">
+          <div>
+            <div class="kicker">R is for</div>
+            <h2>Relationships</h2>
+            <p class="lead">People who care about you and have your back.</p>
+            <p class="body">Sometimes you just need someone to listen. Step by Step's Launch service is free and confidential, for anyone aged 11–25 — housing worries, mental health, school, family, anything.</p>
+          </div>
+          <p class="body" style="opacity:0.9;font-style:italic;">"Actually having people who care about me has helped with my motivation. I think I lost myself for a long time." — young person we support</p>
+        </div>
+        <div class="right">
+          <div class="photo-panel">
+            <img src="project/assets/relationships-fern.jpg" alt="A Step by Step support worker with young people">
+          </div>
+          <div class="card">
+            <h3>Launch &amp; Counselling</h3>
+            <p>Free one-to-one support and real counselling — usually 5 to 8 sessions with a therapist, in person or online.</p>
+            <div class="stat">3,216</div>
+            <div class="stat-label">counselling sessions delivered last year — a 101% increase</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DETAIL: OPPORTUNITIES ============ -->
+    <section id="detail-opportunities" class="screen" data-screen-label="04 HERO · Opportunities">
+      <button class="back-btn" data-go="hub">◀ Back to House</button>
+      <div class="detail opportunities">
+        <div class="left">
+          <div>
+            <div class="kicker">O is for</div>
+            <h2>Opportunities</h2>
+            <p class="lead">Chances to learn, grow, and look forward.</p>
+            <p class="body">A job interview. A college place. A driving lesson. The first weeks in a new flat. Step by Step help young people see what's possible — and then take the steps to make it real.</p>
+          </div>
+          <p class="body" style="opacity:0.9;font-style:italic;">"Step by Step has taught me that my past doesn't have to affect my future. Anything I put my mind to, I can achieve." — young person we support</p>
+        </div>
+        <div class="right">
+          <div class="photo-panel">
+            <img src="project/assets/opportunities-riv.jpg" alt="Young person supported by Step by Step">
+          </div>
+          <div class="card">
+            <h3>Education &amp; Work</h3>
+            <p>From CV help to college applications to apprenticeships — we work with young people to find the next thing that fits. £6.80 of social value for every £1 invested.</p>
+            <div class="stat">76%</div>
+            <div class="stat-label">of young people in Supported Lodgings made positive progress last year</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STEVIE VIDEO ============ -->
+    <section id="stevie" class="screen video-screen" data-screen-label="05 Stevie">
+      <div class="text">
+        <div class="kicker">Real choices, real lives</div>
+        <h2>Meet <em>Stevie</em></h2>
+        <p>Stevie arrived at her host Rachel's door with bin bags of clothes and not much else. This is what happened next.</p>
+        <p style="opacity:0.85;font-size:18px;">Watch the film "18 Isn't Cheaper" — Step by Step's campaign for fairer support for young people leaving care.</p>
+      </div>
+      <div class="player-wrap">
+        <div class="player" id="player-stevie">
+          <video id="video-stevie" preload="none" playsinline controls data-src="stevie.mp4"></video>
+          <div class="placeholder" id="placeholder-stevie" style="display:none;">
+            <div class="label">Stevie's Story</div>
+            <div class="filename">stevie.mp4</div>
+            <div class="note">Add the video file <b>stevie.mp4</b> to the same folder as this page and it will appear here.</div>
+          </div>
+          <div class="play-overlay" id="overlay-stevie">
+            <div class="circle"></div>
+            <div class="label">Tap to play</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ £50 SHOP CHALLENGE ============ -->
+    <section id="shop" class="screen" data-screen-label="06 £50 Shop Challenge">
+      <div class="head">
+        <h2>The <span class="pound">£50</span> Shop Challenge</h2>
+      </div>
+      <div class="body-row">
+        <div class="rules">
+          <h3>How it works</h3>
+          <ol>
+            <li>You're a young person living on your own. You've got <b>£50</b> for the whole week.</li>
+            <li>There is a 'shop' at the back of the room.</li>
+            <li>Run to the shop, pick what you need, bring back the card and pay.</li>
+            <li>Write what you bought and what it cost in your <b>StandUp magazine</b>.</li>
+            <li>Watch out — your leader might shout out a <b>chaos event</b>!</li>
+          </ol>
+          <div class="note">When you've finished, we'll talk about what was hardest to choose, and what you'd keep no matter what.</div>
+        </div>
+        <div class="stations">
+          <div class="station home">
+            <div>
+              <h4>🏠 Home</h4>
+              <p>Rent top-up · Heating · Insurance · Fixing what breaks</p>
+            </div>
+          </div>
+          <div class="station essentials">
+            <div>
+              <h4>🍎 Essentials</h4>
+              <p>Food shop · Toiletries · Clothes · Treats</p>
+            </div>
+          </div>
+          <div class="station relationships">
+            <div>
+              <h4>👥 Relationships</h4>
+              <p>Phone bill · Travel to see someone · Activity with a friend</p>
+            </div>
+          </div>
+          <div class="station opportunities">
+            <div>
+              <h4>🚀 Opportunities</h4>
+              <p>Travel to school/work · Interview clothes · School supplies · Trainers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-strip">Total if you bought everything: <em>???</em>  ·  Your budget: <em>£50</em></div>
+    </section>
+
+    <!-- ============ IMPACT VIDEO ============ -->
+    <section id="impact" class="screen video-screen" data-screen-label="07 Impact">
+      <div class="text">
+        <div class="kicker">What support can do</div>
+        <h2>Real <em>stories</em></h2>
+        <p>Tyron and Liam are two young people Step by Step have stood with. This is what changed.</p>
+        <p style="opacity:0.85;font-size:18px;">A short film of young people sharing what Step by Step's support has meant to them.</p>
+      </div>
+      <div class="player-wrap">
+        <div class="player" id="player-impact">
+          <video id="video-impact" preload="none" playsinline controls data-src="impact.mp4"></video>
+          <div class="placeholder" id="placeholder-impact" style="display:none;">
+            <div class="label">Impact Stories</div>
+            <div class="filename">impact.mp4</div>
+            <div class="note">Add the video file <b>impact.mp4</b> to the same folder as this page and it will appear here.</div>
+          </div>
+          <div class="play-overlay" id="overlay-impact">
+            <div class="circle"></div>
+            <div class="label">Tap to play</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HERO MOMENT (JAMES) ============ -->
+    <section id="hero-moment" class="screen" data-screen-label="08 Your Hero Moment">
+      <div class="photo-wrap">
+        <div class="photo" id="james-photo-wrap">
+          <div class="photo-placeholder">
+            <div class="ph-label">📷 James — then &amp; now</div>
+            <div class="ph-note">Photo loading…</div>
+          </div>
+        </div>
+        <div class="photo-cap">James — supported by Step by Step</div>
+      </div>
+      <div class="text">
+        <div class="kicker">A message from</div>
+        <h2>James — <em>Hero Moment</em></h2>
+        <div class="quote">"Hi guys, great work today. I was supported by Step by Step when I was young. Now I travel all over the world for work. My hero moment was when I was able to <b>give back</b> to Step by Step — and the people who helped me."</div>
+        <div class="signoff">"I can't wait to hear what your hero moments will be."</div>
+        <div class="question">So… what's <span style="color:var(--pink);">your</span> hero moment?</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+// === Auto-scale stage to viewport ===
+(function(){
+  const stage = document.getElementById('stage');
+  const W = 1920, H = 1080;
+  function fit() {
+    const sx = window.innerWidth / W;
+    const sy = window.innerHeight / H;
+    const s = Math.min(sx, sy);
+    stage.style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+})();
+
+// === Screen router ===
+(function(){
+  const screens = document.querySelectorAll('.screen');
+  const navBtns = document.querySelectorAll('header nav button');
+
+  function show(id) {
+    screens.forEach(s => s.classList.toggle('active', s.id === id));
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.go === id));
+    document.querySelectorAll('video').forEach(v => {
+      const containing = v.closest('.screen');
+      if (containing && containing.id !== id) v.pause();
+    });
+    document.querySelectorAll('.play-overlay').forEach(o => {
+      const containing = o.closest('.screen');
+      const v = containing ? containing.querySelector('video') : null;
+      if (v && v.paused) o.classList.remove('hidden');
+    });
+  }
+
+  document.querySelectorAll('[data-go]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      show(el.dataset.go);
+    });
+  });
+
+  window.__go = show;
+})();
+
+// === Video play overlays + missing-file handling (lazy attach) ===
+(function(){
+  ['stevie', 'impact'].forEach(name => {
+    const video = document.getElementById('video-' + name);
+    const overlay = document.getElementById('overlay-' + name);
+    const placeholder = document.getElementById('placeholder-' + name);
+    let attached = false;
+
+    function attach() {
+      if (attached) return;
+      attached = true;
+      const src = video.dataset.src;
+      const probe = document.createElement('video');
+      probe.preload = 'metadata';
+      probe.muted = true;
+      probe.addEventListener('error', () => {
+        video.style.display = 'none';
+        overlay.style.display = 'none';
+        placeholder.style.display = 'block';
+      }, { once: true });
+      probe.addEventListener('loadedmetadata', () => {
+        const source = document.createElement('source');
+        source.src = src;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        video.load();
+      }, { once: true });
+      probe.src = src;
+    }
+
+    const screen = video.closest('.screen');
+    const observer = new MutationObserver(() => {
+      if (screen.classList.contains('active')) attach();
+    });
+    observer.observe(screen, { attributes: true, attributeFilter: ['class'] });
+
+    overlay.addEventListener('click', () => {
+      attach();
+      overlay.classList.add('hidden');
+      setTimeout(() => { video.play().catch(() => {}); }, 50);
+    });
+    video.addEventListener('play', () => overlay.classList.add('hidden'));
+    video.addEventListener('ended', () => overlay.classList.remove('hidden'));
+  });
+})();
+
+// === Load James' photo ===
+(function(){
+  const wrap = document.getElementById('james-photo-wrap');
+  const img = new Image();
+  img.onload = () => {
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.objectPosition = 'top center';
+    img.style.display = 'block';
+    img.alt = 'James — then and now';
+    wrap.innerHTML = '';
+    wrap.appendChild(img);
+  };
+  img.onerror = () => {
+    wrap.querySelector('.ph-note').textContent = 'Add assets/james.jpg to show James’ photo here.';
+  };
+  img.src = 'project/assets/james.jpg';
+})();
+
+// === Keyboard shortcuts ===
+window.addEventListener('keydown', e => {
+  const map = {
+    '1': 'welcome',
+    '2': 'hero-reveal',
+    '3': 'hub',
+    '4': 'stevie',
+    '5': 'shop',
+    '6': 'impact',
+    '7': 'hero-moment',
+  };
+  if (map[e.key]) window.__go(map[e.key]);
+});
+</script>
+</body>
+</html>
