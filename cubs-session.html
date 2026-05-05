@@ -7,7 +7,8 @@
 <style>
 @font-face {
   font-family: 'Veneer';
-  src: url('project/assets/Veneer.otf') format('opentype');
+  src: local('Veneer'),
+       url('project/assets/Veneer.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -654,10 +655,11 @@ header nav button.home:hover { background: #9bba1e; }
 .shop-footer {
   background: var(--black); color: var(--white);
   border-radius: 12px; margin-top: 20px;
-  padding: 18px 28px;
-  font-family: var(--display); font-size: 32px;
+  padding: 16px 28px;
+  font-family: var(--display); font-size: 30px;
   letter-spacing: 0.04em; text-transform: uppercase;
-  text-align: center; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
 }
 .shop-footer em { color: var(--yellow); font-style: normal; }
 
@@ -874,6 +876,63 @@ header nav button.home:hover { background: #9bba1e; }
   letter-spacing: 0.02em; text-transform: uppercase;
 }
 
+/* === YouTube player === */
+.yt-player-wrap {
+  flex: 1; position: relative; display: grid; place-items: center;
+}
+.yt-player {
+  width: 100%; max-width: 1100px; aspect-ratio: 16/9;
+  border: 6px solid var(--lime);
+  border-radius: 14px;
+  position: relative; overflow: hidden;
+  background: #000;
+}
+.yt-player iframe {
+  width: 100%; height: 100%; display: block; border: none;
+}
+.yt-thumb {
+  position: absolute; inset: 0;
+  cursor: pointer;
+}
+.yt-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.yt-thumb .yt-play-overlay {
+  position: absolute; inset: 0;
+  background: rgba(65,37,118,0.55);
+  display: grid; place-items: center;
+}
+.yt-thumb .circle {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: var(--lime);
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 16px rgba(179,209,43,0.25);
+}
+.yt-thumb .circle::before {
+  content: ''; display: block; width: 0; height: 0;
+  border-style: solid;
+  border-width: 38px 0 38px 60px;
+  border-color: transparent transparent transparent var(--black);
+  margin-left: 14px;
+}
+.yt-thumb .tap-lbl {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  font-family: var(--display); font-size: 36px; color: var(--white);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: rgba(0,0,0,0.6); padding: 8px 22px; border-radius: 9999px;
+}
+
+/* Impact screen YouTube player */
+#impact-screen .yt-player {
+  max-width: 100%;
+  border-color: var(--lime);
+}
+#impact-screen .yt-thumb .circle { width: 140px; height: 140px; }
+#impact-screen .yt-thumb .circle::before {
+  border-width: 28px 0 28px 44px; margin-left: 10px;
+}
+#impact-screen .yt-thumb .tap-lbl { font-size: 28px; bottom: 20px; }
+
 /* === Helpers === */
 .fade-in { animation: fadeUp 0.5s ease both; }
 @keyframes fadeUp {
@@ -904,7 +963,8 @@ header nav button.home:hover { background: #9bba1e; }
         <button data-go="hero-reveal">HERO</button>
         <button data-go="hub">House</button>
         <button data-go="stevie">Stevie</button>
-        <button data-go="shop">£50 Shop</button>
+        <button data-go="shop">£50 Shop 1</button>
+        <button data-go="shop-debrief">£50 Shop 2</button>
         <button data-go="impact">Impact</button>
         <button data-go="hero-moment">Hero Moment</button>
       </nav>
@@ -914,7 +974,7 @@ header nav button.home:hover { background: #9bba1e; }
     <section id="welcome" class="screen active">
       <div class="bg-dots dots-1"></div>
       <div class="bg-dots dots-2"></div>
-      <h1>STANLEYS OWN CUBS</h1>
+      <h1>STANLEY'S OWN CUBS</h1>
       <div class="sub">Welcome to Step by Step</div>
       <p class="strap">Tonight we're talking about <b>what every person needs</b> to live well — and what happens when some of those things are missing. We help young people who are going through hard times. <b>Tonight, you're going to help us.</b></p>
       <div class="actions">
@@ -1096,8 +1156,8 @@ header nav button.home:hover { background: #9bba1e; }
           <div>
             <div class="kicker">R is for</div>
             <h2>Relationships</h2>
-            <p class="lead">People who care about you and have your back.</p>
-            <p class="body">Sometimes you just need someone to listen. Step by Step's Launch service is free and confidential, for anyone aged 11–25 — housing worries, mental health, school, family, anything.</p>
+            <p class="lead">People in your corner — at every step.</p>
+            <p class="body">At Step by Step, relationships are at the heart of everything. Hosts open their homes and become a trusted part of a young person's life. Support Workers are there day-to-day. And for anyone who needs a listening ear — from the young person to the wider community — Launch and our counsellors are free and confidential for anyone aged 11–25.</p>
           </div>
           <p class="body" style="opacity:0.9;font-style:italic;">"Actually having people who care about me has helped with my motivation. I think I lost myself for a long time." — young person we support</p>
         </div>
@@ -1106,8 +1166,8 @@ header nav button.home:hover { background: #9bba1e; }
             <img src="project/assets/fern-2yp.jpg" alt="Fern with two young people">
           </div>
           <div class="card">
-            <h3>Launch &amp; Counselling</h3>
-            <p>Free one-to-one support and real counselling — usually 5 to 8 sessions with a therapist, in person or online. Every young person has someone in their corner.</p>
+            <h3>Hosts · Support Workers · Launch</h3>
+            <p>Whether it's a host family sharing their home, a support worker helping plan the next step, or a counsellor offering free therapy — no young person at Step by Step walks alone.</p>
             <div class="stat">3,216</div>
             <div class="stat-label">counselling sessions delivered last year — a 101% increase</div>
           </div>
@@ -1148,21 +1208,21 @@ header nav button.home:hover { background: #9bba1e; }
         <div class="kicker">All of this costs money</div>
         <h2>Meet <em>Stevie</em></h2>
         <p>All the things we've just talked about — a home, the essentials, relationships, opportunities — they all come with a price tag.</p>
-        <p>Stevie was supported by Step by Step. Here she is talking about how she managed her budget when living on her own.</p>
-        <p style="opacity:0.75;font-size:18px;">Watch a short clip from "18 Isn't Cheaper" — Step by Step's campaign for fairer support.</p>
+        <p>Stevie was supported by Step by Step. Here she talks about managing her budget when living on her own.</p>
+        <p style="opacity:0.75;font-size:18px;">A clip from "18 Isn't Cheaper" — Step by Step's campaign for fairer support for care leavers.</p>
       </div>
-      <div class="player-wrap">
-        <div class="player" id="player-stevie">
-          <video id="video-stevie" preload="none" playsinline controls data-src="stevie.mp4"></video>
-          <div class="placeholder" id="placeholder-stevie" style="display:none;">
-            <div class="label">Stevie — Budgeting</div>
-            <div class="filename">stevie.mp4</div>
-            <div class="note">Upload <b>stevie.mp4</b> to the repo root on GitHub and it will appear here.</div>
+      <div class="yt-player-wrap">
+        <div class="yt-player" id="yt-wrap-stevie">
+          <div class="yt-thumb" id="yt-thumb-stevie" onclick="loadYT('stevie','hfqXHHDSL58')">
+            <img src="https://img.youtube.com/vi/hfqXHHDSL58/maxresdefault.jpg" alt="Stevie's story">
+            <div class="yt-play-overlay">
+              <div class="circle"></div>
+              <div class="tap-lbl">Tap to play</div>
+            </div>
           </div>
-          <div class="play-overlay" id="overlay-stevie">
-            <div class="circle"></div>
-            <div class="label">Tap to play</div>
-          </div>
+          <iframe id="yt-iframe-stevie" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+            style="display:none; width:100%; height:100%;"></iframe>
         </div>
       </div>
     </section>
@@ -1203,7 +1263,10 @@ header nav button.home:hover { background: #9bba1e; }
           </div>
         </div>
       </div>
-      <div class="shop-footer">Total if you bought everything: <em>???</em>  ·  Your budget: <em>£50</em>  ·  <span style="color:var(--lime);">When done → tap Stage 2 ▶</span></div>
+      <div class="shop-footer">
+        <span>Total if you bought everything: <em>???</em>  ·  Your budget: <em>£50</em></span>
+        <button class="big-btn pink" data-go="shop-debrief" style="font-size:32px;padding:16px 36px;">Stage 2 — Discuss &amp; Record ▶</button>
+      </div>
     </section>
 
     <!-- ============ £50 SHOP — STAGE 2 DEBRIEF ============ -->
@@ -1244,17 +1307,17 @@ header nav button.home:hover { background: #9bba1e; }
           </div>
         </div>
         <div class="right">
-          <div class="player" id="player-impact">
-            <video id="video-impact" preload="none" playsinline controls data-src="impact.mp4"></video>
-            <div class="placeholder" id="placeholder-impact" style="display:none;">
-              <div class="label">Stevie — Impact</div>
-              <div class="filename">impact.mp4</div>
-              <div class="note">Upload <b>impact.mp4</b> to the repo root on GitHub and it will appear here.</div>
+          <div class="yt-player" id="yt-wrap-impact">
+            <div class="yt-thumb" id="yt-thumb-impact" onclick="loadYT('impact','cELOr9GFI-k')">
+              <img src="https://img.youtube.com/vi/cELOr9GFI-k/maxresdefault.jpg" alt="Stevie's impact story">
+              <div class="yt-play-overlay">
+                <div class="circle"></div>
+                <div class="tap-lbl">Tap to play</div>
+              </div>
             </div>
-            <div class="play-overlay" id="overlay-impact">
-              <div class="circle"></div>
-              <div class="label">Tap to play</div>
-            </div>
+            <iframe id="yt-iframe-impact" frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+              style="display:none; width:100%; height:100%;"></iframe>
           </div>
         </div>
       </div>
@@ -1307,13 +1370,8 @@ header nav button.home:hover { background: #9bba1e; }
   function show(id) {
     screens.forEach(s => s.classList.toggle('active', s.id === id));
     navBtns.forEach(b => b.classList.toggle('active', b.dataset.go === id));
-    document.querySelectorAll('video').forEach(v => {
-      if (v.closest('.screen')?.id !== id) v.pause();
-    });
-    document.querySelectorAll('.play-overlay').forEach(o => {
-      const v = o.closest('.player')?.querySelector('video');
-      if (v && v.paused) o.classList.remove('hidden');
-    });
+    if (id !== 'stevie') stopYT('stevie');
+    if (id !== 'impact') stopYT('impact');
   }
 
   document.querySelectorAll('[data-go]').forEach(el => {
@@ -1328,51 +1386,21 @@ document.querySelectorAll('#hero-reveal .letter').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('revealed'));
 });
 
-// === Video lazy-load + missing-file handling ===
-(function(){
-  function wireVideo(name, playerId) {
-    const video = document.getElementById('video-' + name);
-    const overlay = document.getElementById('overlay-' + name);
-    const placeholder = document.getElementById('placeholder-' + name);
-    let attached = false;
-
-    function attach() {
-      if (attached) return;
-      attached = true;
-      const src = video.dataset.src;
-      const probe = document.createElement('video');
-      probe.preload = 'metadata'; probe.muted = true;
-      probe.addEventListener('error', () => {
-        video.style.display = 'none';
-        overlay.style.display = 'none';
-        placeholder.style.display = 'block';
-      }, { once: true });
-      probe.addEventListener('loadedmetadata', () => {
-        const s = document.createElement('source');
-        s.src = src; s.type = 'video/mp4';
-        video.appendChild(s);
-        video.load();
-      }, { once: true });
-      probe.src = src;
-    }
-
-    const screen = video.closest('.screen');
-    new MutationObserver(() => {
-      if (screen.classList.contains('active')) attach();
-    }).observe(screen, { attributes: true, attributeFilter: ['class'] });
-
-    overlay.addEventListener('click', () => {
-      attach();
-      overlay.classList.add('hidden');
-      setTimeout(() => video.play().catch(() => {}), 50);
-    });
-    video.addEventListener('play', () => overlay.classList.add('hidden'));
-    video.addEventListener('ended', () => overlay.classList.remove('hidden'));
-  }
-
-  wireVideo('stevie', 'player-stevie');
-  wireVideo('impact', 'player-impact');
-})();
+// === YouTube embed helpers ===
+function loadYT(name, videoId) {
+  document.getElementById('yt-thumb-' + name).style.display = 'none';
+  const iframe = document.getElementById('yt-iframe-' + name);
+  iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1';
+  iframe.style.display = 'block';
+}
+function stopYT(name) {
+  const thumb = document.getElementById('yt-thumb-' + name);
+  const iframe = document.getElementById('yt-iframe-' + name);
+  if (!iframe) return;
+  iframe.src = '';
+  iframe.style.display = 'none';
+  if (thumb) thumb.style.display = 'block';
+}
 
 // === Load James' photo ===
 (function(){
