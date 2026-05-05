@@ -34,7 +34,6 @@ html, body {
   touch-action: manipulation;
 }
 
-/* === SCALE STAGE: design at 1920x1080, scale to viewport === */
 #stage-wrap {
   position: fixed; inset: 0;
   display: grid; place-items: center;
@@ -55,7 +54,7 @@ html, body {
   z-index: 200;
 }
 
-/* === HEADER STRIP (leader nav) === */
+/* === HEADER === */
 header {
   position: absolute; top: 12px; left: 0; right: 0; height: 84px;
   display: flex; align-items: center; padding: 0 32px;
@@ -64,23 +63,22 @@ header {
   z-index: 150;
 }
 header .brand {
-  display: flex; align-items: center; gap: 18px;
-  font-family: var(--display); font-size: 32px; color: var(--purple);
-  letter-spacing: 0.02em; text-transform: uppercase;
-  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; flex-shrink: 0;
 }
-header .brand img { height: 56px; }
+header .brand img { height: 52px; }
 header nav {
   margin-left: auto;
-  display: flex; gap: 8px;
+  display: flex; gap: 6px;
 }
 header nav button {
-  font-family: var(--display); font-size: 22px;
+  font-family: var(--display); font-size: 20px;
   letter-spacing: 0.04em; text-transform: uppercase;
   background: transparent; border: 2px solid transparent;
-  padding: 10px 18px; border-radius: 6px;
+  padding: 9px 16px; border-radius: 6px;
   color: var(--purple); cursor: pointer;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 header nav button:hover, header nav button.active {
   background: var(--purple); color: var(--white);
@@ -101,11 +99,10 @@ header nav button.home:hover { background: #9bba1e; }
 }
 .screen.active { opacity: 1; pointer-events: auto; z-index: 10; }
 
-/* === BACKGROUND DECORATIONS === */
 .bg-dots {
   position: absolute; pointer-events: none;
   background-size: contain; background-repeat: no-repeat;
-  opacity: 0.55;
+  z-index: 0;
 }
 
 /* === BIG BUTTONS === */
@@ -118,6 +115,7 @@ header nav button.home:hover { background: #9bba1e; }
   background: var(--lime); color: var(--black);
   box-shadow: 0 6px 0 #7e9520;
   transition: transform 0.08s ease, box-shadow 0.08s ease;
+  position: relative; z-index: 2;
 }
 .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #7e9520; }
 .big-btn.purple { background: var(--purple); color: var(--white); box-shadow: 0 6px 0 #2a1850; }
@@ -133,86 +131,157 @@ header nav button.home:hover { background: #9bba1e; }
 }
 #welcome h1 {
   font-family: var(--display);
-  font-size: 220px;
+  font-size: 210px;
   color: var(--white);
   line-height: 0.9;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   margin-bottom: 24px;
-}
-#welcome .amp {
-  font-family: var(--display); color: var(--lime); font-size: 220px;
+  position: relative; z-index: 2;
 }
 #welcome .sub {
   font-family: var(--display);
-  font-size: 64px;
+  font-size: 60px;
   color: var(--yellow);
   letter-spacing: 0.04em; text-transform: uppercase;
   margin-bottom: 48px;
+  position: relative; z-index: 2;
 }
 #welcome .strap {
   font-family: var(--body); font-size: 28px; color: var(--white);
   max-width: 1200px; line-height: 1.4;
   margin-bottom: 64px;
+  position: relative; z-index: 2;
 }
 #welcome .strap b { color: var(--lime); }
 #welcome .dots-1 {
-  width: 420px; height: 420px;
+  width: 500px; height: 500px;
   background-image: url('project/assets/dots-lime.png');
-  top: 8%; left: 4%;
-  opacity: 0.4;
+  top: 0; left: 0; opacity: 0.55;
 }
 #welcome .dots-2 {
-  width: 420px; height: 420px;
+  width: 500px; height: 500px;
   background-image: url('project/assets/dots-pink.png');
-  bottom: 8%; right: 4%;
-  opacity: 0.4;
+  bottom: 0; right: 0; opacity: 0.55;
 }
 #welcome .logo-w {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  height: 90px; opacity: 0.9;
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  height: 84px; opacity: 0.9; z-index: 2;
+}
+#welcome .actions { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+/* ============== ABOUT STEP BY STEP ============== */
+.about-inner {
+  background: var(--black);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  padding: 0;
+  height: 100%;
+}
+.about-inner .left {
+  background: var(--purple);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 64px 72px;
+  text-align: center;
+}
+.about-inner .stat-big {
+  font-family: var(--display); font-size: 260px; color: var(--lime);
+  line-height: 0.85; letter-spacing: 0;
+}
+.about-inner .stat-unit {
+  font-family: var(--display); font-size: 72px; color: var(--lime);
+  line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.about-inner .stat-desc {
+  font-family: var(--body); font-size: 32px; color: var(--white);
+  line-height: 1.35; max-width: 560px;
+}
+.about-inner .right {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 72px 80px;
+}
+.about-inner .right .kicker {
+  font-family: var(--display); font-size: 32px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px;
+}
+.about-inner .right h2 {
+  font-family: var(--display); font-size: 90px; color: var(--white);
+  line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 36px;
+}
+.about-inner .right p {
+  font-family: var(--body); font-size: 28px; color: var(--white);
+  line-height: 1.5; margin-bottom: 24px;
+}
+.about-inner .right .standout {
+  font-family: var(--display); font-size: 42px; color: var(--yellow);
+  letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.1;
+  border-left: 8px solid var(--lime);
+  padding-left: 28px;
+  margin-top: 12px;
 }
 
 /* ============== HERO REVEAL ============== */
 #hero-reveal {
   background: var(--black);
   display: flex; flex-direction: column;
-  padding: 60px 80px;
+  padding: 56px 80px;
 }
 #hero-reveal .kicker {
   font-family: var(--display); font-size: 38px;
   color: var(--lime); letter-spacing: 0.04em; text-transform: uppercase;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 #hero-reveal h2 {
-  font-family: var(--display); font-size: 110px; color: var(--white);
+  font-family: var(--display); font-size: 100px; color: var(--white);
   line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase;
-  margin-bottom: 60px; max-width: 1500px;
+  margin-bottom: 40px; max-width: 1500px;
 }
 #hero-reveal h2 em { font-style: normal; color: var(--yellow); }
+#hero-reveal .hint {
+  font-family: var(--body); font-size: 22px; color: rgba(255,255,255,0.55);
+  margin-bottom: 20px; font-style: italic;
+}
 #hero-reveal .grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
   flex: 1;
 }
 #hero-reveal .letter {
   border-radius: 18px;
-  padding: 36px 32px;
+  padding: 32px 28px;
   display: flex; flex-direction: column; justify-content: space-between;
   position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.12s ease;
 }
+#hero-reveal .letter:active { transform: scale(0.98); }
 #hero-reveal .letter .L {
-  font-family: var(--display); font-size: 240px; line-height: 0.85;
+  font-family: var(--display); font-size: 220px; line-height: 0.85;
   letter-spacing: 0; text-transform: uppercase;
+  pointer-events: none;
 }
 #hero-reveal .letter .word {
-  font-family: var(--display); font-size: 56px; line-height: 0.95;
+  font-family: var(--display); font-size: 52px; line-height: 0.95;
   letter-spacing: 0.02em; text-transform: uppercase;
-  margin-top: -10px;
+  margin-top: -10px; pointer-events: none;
 }
 #hero-reveal .letter .desc {
   font-family: var(--body); font-size: 22px; line-height: 1.4;
   margin-top: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
 }
+#hero-reveal .letter.revealed .desc {
+  opacity: 1; transform: translateY(0);
+}
+#hero-reveal .tap-hint {
+  position: absolute; bottom: 16px; right: 20px;
+  font-family: var(--body); font-size: 15px; opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+#hero-reveal .letter.revealed .tap-hint { opacity: 0; }
 #hero-reveal .letter.h { background: var(--lime); color: var(--black); }
 #hero-reveal .letter.e { background: var(--pink); color: var(--white); }
 #hero-reveal .letter.r { background: var(--yellow); color: var(--black); }
@@ -221,17 +290,17 @@ header nav button.home:hover { background: #9bba1e; }
 /* ============== HERO HOUSE HUB ============== */
 #hub {
   background: var(--white);
-  padding: 24px 48px 48px;
+  padding: 16px 48px 24px;
   display: flex; flex-direction: column; align-items: center;
 }
 #hub .title {
-  font-family: var(--display); font-size: 56px;
+  font-family: var(--display); font-size: 52px;
   color: var(--purple); letter-spacing: 0.02em; text-transform: uppercase;
-  text-align: center; margin-bottom: 8px;
+  text-align: center; margin-bottom: 4px;
 }
 #hub .sub {
-  font-family: var(--body); font-size: 22px; color: var(--black);
-  text-align: center; margin-bottom: 20px;
+  font-family: var(--body); font-size: 20px; color: var(--black);
+  text-align: center; margin-bottom: 12px;
 }
 #hub .sub b { color: var(--pink); }
 #hub .house-wrap {
@@ -239,14 +308,16 @@ header nav button.home:hover { background: #9bba1e; }
   display: grid; place-items: center;
   position: relative;
 }
+#hub .continue-row {
+  width: 100%; text-align: center; padding: 12px 0 0;
+}
 
-/* The house */
 .house {
   position: relative;
-  width: 1200px; height: 790px;
+  width: 1160px; height: 720px;
 }
 .house .roof {
-  position: absolute; top: 0; left: 0; right: 0; height: 210px;
+  position: absolute; top: 0; left: 0; right: 0; height: 195px;
   z-index: 5;
 }
 .house .roof .tri {
@@ -255,23 +326,21 @@ header nav button.home:hover { background: #9bba1e; }
   clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
 }
 .house .roof .label {
-  position: absolute; top: 80px; left: 0; right: 0;
+  position: absolute; top: 72px; left: 0; right: 0;
   text-align: center;
-  font-family: var(--display); font-size: 72px; color: var(--white);
+  font-family: var(--display); font-size: 68px; color: var(--white);
   letter-spacing: 0.04em; text-transform: uppercase;
   z-index: 5;
 }
 .house .body {
-  position: absolute; top: 192px; left: 30px; right: 30px; bottom: 0;
+  position: absolute; top: 178px; left: 28px; right: 28px; bottom: 0;
   display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
   gap: 10px;
   border: 10px solid var(--black);
   background: var(--black);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
 }
-
-/* Photo rooms */
 .house .room {
   position: relative;
   overflow: hidden;
@@ -284,147 +353,132 @@ header nav button.home:hover { background: #9bba1e; }
   transition: transform 0.35s ease;
 }
 .house .room:hover .room-photo,
-.house .room:active .room-photo {
-  transform: scale(1.06);
-}
+.house .room:active .room-photo { transform: scale(1.06); }
 .house .room .room-overlay {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
   align-items: center; justify-content: flex-end;
-  padding: 24px 20px;
-  transition: background 0.2s ease;
+  padding: 20px;
+  transition: filter 0.2s ease;
 }
 .house .room.home .room-overlay {
-  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(65,37,118,0.85) 0%, rgba(65,37,118,0.2) 55%, transparent 100%);
 }
 .house .room.essentials .room-overlay {
-  background: linear-gradient(to top, rgba(230,13,140,0.82) 0%, rgba(230,13,140,0.25) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(230,13,140,0.85) 0%, rgba(230,13,140,0.2) 55%, transparent 100%);
 }
 .house .room.relationships .room-overlay {
-  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(65,37,118,0.85) 0%, rgba(65,37,118,0.2) 55%, transparent 100%);
 }
 .house .room.opportunities .room-overlay {
-  background: linear-gradient(to top, rgba(65,37,118,0.82) 0%, rgba(65,37,118,0.25) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(65,37,118,0.85) 0%, rgba(65,37,118,0.2) 55%, transparent 100%);
 }
 .house .room:hover .room-overlay { filter: brightness(1.1); }
-.house .room:active .room-overlay { filter: brightness(1.2); }
 .house .room .label {
-  font-family: var(--display); font-size: 58px;
+  font-family: var(--display); font-size: 54px;
   letter-spacing: 0.04em; text-transform: uppercase;
   line-height: 0.95;
-  color: var(--white);
   text-shadow: 0 3px 12px rgba(0,0,0,0.6);
 }
-.house .room.home .label { color: var(--lime); }
+.house .room.home .label       { color: var(--lime); }
 .house .room.essentials .label { color: var(--white); }
 .house .room.relationships .label { color: var(--yellow); }
 .house .room.opportunities .label { color: var(--white); }
 .house .room .tap {
-  font-family: var(--body); font-size: 18px;
+  font-family: var(--body); font-size: 17px;
   color: rgba(255,255,255,0.9);
-  margin-top: 8px;
+  margin-top: 6px;
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }
-
-/* Colour badge top-left of each room */
 .house .room .badge {
-  position: absolute; top: 16px; left: 16px;
-  width: 52px; height: 52px; border-radius: 50%;
+  position: absolute; top: 14px; left: 14px;
+  width: 48px; height: 48px; border-radius: 50%;
   display: grid; place-items: center;
-  font-family: var(--display); font-size: 34px;
-  letter-spacing: 0;
+  font-family: var(--display); font-size: 30px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 .house .room.home .badge        { background: var(--lime); color: var(--black); }
 .house .room.essentials .badge  { background: var(--pink); color: var(--white); }
 .house .room.relationships .badge { background: var(--yellow); color: var(--black); }
 .house .room.opportunities .badge { background: var(--purple); color: var(--white); }
-
 .house .door {
   position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: 120px; height: 180px;
+  width: 110px; height: 165px;
   background: var(--purple);
   border: 8px solid var(--black);
   border-bottom: none;
-  border-radius: 60px 60px 0 0;
+  border-radius: 55px 55px 0 0;
   z-index: 10;
 }
 .house .door::after {
-  content: ''; position: absolute; right: 18px; top: 50%;
-  width: 12px; height: 12px; background: var(--lime); border-radius: 50%;
+  content: ''; position: absolute; right: 16px; top: 50%;
+  width: 11px; height: 11px; background: var(--lime); border-radius: 50%;
 }
 
 /* ============== HERO DETAIL ============== */
 .detail {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
   height: 100%;
-  padding: 16px 16px 16px 16px;
+  padding: 12px;
 }
 .detail .left {
   border-radius: 18px;
-  padding: 56px 48px;
+  padding: 48px 44px;
   display: flex; flex-direction: column; justify-content: space-between;
   position: relative; overflow: hidden;
 }
 .detail .left .kicker {
-  font-family: var(--display); font-size: 32px;
+  font-family: var(--display); font-size: 30px;
   letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .detail .left h2 {
-  font-family: var(--display); font-size: 130px;
+  font-family: var(--display); font-size: 120px;
   letter-spacing: 0.02em; text-transform: uppercase;
-  line-height: 0.9; margin-bottom: 28px;
+  line-height: 0.9; margin-bottom: 24px;
 }
 .detail .left p.lead {
-  font-family: var(--body); font-size: 32px; line-height: 1.35;
-  font-weight: bold; margin-bottom: 24px;
+  font-family: var(--body); font-size: 30px; line-height: 1.35;
+  font-weight: bold; margin-bottom: 20px;
 }
 .detail .left p.body {
-  font-family: var(--body); font-size: 22px; line-height: 1.5;
+  font-family: var(--body); font-size: 21px; line-height: 1.5;
 }
-
-/* Photo panel for detail screens */
 .detail .right {
-  display: flex; flex-direction: column; gap: 20px;
+  display: flex; flex-direction: column; gap: 16px;
 }
 .detail .right .photo-panel {
-  flex: 1;
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  border: 4px solid var(--black);
+  flex: 1; border-radius: 18px; overflow: hidden;
+  position: relative; border: 4px solid var(--black);
 }
 .detail .right .photo-panel img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .detail .right .card {
   flex: 1; background: var(--white);
   border: 4px solid var(--black);
   border-radius: 14px;
-  padding: 28px 32px;
+  padding: 24px 28px;
   display: flex; flex-direction: column;
 }
 .detail .right .card h3 {
-  font-family: var(--display); font-size: 38px;
+  font-family: var(--display); font-size: 34px;
   color: var(--purple); letter-spacing: 0.02em; text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .detail .right .card p {
-  font-family: var(--body); font-size: 21px; line-height: 1.45;
+  font-family: var(--body); font-size: 20px; line-height: 1.45;
 }
 .detail .right .card .stat {
-  font-family: var(--display); font-size: 90px; line-height: 0.9;
+  font-family: var(--display); font-size: 80px; line-height: 0.9;
   margin-top: auto;
 }
 .detail .right .card .stat-label {
-  font-family: var(--body); font-size: 20px; line-height: 1.3; margin-top: 4px;
+  font-family: var(--body); font-size: 18px; line-height: 1.3; margin-top: 4px;
 }
-.detail.home .left { background: var(--lime); color: var(--black); }
+.detail.home .left        { background: var(--lime); color: var(--black); }
 .detail.home .right .card .stat { color: var(--purple); }
-.detail.essentials .left { background: var(--pink); color: var(--white); }
+.detail.essentials .left  { background: var(--pink); color: var(--white); }
 .detail.essentials .right .card .stat { color: var(--pink); }
 .detail.relationships .left { background: var(--yellow); color: var(--black); }
 .detail.relationships .right .card .stat { color: var(--pink); }
@@ -432,34 +486,34 @@ header nav button.home:hover { background: #9bba1e; }
 .detail.opportunities .right .card .stat { color: var(--purple); }
 
 .back-btn {
-  position: absolute; top: 16px; right: 24px; z-index: 50;
-  font-family: var(--display); font-size: 26px;
+  position: absolute; top: 14px; right: 20px; z-index: 50;
+  font-family: var(--display); font-size: 24px;
   letter-spacing: 0.04em; text-transform: uppercase;
   background: var(--black); color: var(--white);
-  border: none; padding: 14px 26px;
+  border: none; padding: 12px 24px;
   border-radius: 9999px; cursor: pointer;
 }
 .back-btn:hover { background: var(--purple); }
 
-/* ============== STEVIE / IMPACT VIDEO SCREENS ============== */
+/* ============== VIDEO SCREENS ============== */
 .video-screen {
   background: var(--black);
-  display: flex; gap: 48px; padding: 56px 64px;
+  display: flex; gap: 48px; padding: 52px 60px;
 }
 .video-screen .text {
-  width: 520px; flex-shrink: 0;
+  width: 500px; flex-shrink: 0;
   color: var(--white);
   display: flex; flex-direction: column; justify-content: center;
 }
 .video-screen .text .kicker {
   font-family: var(--display); font-size: 28px;
   color: var(--lime); letter-spacing: 0.04em; text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 .video-screen .text h2 {
-  font-family: var(--display); font-size: 92px;
+  font-family: var(--display); font-size: 86px;
   letter-spacing: 0.02em; text-transform: uppercase;
-  line-height: 0.95; margin-bottom: 32px;
+  line-height: 0.95; margin-bottom: 28px;
 }
 .video-screen .text h2 em { font-style: normal; color: var(--yellow); }
 .video-screen .text p {
@@ -482,7 +536,7 @@ header nav button.home:hover { background: #9bba1e; }
   text-align: center; color: var(--white); padding: 40px;
 }
 .video-screen .player .placeholder .label {
-  font-family: var(--display); font-size: 56px; color: var(--yellow);
+  font-family: var(--display); font-size: 52px; color: var(--yellow);
   letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;
 }
 .video-screen .player .placeholder .filename {
@@ -499,132 +553,266 @@ header nav button.home:hover { background: #9bba1e; }
   background: rgba(65, 37, 118, 0.55);
   display: grid; place-items: center;
   cursor: pointer;
-  transition: opacity 0.2s ease;
 }
 .video-screen .player .play-overlay.hidden { display: none; }
 .video-screen .player .play-overlay .circle {
-  width: 180px; height: 180px; border-radius: 50%;
+  width: 170px; height: 170px; border-radius: 50%;
   background: var(--lime);
   display: grid; place-items: center;
   box-shadow: 0 0 0 16px rgba(179, 209, 43, 0.25);
 }
 .video-screen .player .play-overlay .circle::before {
-  content: ''; display: block;
-  width: 0; height: 0;
+  content: ''; display: block; width: 0; height: 0;
   border-style: solid;
-  border-width: 38px 0 38px 60px;
+  border-width: 36px 0 36px 56px;
   border-color: transparent transparent transparent var(--black);
-  margin-left: 14px;
+  margin-left: 12px;
 }
 .video-screen .player .play-overlay .label {
-  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-  font-family: var(--display); font-size: 36px; color: var(--white);
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  font-family: var(--display); font-size: 34px; color: var(--white);
   letter-spacing: 0.04em; text-transform: uppercase;
-  background: rgba(0,0,0,0.6); padding: 8px 22px; border-radius: 9999px;
+  background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 9999px;
 }
 
 /* ============== SHOP CHALLENGE ============== */
-#shop {
+#shop, #shop-debrief {
   background: var(--white);
-  padding: 32px 56px 48px;
+  padding: 28px 52px 44px;
   display: flex; flex-direction: column;
 }
-#shop .head {
-  text-align: center; margin-bottom: 24px;
+.shop-head {
+  text-align: center; margin-bottom: 20px;
 }
-#shop .head .kicker {
-  font-family: var(--display); font-size: 32px; color: var(--pink);
+.shop-head .kicker {
+  font-family: var(--display); font-size: 30px; color: var(--pink);
   letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px;
 }
-#shop .head h2 {
-  font-family: var(--display); font-size: 96px; color: var(--purple);
+.shop-head h2 {
+  font-family: var(--display); font-size: 88px; color: var(--purple);
   line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
 }
-#shop .head h2 .pound {
+.shop-head h2 .pound {
   background: var(--yellow); color: var(--black);
-  padding: 0 18px; border-radius: 8px;
+  padding: 0 16px; border-radius: 8px;
   display: inline-block; transform: rotate(-2deg);
 }
-#shop .body-row {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px;
-  flex: 1; margin-top: 12px;
+.shop-body-row {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px;
+  flex: 1; margin-top: 10px;
 }
-#shop .rules {
+.shop-rules {
   background: var(--purple); color: var(--white);
-  border-radius: 18px; padding: 36px 40px;
-  display: flex; flex-direction: column; gap: 18px;
+  border-radius: 18px; padding: 32px 36px;
+  display: flex; flex-direction: column; gap: 16px;
 }
-#shop .rules h3 {
-  font-family: var(--display); font-size: 44px; color: var(--lime);
+.shop-rules h3 {
+  font-family: var(--display); font-size: 40px; color: var(--lime);
   letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 4px;
 }
-#shop .rules ol {
+.shop-rules ol {
   list-style: none; counter-reset: step;
-  display: flex; flex-direction: column; gap: 14px;
+  display: flex; flex-direction: column; gap: 12px;
 }
-#shop .rules ol li {
+.shop-rules ol li {
   counter-increment: step;
-  font-family: var(--body); font-size: 22px; line-height: 1.4;
-  padding-left: 60px; position: relative;
+  font-family: var(--body); font-size: 21px; line-height: 1.4;
+  padding-left: 56px; position: relative;
 }
-#shop .rules ol li::before {
+.shop-rules ol li::before {
   content: counter(step);
   position: absolute; left: 0; top: -2px;
-  width: 44px; height: 44px;
+  width: 40px; height: 40px;
   background: var(--lime); color: var(--black);
   border-radius: 50%;
-  font-family: var(--display); font-size: 28px;
+  font-family: var(--display); font-size: 26px;
   display: grid; place-items: center;
 }
-#shop .rules .note {
-  font-family: var(--body); font-size: 20px; color: var(--yellow);
+.shop-rules .note {
+  font-family: var(--body); font-size: 19px; color: var(--yellow);
   font-style: italic; margin-top: 4px;
 }
-
-#shop .stations {
+.shop-stations {
   display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
-#shop .station {
-  border-radius: 14px; padding: 20px 24px;
-  color: var(--white);
-  display: flex; flex-direction: column; justify-content: space-between;
+.shop-station {
+  border-radius: 14px; padding: 18px 22px;
+  display: flex; flex-direction: column;
 }
-#shop .station h4 {
-  font-family: var(--display); font-size: 36px; letter-spacing: 0.02em;
+.shop-station h4 {
+  font-family: var(--display); font-size: 34px; letter-spacing: 0.02em;
   text-transform: uppercase; margin-bottom: 6px;
 }
-#shop .station p {
-  font-family: var(--body); font-size: 17px; line-height: 1.4;
-  opacity: 0.95;
+.shop-station p {
+  font-family: var(--body); font-size: 16px; line-height: 1.4; opacity: 0.95;
 }
-#shop .station.home { background: var(--lime); color: var(--black); }
-#shop .station.essentials { background: var(--pink); }
-#shop .station.relationships { background: var(--yellow); color: var(--black); }
-#shop .station.opportunities { background: var(--purple); }
-
-#shop .footer-strip {
+.shop-station.home { background: var(--lime); color: var(--black); }
+.shop-station.essentials { background: var(--pink); color: var(--white); }
+.shop-station.relationships { background: var(--yellow); color: var(--black); }
+.shop-station.opportunities { background: var(--purple); color: var(--white); }
+.shop-footer {
   background: var(--black); color: var(--white);
-  border-radius: 12px;
-  margin-top: 24px;
-  padding: 22px 32px;
-  font-family: var(--display); font-size: 36px;
+  border-radius: 12px; margin-top: 20px;
+  padding: 18px 28px;
+  font-family: var(--display); font-size: 32px;
   letter-spacing: 0.04em; text-transform: uppercase;
-  text-align: center;
+  text-align: center; flex-shrink: 0;
 }
-#shop .footer-strip em { color: var(--yellow); font-style: normal; }
+.shop-footer em { color: var(--yellow); font-style: normal; }
+
+/* Debrief screen */
+#shop-debrief .debrief-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  flex: 1; margin-top: 10px;
+}
+#shop-debrief .discuss {
+  background: var(--purple); color: var(--white);
+  border-radius: 18px; padding: 36px 40px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+#shop-debrief .discuss h3 {
+  font-family: var(--display); font-size: 44px; color: var(--lime);
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+#shop-debrief .discuss ul {
+  list-style: none; display: flex; flex-direction: column; gap: 16px;
+}
+#shop-debrief .discuss ul li {
+  font-family: var(--body); font-size: 24px; line-height: 1.4;
+  padding-left: 44px; position: relative;
+}
+#shop-debrief .discuss ul li::before {
+  content: '?';
+  position: absolute; left: 0; top: -2px;
+  width: 32px; height: 32px;
+  background: var(--lime); color: var(--black);
+  border-radius: 50%;
+  font-family: var(--display); font-size: 22px;
+  display: grid; place-items: center;
+}
+#shop-debrief .magazine-box {
+  background: var(--lime); color: var(--black);
+  border-radius: 18px; padding: 40px 48px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 20px;
+}
+#shop-debrief .magazine-box .mag-icon {
+  font-size: 96px; line-height: 1;
+}
+#shop-debrief .magazine-box h3 {
+  font-family: var(--display); font-size: 56px;
+  letter-spacing: 0.02em; text-transform: uppercase; line-height: 0.95;
+}
+#shop-debrief .magazine-box p {
+  font-family: var(--body); font-size: 26px; line-height: 1.4;
+  max-width: 560px;
+}
+
+/* ============== IMPACT SCREEN ============== */
+#impact-screen {
+  background: var(--black);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  padding: 0;
+  height: 100%;
+}
+#impact-screen .left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 60px 64px;
+  color: var(--white);
+}
+#impact-screen .left .kicker {
+  font-family: var(--display); font-size: 30px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;
+}
+#impact-screen .left h2 {
+  font-family: var(--display); font-size: 96px; color: var(--white);
+  line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+#impact-screen .left h2 em { font-style: normal; color: var(--yellow); }
+#impact-screen .left p {
+  font-family: var(--body); font-size: 24px; line-height: 1.5;
+  margin-bottom: 20px;
+}
+#impact-screen .stat-box {
+  background: var(--lime); color: var(--black);
+  border-radius: 14px; padding: 24px 32px;
+  margin-top: 8px;
+}
+#impact-screen .stat-box .num {
+  font-family: var(--display); font-size: 100px; line-height: 0.85;
+}
+#impact-screen .stat-box .lbl {
+  font-family: var(--body); font-size: 22px; line-height: 1.35; margin-top: 6px;
+}
+#impact-screen .right {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48px 56px 48px 40px;
+}
+#impact-screen .player {
+  width: 100%; aspect-ratio: 16/9;
+  background: #1a1a1a;
+  border: 6px solid var(--lime);
+  border-radius: 14px;
+  position: relative; overflow: hidden;
+  display: grid; place-items: center;
+}
+#impact-screen .player video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+#impact-screen .player .placeholder {
+  text-align: center; color: var(--white); padding: 32px;
+}
+#impact-screen .player .placeholder .label {
+  font-family: var(--display); font-size: 44px; color: var(--yellow);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px;
+}
+#impact-screen .player .placeholder .filename {
+  font-family: monospace; font-size: 18px; color: var(--lime);
+  background: rgba(255,255,255,0.08); padding: 8px 16px;
+  border-radius: 6px; display: inline-block; margin-bottom: 10px;
+}
+#impact-screen .player .placeholder .note {
+  font-family: var(--body); font-size: 17px; color: var(--white); opacity: 0.8;
+  max-width: 440px; line-height: 1.4; margin: 0 auto;
+}
+#impact-screen .player .play-overlay {
+  position: absolute; inset: 0;
+  background: rgba(65, 37, 118, 0.55);
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+#impact-screen .player .play-overlay.hidden { display: none; }
+#impact-screen .player .play-overlay .circle {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: var(--lime); display: grid; place-items: center;
+  box-shadow: 0 0 0 12px rgba(179,209,43,0.25);
+}
+#impact-screen .player .play-overlay .circle::before {
+  content: ''; display: block; width: 0; height: 0;
+  border-style: solid;
+  border-width: 28px 0 28px 44px;
+  border-color: transparent transparent transparent var(--black);
+  margin-left: 10px;
+}
+#impact-screen .player .play-overlay .label {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  font-family: var(--display); font-size: 30px; color: var(--white);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: rgba(0,0,0,0.6); padding: 6px 18px; border-radius: 9999px;
+}
 
 /* ============== HERO MOMENT (JAMES) ============== */
-#hero-moment {
+.hero-moment-inner {
   background: var(--purple);
   color: var(--white);
-  padding: 56px 80px;
-  display: grid; grid-template-columns: 580px 1fr; gap: 56px;
+  padding: 52px 76px;
+  display: grid; grid-template-columns: 560px 1fr; gap: 52px;
+  height: 100%;
 }
-#hero-moment .photo-wrap {
-  display: flex; flex-direction: column; gap: 24px;
+.hero-moment-inner .photo-wrap {
+  display: flex; flex-direction: column; gap: 20px;
 }
-#hero-moment .photo {
+.hero-moment-inner .photo {
   flex: 1;
   background: var(--black);
   border: 6px solid var(--lime);
@@ -632,62 +820,59 @@ header nav button.home:hover { background: #9bba1e; }
   overflow: hidden;
   position: relative;
 }
-#hero-moment .photo img {
+.hero-moment-inner .photo img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
   display: block;
 }
-#hero-moment .photo .ph-label {
-  font-family: var(--display); font-size: 40px; color: var(--yellow);
-  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px;
-}
-#hero-moment .photo .ph-note {
-  font-family: var(--body); font-size: 18px; color: var(--white); opacity: 0.85;
-  max-width: 400px; line-height: 1.4;
-}
-#hero-moment .photo-placeholder {
+.hero-moment-inner .photo-placeholder {
   display: grid; place-items: center; text-align: center; padding: 32px;
   height: 100%;
 }
-#hero-moment .photo-cap {
+.hero-moment-inner .photo .ph-label {
+  font-family: var(--display); font-size: 38px; color: var(--yellow);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px;
+}
+.hero-moment-inner .photo .ph-note {
+  font-family: var(--body); font-size: 17px; color: var(--white); opacity: 0.85;
+  max-width: 380px; line-height: 1.4;
+}
+.hero-moment-inner .photo-cap {
   background: var(--lime); color: var(--black);
-  padding: 14px 22px; border-radius: 12px; text-align: center;
-  font-family: var(--display); font-size: 32px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 12px 20px; border-radius: 12px; text-align: center;
+  font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; text-transform: uppercase;
   flex-shrink: 0;
 }
-#hero-moment .text {
+.hero-moment-inner .text {
   display: flex; flex-direction: column; justify-content: center;
 }
-#hero-moment .text .kicker {
-  font-family: var(--display); font-size: 32px; color: var(--lime);
-  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;
+.hero-moment-inner .text .kicker {
+  font-family: var(--display); font-size: 30px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 14px;
 }
-#hero-moment .text h2 {
-  font-family: var(--display); font-size: 110px; color: var(--white);
+.hero-moment-inner .text h2 {
+  font-family: var(--display); font-size: 100px; color: var(--white);
   line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
-  margin-bottom: 32px;
-}
-#hero-moment .text h2 em { font-style: normal; color: var(--yellow); }
-#hero-moment .quote {
-  font-family: var(--body); font-size: 26px; line-height: 1.5;
-  border-left: 6px solid var(--lime);
-  padding: 8px 0 8px 28px;
   margin-bottom: 28px;
 }
-#hero-moment .signoff {
-  font-family: var(--display); font-size: 38px; color: var(--lime);
-  letter-spacing: 0.04em; text-transform: uppercase;
-  margin-bottom: 32px;
+.hero-moment-inner .text h2 em { font-style: normal; color: var(--yellow); }
+.hero-moment-inner .quote {
+  font-family: var(--body); font-size: 25px; line-height: 1.5;
+  border-left: 6px solid var(--lime);
+  padding: 8px 0 8px 24px;
+  margin-bottom: 24px;
 }
-#hero-moment .question {
+.hero-moment-inner .signoff {
+  font-family: var(--display); font-size: 36px; color: var(--lime);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-moment-inner .question {
   background: var(--lime); color: var(--black);
-  padding: 24px 32px; border-radius: 12px;
-  font-family: var(--display); font-size: 44px; line-height: 1;
+  padding: 22px 30px; border-radius: 12px;
+  font-family: var(--display); font-size: 42px; line-height: 1;
   letter-spacing: 0.02em; text-transform: uppercase;
 }
-
-/* ============== HOME / Index buttons === */
-#welcome .actions { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
 
 /* === Helpers === */
 .fade-in { animation: fadeUp 0.5s ease both; }
@@ -711,10 +896,11 @@ header nav button.home:hover { background: #9bba1e; }
 
     <header>
       <div class="brand" data-go="welcome">
-        <img src="project/assets/logo-secondary-white.png" alt="Step by Step" style="height:54px;filter:brightness(0) saturate(100%) invert(13%) sepia(72%) saturate(2078%) hue-rotate(257deg) brightness(94%) contrast(96%);">
+        <img src="project/assets/logo-secondary-white.png" alt="Step by Step" style="filter:brightness(0) saturate(100%) invert(13%) sepia(72%) saturate(2078%) hue-rotate(257deg) brightness(94%) contrast(96%);">
       </div>
       <nav>
         <button data-go="welcome" class="home">★ Home</button>
+        <button data-go="about">About SbS</button>
         <button data-go="hero-reveal">HERO</button>
         <button data-go="hub">House</button>
         <button data-go="stevie">Stevie</button>
@@ -725,22 +911,41 @@ header nav button.home:hover { background: #9bba1e; }
     </header>
 
     <!-- ============ WELCOME ============ -->
-    <section id="welcome" class="screen active" data-screen-label="01 Welcome">
+    <section id="welcome" class="screen active">
       <div class="bg-dots dots-1"></div>
       <div class="bg-dots dots-2"></div>
       <h1>STANLEYS OWN CUBS</h1>
       <div class="sub">Welcome to Step by Step</div>
       <p class="strap">Tonight we're talking about <b>what every person needs</b> to live well — and what happens when some of those things are missing. We help young people who are going through hard times. <b>Tonight, you're going to help us.</b></p>
       <div class="actions">
-        <button class="big-btn" data-go="hero-reveal">Let's Go ▶</button>
+        <button class="big-btn" data-go="about">Let's Go ▶</button>
       </div>
       <img class="logo-w" src="project/assets/logo-primary-white.png" alt="Step by Step">
     </section>
 
+    <!-- ============ ABOUT STEP BY STEP ============ -->
+    <section id="about" class="screen" style="padding:0;">
+      <div class="about-inner">
+        <div class="left">
+          <div class="stat-big">1</div>
+          <div class="stat-unit">in 40</div>
+          <p class="stat-desc">young people across the South-Central area don't have somewhere safe to sleep tonight</p>
+        </div>
+        <div class="right">
+          <div class="kicker">Who we are</div>
+          <h2>Step by Step</h2>
+          <p>A youth homelessness charity supporting young people across <b style="color:var(--lime);">six counties</b> in the South of England.</p>
+          <p>On any given night we accommodate around <b style="color:var(--lime);">200 young people</b> aged 16–24.</p>
+          <div class="standout">A safe bed is only the beginning.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ HERO REVEAL ============ -->
-    <section id="hero-reveal" class="screen" data-screen-label="02 HERO Reveal">
-      <div class="kicker">Everyone needs four things</div>
+    <section id="hero-reveal" class="screen">
+      <div class="kicker">Everyone needs four things to thrive</div>
       <h2>We call them <em>HERO</em></h2>
+      <p class="hint">Tap each card to reveal what it means →</p>
       <div class="grid stagger">
         <div class="letter h">
           <div>
@@ -748,6 +953,7 @@ header nav button.home:hover { background: #9bba1e; }
             <div class="word">Home</div>
           </div>
           <div class="desc">A safe place to sleep with a door you can close.</div>
+          <div class="tap-hint">Tap to reveal</div>
         </div>
         <div class="letter e">
           <div>
@@ -755,6 +961,7 @@ header nav button.home:hover { background: #9bba1e; }
             <div class="word">Essentials</div>
           </div>
           <div class="desc">Food, clothes, and the things you need to stay healthy.</div>
+          <div class="tap-hint">Tap to reveal</div>
         </div>
         <div class="letter r">
           <div>
@@ -762,6 +969,7 @@ header nav button.home:hover { background: #9bba1e; }
             <div class="word">Relationships</div>
           </div>
           <div class="desc">People who care about you and have your back.</div>
+          <div class="tap-hint">Tap to reveal</div>
         </div>
         <div class="letter o">
           <div>
@@ -769,12 +977,13 @@ header nav button.home:hover { background: #9bba1e; }
             <div class="word">Opportunities</div>
           </div>
           <div class="desc">Chances to learn, grow, and look forward.</div>
+          <div class="tap-hint">Tap to reveal</div>
         </div>
       </div>
     </section>
 
     <!-- ============ HERO HOUSE HUB ============ -->
-    <section id="hub" class="screen" data-screen-label="03 HERO House">
+    <section id="hub" class="screen">
       <div class="title">Tap a room to see what we do</div>
       <div class="sub">Step by Step helps young people with <b>all four</b> — not just one.</div>
       <div class="house-wrap">
@@ -785,7 +994,7 @@ header nav button.home:hover { background: #9bba1e; }
           </div>
           <div class="body">
             <div class="room home" data-go="detail-home">
-              <img class="room-photo" src="project/assets/home-photo.jpg" alt="Home — safe housing">
+              <img class="room-photo" src="project/assets/home-photo.jpg" alt="Home">
               <div class="room-overlay">
                 <div class="badge">H</div>
                 <div class="label">Home</div>
@@ -793,7 +1002,7 @@ header nav button.home:hover { background: #9bba1e; }
               </div>
             </div>
             <div class="room essentials" data-go="detail-essentials">
-              <img class="room-photo" src="project/assets/essentials-photo.jpg" alt="Essentials — everyday needs">
+              <img class="room-photo" src="project/assets/essentials-photo.jpg" alt="Essentials">
               <div class="room-overlay">
                 <div class="badge">E</div>
                 <div class="label">Essentials</div>
@@ -801,7 +1010,7 @@ header nav button.home:hover { background: #9bba1e; }
               </div>
             </div>
             <div class="room relationships" data-go="detail-relationships">
-              <img class="room-photo" src="project/assets/relationships-photo.jpg" alt="Relationships — people who care">
+              <img class="room-photo" src="project/assets/relationships-photo.jpg" alt="Relationships">
               <div class="room-overlay">
                 <div class="badge">R</div>
                 <div class="label">Relationships</div>
@@ -809,7 +1018,7 @@ header nav button.home:hover { background: #9bba1e; }
               </div>
             </div>
             <div class="room opportunities" data-go="detail-opportunities">
-              <img class="room-photo" src="project/assets/opportunities-photo.jpg" alt="Opportunities — chances to grow">
+              <img class="room-photo" src="project/assets/opportunities-photo.jpg" alt="Opportunities">
               <div class="room-overlay">
                 <div class="badge">O</div>
                 <div class="label">Opportunities</div>
@@ -820,10 +1029,13 @@ header nav button.home:hover { background: #9bba1e; }
           <div class="door"></div>
         </div>
       </div>
+      <div class="continue-row">
+        <button class="big-btn" data-go="stevie">Continue to Stevie's Story ▶</button>
+      </div>
     </section>
 
     <!-- ============ DETAIL: HOME ============ -->
-    <section id="detail-home" class="screen" data-screen-label="04 HERO · Home">
+    <section id="detail-home" class="screen">
       <button class="back-btn" data-go="hub">◀ Back to House</button>
       <div class="detail home">
         <div class="left">
@@ -837,11 +1049,11 @@ header nav button.home:hover { background: #9bba1e; }
         </div>
         <div class="right">
           <div class="photo-panel">
-            <img src="project/assets/home-foyer.jpg" alt="Step by Step Aldershot Foyer">
+            <img src="project/assets/charlie-room.jpg" alt="Getting a room ready">
           </div>
           <div class="card">
             <h3>Supported Lodgings &amp; The Foyer</h3>
-            <p>A young person moves in with a family who has a spare room — or into our Aldershot Foyer, a building of small flats with staff on hand 24/7.</p>
+            <p>A young person moves in with a family who has a spare room — or into our Aldershot Foyer, with staff on hand 24/7. Step by Step Fostering also finds long-term homes for children.</p>
             <div class="stat">325</div>
             <div class="stat-label">young people given a safe home last year</div>
           </div>
@@ -850,34 +1062,34 @@ header nav button.home:hover { background: #9bba1e; }
     </section>
 
     <!-- ============ DETAIL: ESSENTIALS ============ -->
-    <section id="detail-essentials" class="screen" data-screen-label="04 HERO · Essentials">
+    <section id="detail-essentials" class="screen">
       <button class="back-btn" data-go="hub">◀ Back to House</button>
       <div class="detail essentials">
         <div class="left">
           <div>
             <div class="kicker">E is for</div>
             <h2>Essentials</h2>
-            <p class="lead">The everyday things you need to stay well.</p>
-            <p class="body">Food. Toiletries. Clothes for school. A bus fare. A heating bill that gets paid. When you're trying to live on your own at 17 or 18, the basics can quickly become impossible.</p>
+            <p class="lead">From life skills and cooking to health and wellbeing.</p>
+            <p class="body">Every young person gets their own room — with heating, internet, and in Aldershot even their own bathroom. Step by Step helps young people build the everyday skills they need to thrive.</p>
           </div>
-          <p class="body" style="opacity:0.9;font-style:italic;">"The funding helped me look for rooms more efficiently — I had the option before some others." — Bradley, Opportunities Fund</p>
+          <p class="body" style="opacity:0.9;font-style:italic;">"It really helped me feel like I had my own space and could do my own thing." — young person we support</p>
         </div>
         <div class="right">
           <div class="photo-panel">
             <img src="project/assets/georgie-cooking.jpg" alt="Learning to cook with Step by Step">
           </div>
           <div class="card">
-            <h3>Opportunities Fund</h3>
-            <p>Small grants for big differences — bus passes, bikes, a deposit, work boots. Whatever a young person needs to take their next step.</p>
-            <div class="stat">149</div>
-            <div class="stat-label">young people supported with an Opportunities Fund grant last year</div>
+            <h3>Life Skills &amp; Wellbeing</h3>
+            <p>Cooking, budgeting, health — our staff and hosts work side by side with young people to build the everyday skills that most of us take for granted.</p>
+            <div class="stat">79%</div>
+            <div class="stat-label">of young people we support make positive progress</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ DETAIL: RELATIONSHIPS ============ -->
-    <section id="detail-relationships" class="screen" data-screen-label="04 HERO · Relationships">
+    <section id="detail-relationships" class="screen">
       <button class="back-btn" data-go="hub">◀ Back to House</button>
       <div class="detail relationships">
         <div class="left">
@@ -891,11 +1103,11 @@ header nav button.home:hover { background: #9bba1e; }
         </div>
         <div class="right">
           <div class="photo-panel">
-            <img src="project/assets/relationships-fern.jpg" alt="A Step by Step support worker with young people">
+            <img src="project/assets/fern-2yp.jpg" alt="Fern with two young people">
           </div>
           <div class="card">
             <h3>Launch &amp; Counselling</h3>
-            <p>Free one-to-one support and real counselling — usually 5 to 8 sessions with a therapist, in person or online.</p>
+            <p>Free one-to-one support and real counselling — usually 5 to 8 sessions with a therapist, in person or online. Every young person has someone in their corner.</p>
             <div class="stat">3,216</div>
             <div class="stat-label">counselling sessions delivered last year — a 101% increase</div>
           </div>
@@ -904,7 +1116,7 @@ header nav button.home:hover { background: #9bba1e; }
     </section>
 
     <!-- ============ DETAIL: OPPORTUNITIES ============ -->
-    <section id="detail-opportunities" class="screen" data-screen-label="04 HERO · Opportunities">
+    <section id="detail-opportunities" class="screen">
       <button class="back-btn" data-go="hub">◀ Back to House</button>
       <div class="detail opportunities">
         <div class="left">
@@ -912,39 +1124,40 @@ header nav button.home:hover { background: #9bba1e; }
             <div class="kicker">O is for</div>
             <h2>Opportunities</h2>
             <p class="lead">Chances to learn, grow, and look forward.</p>
-            <p class="body">A job interview. A college place. A driving lesson. The first weeks in a new flat. Step by Step help young people see what's possible — and then take the steps to make it real.</p>
+            <p class="body">A job interview. A college place. A driving lesson. The first weeks in a new flat. Step by Step help young people see what's possible — and take the steps to make it real.</p>
           </div>
-          <p class="body" style="opacity:0.9;font-style:italic;">"Step by Step has taught me that my past doesn't have to affect my future. Anything I put my mind to, I can achieve." — young person we support</p>
+          <p class="body" style="opacity:0.9;font-style:italic;">"Step by Step has taught me that my past doesn't have to affect my future." — young person we support</p>
         </div>
         <div class="right">
           <div class="photo-panel">
             <img src="project/assets/opportunities-riv.jpg" alt="Young person supported by Step by Step">
           </div>
           <div class="card">
-            <h3>Education &amp; Work</h3>
-            <p>From CV help to college applications to apprenticeships — we work with young people to find the next thing that fits. £6.80 of social value for every £1 invested.</p>
-            <div class="stat">76%</div>
-            <div class="stat-label">of young people in Supported Lodgings made positive progress last year</div>
+            <h3>Education, Work &amp; Opportunities Fund</h3>
+            <p>From CV help to college applications — and small grants that make the difference. Bus passes, bikes, a deposit, work boots. Whatever a young person needs to take their next step.</p>
+            <div class="stat">149</div>
+            <div class="stat-label">young people supported with an Opportunities Fund grant last year</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ STEVIE VIDEO ============ -->
-    <section id="stevie" class="screen video-screen" data-screen-label="05 Stevie">
+    <section id="stevie" class="screen video-screen">
       <div class="text">
-        <div class="kicker">Real choices, real lives</div>
+        <div class="kicker">All of this costs money</div>
         <h2>Meet <em>Stevie</em></h2>
-        <p>Stevie arrived at her host Rachel's door with bin bags of clothes and not much else. This is what happened next.</p>
-        <p style="opacity:0.85;font-size:18px;">Watch the film "18 Isn't Cheaper" — Step by Step's campaign for fairer support for young people leaving care.</p>
+        <p>All the things we've just talked about — a home, the essentials, relationships, opportunities — they all come with a price tag.</p>
+        <p>Stevie was supported by Step by Step. Here she is talking about how she managed her budget when living on her own.</p>
+        <p style="opacity:0.75;font-size:18px;">Watch a short clip from "18 Isn't Cheaper" — Step by Step's campaign for fairer support.</p>
       </div>
       <div class="player-wrap">
         <div class="player" id="player-stevie">
           <video id="video-stevie" preload="none" playsinline controls data-src="stevie.mp4"></video>
           <div class="placeholder" id="placeholder-stevie" style="display:none;">
-            <div class="label">Stevie's Story</div>
+            <div class="label">Stevie — Budgeting</div>
             <div class="filename">stevie.mp4</div>
-            <div class="note">Add the video file <b>stevie.mp4</b> to the same folder as this page and it will appear here.</div>
+            <div class="note">Upload <b>stevie.mp4</b> to the repo root on GitHub and it will appear here.</div>
           </div>
           <div class="play-overlay" id="overlay-stevie">
             <div class="circle"></div>
@@ -954,94 +1167,118 @@ header nav button.home:hover { background: #9bba1e; }
       </div>
     </section>
 
-    <!-- ============ £50 SHOP CHALLENGE ============ -->
-    <section id="shop" class="screen" data-screen-label="06 £50 Shop Challenge">
-      <div class="head">
+    <!-- ============ £50 SHOP — STAGE 1 ============ -->
+    <section id="shop" class="screen">
+      <div class="shop-head">
+        <div class="kicker">Stage 1 — Go Shopping</div>
         <h2>The <span class="pound">£50</span> Shop Challenge</h2>
       </div>
-      <div class="body-row">
-        <div class="rules">
+      <div class="shop-body-row">
+        <div class="shop-rules">
           <h3>How it works</h3>
           <ol>
             <li>You're a young person living on your own. You've got <b>£50</b> for the whole week.</li>
             <li>There is a 'shop' at the back of the room.</li>
-            <li>Run to the shop, pick what you need, bring back the card and pay.</li>
-            <li>Write what you bought and what it cost in your <b>StandUp magazine</b>.</li>
+            <li>Run to the shop, pick what you need, and bring back the card.</li>
             <li>Watch out — your leader might shout out a <b>chaos event</b>!</li>
           </ol>
-          <div class="note">When you've finished, we'll talk about what was hardest to choose, and what you'd keep no matter what.</div>
+          <div class="note">When everyone has shopped, we'll talk — then move to Stage 2 to write it down.</div>
         </div>
-        <div class="stations">
-          <div class="station home">
-            <div>
-              <h4>🏠 Home</h4>
-              <p>Rent top-up · Heating · Insurance · Fixing what breaks</p>
-            </div>
+        <div class="shop-stations">
+          <div class="shop-station home">
+            <h4>🏠 Home</h4>
+            <p>Rent top-up · Heating · Insurance · Fixing what breaks</p>
           </div>
-          <div class="station essentials">
-            <div>
-              <h4>🍎 Essentials</h4>
-              <p>Food shop · Toiletries · Clothes · Treats</p>
-            </div>
+          <div class="shop-station essentials">
+            <h4>🍎 Essentials</h4>
+            <p>Food shop · Toiletries · Clothes · Treats</p>
           </div>
-          <div class="station relationships">
-            <div>
-              <h4>👥 Relationships</h4>
-              <p>Phone bill · Travel to see someone · Activity with a friend</p>
-            </div>
+          <div class="shop-station relationships">
+            <h4>👥 Relationships</h4>
+            <p>Phone bill · Travel to see someone · Activity with a friend</p>
           </div>
-          <div class="station opportunities">
-            <div>
-              <h4>🚀 Opportunities</h4>
-              <p>Travel to school/work · Interview clothes · School supplies · Trainers</p>
-            </div>
+          <div class="shop-station opportunities">
+            <h4>🚀 Opportunities</h4>
+            <p>Travel to school/work · Interview clothes · School supplies · Trainers</p>
           </div>
         </div>
       </div>
-      <div class="footer-strip">Total if you bought everything: <em>???</em>  ·  Your budget: <em>£50</em></div>
+      <div class="shop-footer">Total if you bought everything: <em>???</em>  ·  Your budget: <em>£50</em>  ·  <span style="color:var(--lime);">When done → tap Stage 2 ▶</span></div>
     </section>
 
-    <!-- ============ IMPACT VIDEO ============ -->
-    <section id="impact" class="screen video-screen" data-screen-label="07 Impact">
-      <div class="text">
-        <div class="kicker">What support can do</div>
-        <h2>Real <em>stories</em></h2>
-        <p>Tyron and Liam are two young people Step by Step have stood with. This is what changed.</p>
-        <p style="opacity:0.85;font-size:18px;">A short film of young people sharing what Step by Step's support has meant to them.</p>
+    <!-- ============ £50 SHOP — STAGE 2 DEBRIEF ============ -->
+    <section id="shop-debrief" class="screen">
+      <div class="shop-head">
+        <div class="kicker">Stage 2 — Discuss &amp; Record</div>
+        <h2>What did you <span class="pound">choose</span>?</h2>
       </div>
-      <div class="player-wrap">
-        <div class="player" id="player-impact">
-          <video id="video-impact" preload="none" playsinline controls data-src="impact.mp4"></video>
-          <div class="placeholder" id="placeholder-impact" style="display:none;">
-            <div class="label">Impact Stories</div>
-            <div class="filename">impact.mp4</div>
-            <div class="note">Add the video file <b>impact.mp4</b> to the same folder as this page and it will appear here.</div>
+      <div class="debrief-grid">
+        <div class="discuss">
+          <h3>Let's talk about it</h3>
+          <ul>
+            <li>What was the hardest thing to choose?</li>
+            <li>What would you keep no matter what?</li>
+            <li>Was there anything you couldn't afford?</li>
+            <li>What would happen if a chaos event hit — boiler broken, phone lost?</li>
+          </ul>
+        </div>
+        <div class="magazine-box">
+          <div class="mag-icon">📓</div>
+          <h3>Now write it down</h3>
+          <p>Open your <b>StandUp magazine</b> and fill in what you bought and what it cost.</p>
+          <p style="margin-top:8px;font-size:20px;opacity:0.75;">Then we'll compare notes across the group.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IMPACT ============ -->
+    <section id="impact" class="screen" style="padding:0;">
+      <div id="impact-screen">
+        <div class="left">
+          <div class="kicker">Real change, real lives</div>
+          <h2>Stevie's <em>Impact</em></h2>
+          <p>Stevie is one of hundreds of young people Step by Step has stood with. Watch her talk about what the support has meant to her.</p>
+          <div class="stat-box">
+            <div class="num">£6.80</div>
+            <div class="lbl">of social value created for every <b>£1</b> invested in Step by Step</div>
           </div>
-          <div class="play-overlay" id="overlay-impact">
-            <div class="circle"></div>
-            <div class="label">Tap to play</div>
+        </div>
+        <div class="right">
+          <div class="player" id="player-impact">
+            <video id="video-impact" preload="none" playsinline controls data-src="impact.mp4"></video>
+            <div class="placeholder" id="placeholder-impact" style="display:none;">
+              <div class="label">Stevie — Impact</div>
+              <div class="filename">impact.mp4</div>
+              <div class="note">Upload <b>impact.mp4</b> to the repo root on GitHub and it will appear here.</div>
+            </div>
+            <div class="play-overlay" id="overlay-impact">
+              <div class="circle"></div>
+              <div class="label">Tap to play</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ HERO MOMENT (JAMES) ============ -->
-    <section id="hero-moment" class="screen" data-screen-label="08 Your Hero Moment">
-      <div class="photo-wrap">
-        <div class="photo" id="james-photo-wrap">
-          <div class="photo-placeholder">
-            <div class="ph-label">📷 James — then &amp; now</div>
-            <div class="ph-note">Photo loading…</div>
+    <section id="hero-moment" class="screen" style="padding:0;">
+      <div class="hero-moment-inner">
+        <div class="photo-wrap">
+          <div class="photo" id="james-photo-wrap">
+            <div class="photo-placeholder">
+              <div class="ph-label">📷 James — then &amp; now</div>
+              <div class="ph-note">Photo loading…</div>
+            </div>
           </div>
+          <div class="photo-cap">James — supported by Step by Step</div>
         </div>
-        <div class="photo-cap">James — supported by Step by Step</div>
-      </div>
-      <div class="text">
-        <div class="kicker">A message from</div>
-        <h2>James — <em>Hero Moment</em></h2>
-        <div class="quote">"Hi guys, great work today. I was supported by Step by Step when I was young. Now I travel all over the world for work. My hero moment was when I was able to <b>give back</b> to Step by Step — and the people who helped me."</div>
-        <div class="signoff">"I can't wait to hear what your hero moments will be."</div>
-        <div class="question">So… what's <span style="color:var(--pink);">your</span> hero moment?</div>
+        <div class="text">
+          <div class="kicker">A message from</div>
+          <h2>James — <em>Hero Moment</em></h2>
+          <div class="quote">"Hi guys, great work today. I was supported by Step by Step when I was young. Now I travel all over the world for work. My hero moment was when I was able to <b>give back</b> to Step by Step — and the people who helped me."</div>
+          <div class="signoff">"I can't wait to hear what your hero moments will be."</div>
+          <div class="question">So… what's <span style="color:var(--pink);">your</span> hero moment?</div>
+        </div>
       </div>
     </section>
 
@@ -1056,8 +1293,7 @@ header nav button.home:hover { background: #9bba1e; }
   function fit() {
     const sx = window.innerWidth / W;
     const sy = window.innerHeight / H;
-    const s = Math.min(sx, sy);
-    stage.style.transform = `scale(${s})`;
+    stage.style.transform = `scale(${Math.min(sx, sy)})`;
   }
   window.addEventListener('resize', fit);
   fit();
@@ -1072,29 +1308,29 @@ header nav button.home:hover { background: #9bba1e; }
     screens.forEach(s => s.classList.toggle('active', s.id === id));
     navBtns.forEach(b => b.classList.toggle('active', b.dataset.go === id));
     document.querySelectorAll('video').forEach(v => {
-      const containing = v.closest('.screen');
-      if (containing && containing.id !== id) v.pause();
+      if (v.closest('.screen')?.id !== id) v.pause();
     });
     document.querySelectorAll('.play-overlay').forEach(o => {
-      const containing = o.closest('.screen');
-      const v = containing ? containing.querySelector('video') : null;
+      const v = o.closest('.player')?.querySelector('video');
       if (v && v.paused) o.classList.remove('hidden');
     });
   }
 
   document.querySelectorAll('[data-go]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      show(el.dataset.go);
-    });
+    el.addEventListener('click', e => { e.preventDefault(); show(el.dataset.go); });
   });
 
   window.__go = show;
 })();
 
-// === Video play overlays + missing-file handling (lazy attach) ===
+// === HERO cards: tap to reveal descriptor ===
+document.querySelectorAll('#hero-reveal .letter').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('revealed'));
+});
+
+// === Video lazy-load + missing-file handling ===
 (function(){
-  ['stevie', 'impact'].forEach(name => {
+  function wireVideo(name, playerId) {
     const video = document.getElementById('video-' + name);
     const overlay = document.getElementById('overlay-' + name);
     const placeholder = document.getElementById('placeholder-' + name);
@@ -1105,37 +1341,37 @@ header nav button.home:hover { background: #9bba1e; }
       attached = true;
       const src = video.dataset.src;
       const probe = document.createElement('video');
-      probe.preload = 'metadata';
-      probe.muted = true;
+      probe.preload = 'metadata'; probe.muted = true;
       probe.addEventListener('error', () => {
         video.style.display = 'none';
         overlay.style.display = 'none';
         placeholder.style.display = 'block';
       }, { once: true });
       probe.addEventListener('loadedmetadata', () => {
-        const source = document.createElement('source');
-        source.src = src;
-        source.type = 'video/mp4';
-        video.appendChild(source);
+        const s = document.createElement('source');
+        s.src = src; s.type = 'video/mp4';
+        video.appendChild(s);
         video.load();
       }, { once: true });
       probe.src = src;
     }
 
     const screen = video.closest('.screen');
-    const observer = new MutationObserver(() => {
+    new MutationObserver(() => {
       if (screen.classList.contains('active')) attach();
-    });
-    observer.observe(screen, { attributes: true, attributeFilter: ['class'] });
+    }).observe(screen, { attributes: true, attributeFilter: ['class'] });
 
     overlay.addEventListener('click', () => {
       attach();
       overlay.classList.add('hidden');
-      setTimeout(() => { video.play().catch(() => {}); }, 50);
+      setTimeout(() => video.play().catch(() => {}), 50);
     });
     video.addEventListener('play', () => overlay.classList.add('hidden'));
     video.addEventListener('ended', () => overlay.classList.remove('hidden'));
-  });
+  }
+
+  wireVideo('stevie', 'player-stevie');
+  wireVideo('impact', 'player-impact');
 })();
 
 // === Load James' photo ===
@@ -1143,17 +1379,14 @@ header nav button.home:hover { background: #9bba1e; }
   const wrap = document.getElementById('james-photo-wrap');
   const img = new Image();
   img.onload = () => {
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.objectPosition = 'top center';
-    img.style.display = 'block';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:top center;display:block;';
     img.alt = 'James — then and now';
     wrap.innerHTML = '';
     wrap.appendChild(img);
   };
   img.onerror = () => {
-    wrap.querySelector('.ph-note').textContent = 'Add assets/james.jpg to show James’ photo here.';
+    const ph = wrap.querySelector('.ph-note');
+    if (ph) ph.textContent = 'Add james.jpg to the repo to show James’ photo here.';
   };
   img.src = 'project/assets/james.jpg';
 })();
@@ -1161,13 +1394,8 @@ header nav button.home:hover { background: #9bba1e; }
 // === Keyboard shortcuts ===
 window.addEventListener('keydown', e => {
   const map = {
-    '1': 'welcome',
-    '2': 'hero-reveal',
-    '3': 'hub',
-    '4': 'stevie',
-    '5': 'shop',
-    '6': 'impact',
-    '7': 'hero-moment',
+    '1':'welcome','2':'about','3':'hero-reveal','4':'hub',
+    '5':'stevie','6':'shop','7':'shop-debrief','8':'impact','9':'hero-moment'
   };
   if (map[e.key]) window.__go(map[e.key]);
 });
