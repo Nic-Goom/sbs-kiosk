@@ -662,7 +662,7 @@
         </div>
         <div class="card-content">
           <div class="card-num">02</div>
-          <div class="card-title">What You Could Receive</div>
+          <div class="card-title">The Financial Impact</div>
           <div class="card-sub">See your potential allowance</div>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
@@ -713,7 +713,7 @@
 
     <nav class="tab-nav">
       <button class="tab-pill" onclick="activateSection(0)">Take the Quiz</button>
-      <button class="tab-pill" onclick="activateSection(1)">What You Could Receive</button>
+      <button class="tab-pill" onclick="activateSection(1)">The Financial Impact</button>
       <button class="tab-pill" onclick="activateSection(2)">Hear From Our Carers</button>
       <button class="tab-pill" onclick="activateSection(3)">Find Out More</button>
     </nav>
@@ -758,12 +758,17 @@
 
         <div class="quiz-end" id="quiz-end">
           <div class="end-splash">
-            <!-- Heart + home: Step by Step Fostering logo motif -->
-            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M28 48 C28 48 6 34 6 20 C6 13 11 8 18 8 C22 8 26 10 28 14 C30 10 34 8 38 8 C45 8 50 13 50 20 C50 34 28 48 28 48Z" fill="white" opacity="0.9"/>
-              <path d="M28 30 L18 22 L18 36 L38 36 L38 22 Z" fill="none" stroke="rgba(230,13,140,0.7)" stroke-width="2.5" stroke-linejoin="round"/>
-              <path d="M14 25 L28 14 L42 25" fill="none" stroke="rgba(230,13,140,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="24" y="28" width="8" height="8" rx="1" fill="rgba(230,13,140,0.7)"/>
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <!-- Purple heart -->
+              <path d="M50 82 C50 82 12 58 12 34 C12 22 21 14 32 14 C39 14 45 18 50 24 C55 18 61 14 68 14 C79 14 88 22 88 34 C88 58 50 82 50 82Z" fill="#412576"/>
+              <!-- White border house -->
+              <polygon points="50,44 32,56 68,56" fill="white"/>
+              <rect x="33" y="55" width="34" height="24" rx="2" fill="white"/>
+              <!-- Pink house -->
+              <polygon points="50,47 35,57 65,57" fill="#e60d8c"/>
+              <rect x="36" y="56" width="28" height="21" rx="1" fill="#e60d8c"/>
+              <!-- White door -->
+              <rect x="44" y="66" width="12" height="11" rx="1" fill="white"/>
             </svg>
           </div>
           <h2>Interested? Find out more.</h2>
@@ -786,7 +791,7 @@
       <!-- SECTION 2: CALCULATOR -->
       <div class="section-panel" id="section-1">
         <div class="calc-section">
-          <h1 class="section-h1">What You Could Receive</h1>
+          <h1 class="section-h1">The Financial Impact</h1>
           <p class="section-intro">Use the buttons below to see your estimated weekly, monthly and yearly allowance — includes both the child's allowance and your carer fee.</p>
 
           <div class="calc-group">
@@ -1153,6 +1158,52 @@ function goToAttract() {
   document.getElementById('back-float').classList.remove('visible');
   clearIdleTimer();
   document.getElementById('content-area').scrollTop = 0;
+  resetAll();
+}
+
+function resetAll() {
+  // Quiz
+  resetQuiz();
+
+  // Calculator
+  calcState = { children: null, type: null };
+  document.querySelectorAll('.calc-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('output-empty').style.display = 'block';
+  document.getElementById('output-results').style.display = 'none';
+
+  // Accordion cards
+  document.querySelectorAll('.contact-card').forEach(c => c.classList.remove('open'));
+  openCard = -1;
+
+  // All form inputs
+  document.querySelectorAll('.cc-body input').forEach(i => i.value = '');
+
+  // Coffee morning
+  document.querySelectorAll('.coffee-date').forEach(d => d.classList.remove('selected'));
+  document.getElementById('coffee-form').style.display = 'none';
+  document.getElementById('coffee-optin').style.display = 'none';
+  document.getElementById('coffee-submit-wrap').style.display = 'none';
+  selectedDate = null;
+
+  // Online sessions
+  document.querySelectorAll('.online-session').forEach(d => d.classList.remove('selected'));
+  document.getElementById('online-form').style.display = 'none';
+  document.getElementById('online-optin').style.display = 'none';
+  document.getElementById('online-submit-wrap').style.display = 'none';
+  selectedOnline = null;
+
+  // Call back time
+  document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+  selectedTime = null;
+
+  // Opt-in checkboxes
+  document.querySelectorAll('.optin-row').forEach(r => r.classList.remove('checked'));
+
+  // Confirmation messages
+  document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible'));
+
+  // SL panel
+  document.getElementById('sl-panel').classList.remove('visible');
 }
 
 let videoMuted = true;
@@ -1225,7 +1276,7 @@ document.getElementById('root').addEventListener('pointerdown', () => {
 /* ── QUIZ (ACCORDION) ── */
 const questions = [
   { statement: "I have to own my home to foster", answer: false, reveal: "Renting is fine. We just want to know your tenancy is stable." },
-  { statement: "Foster carers don't receive any payment for their time", answer: false, reveal: "You receive an allowance for the young person's needs and a fee that recognises your care. Tap 'What You Could Receive' to see an estimate." },
+  { statement: "Foster carers don't receive any payment for their time", answer: false, reveal: "You receive an allowance for the young person's needs and a fee that recognises your care. Tap 'The Financial Impact' to see an estimate." },
   { statement: "You get a say in who is placed with you", answer: true, reveal: "Matching is always a conversation. You'll share what age range and situation you feel comfortable with, and you'll meet the young person before any placement begins." },
   { statement: "Single people and same-sex couples can foster with Step by Step", answer: true, reveal: "Carers come from every background, relationship status and orientation. What matters is the home and heart you offer." },
   { statement: "The assessment takes over a year", answer: false, reveal: "Most assessments are completed within four to six months, with support throughout." },
