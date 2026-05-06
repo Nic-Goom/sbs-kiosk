@@ -593,7 +593,8 @@
       <div class="corner-bracket tr"></div>
       <div class="corner-bracket bl"></div>
       <div class="corner-bracket br"></div>
-      <iframe id="yt-iframe" src="https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=1&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0&enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
+      <iframe id="yt-iframe" src="https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=1&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
+      <div id="video-overlay" style="position:absolute;inset:0;z-index:12;cursor:pointer;" onclick="handleVideoTap()"></div>
       <div class="tap-prompt" id="tap-prompt">&#9654; TAP TO UNMUTE</div>
     </div>
 
@@ -1088,10 +1089,12 @@ function goToAttract() {
 function handleVideoTap() {
   const iframe = document.getElementById('yt-iframe');
   const prompt = document.getElementById('tap-prompt');
+  const overlay = document.getElementById('video-overlay');
   if (iframe) {
     iframe.src = 'https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=0&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0';
   }
   if (prompt) prompt.style.display = 'none';
+  if (overlay) overlay.style.display = 'none';
 }
 
 /* ── IDLE TIMER ── */
