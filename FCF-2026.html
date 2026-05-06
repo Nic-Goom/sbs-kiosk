@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Step by Step Fostering — Foster Care Fortnight 2026</title>
+<style>
+  @font-face {
+    font-family: 'Veneer';
+    src: url('project/fonts/Veneer.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple:     #412576;
+    --pink:       #e60d8c;
+    --lime:       #b3d12b;
+    --yellow:     #f4e600;
+    --white:      #ffffff;
+    --off-white:  #fafafa;
+    --charcoal:   #2d2d2d;
+    --gradient:   linear-gradient(135deg, #e60d8c 0%, #412576 100%);
+    --gradient-h: linear-gradient(90deg, #e60d8c 0%, #412576 100%);
+    --veneer: 'Veneer', Georgia, serif;
+    --body:   Verdana, Geneva, Tahoma, sans-serif;
+    --r-card: 20px;
+    --r-btn:  9999px;
+  }
+
+  html, body {
+    width: 1080px; height: 1920px;
+    overflow: hidden;
+    background: #1a0a2e;
+    font-family: var(--body);
+    color: var(--charcoal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    width: 1080px; height: 1920px;
+    position: relative; overflow: hidden;
+    transform-origin: top left;
+    background: var(--off-white);
+  }
+
+  /* ── HEADER ── */
+  .kiosk-header {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 100px;
+    background: var(--gradient-h);
+    display: flex; align-items: center;
+    padding: 0 28px; gap: 16px; z-index: 100;
+  }
+
+  .logo-pill {
+    background: white;
+    border-radius: 10px;
+    padding: 4px 12px 4px 8px;
+    display: flex; align-items: center;
+    height: 72px;
+    flex-shrink: 0;
+  }
+  .logo-pill img { height: 60px; width: auto; display: block; }
+
+  .fcf-badge {
+    background: rgba(255,255,255,0.18);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 10px;
+    padding: 6px 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .badge-top {
+    font-family: var(--veneer); font-size: 21px;
+    letter-spacing: 0.07em; color: #fff;
+    text-transform: uppercase; line-height: 1.1;
+  }
+  .badge-sub {
+    font-family: var(--body); font-size: 12px;
+    color: rgba(255,255,255,0.85); font-style: italic;
+  }
+
+  .header-spacer { flex: 1; }
+
+  .back-btn {
+    background: rgba(255,255,255,0.22);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: var(--r-btn);
+    color: #fff; font-family: var(--body);
+    font-size: 16px; font-weight: 700;
+    padding: 10px 24px; cursor: pointer;
+    transition: background 0.2s;
+    display: none; align-items: center; gap: 8px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.34); }
+  .back-btn.visible { display: flex; }
+
+  /* ── FOOTER ── */
+  .kiosk-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 96px;
+    background: var(--purple);
+    display: flex; align-items: center;
+    padding: 0 32px; gap: 28px; z-index: 100;
+  }
+  .footer-qr {
+    width: 68px; height: 68px;
+    background: white; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden;
+    padding: 4px;
+  }
+  .footer-qr img { width: 60px; height: 60px; display: block; object-fit: contain; }
+  .footer-text { flex: 1; }
+  .footer-scan { font-family: var(--body); font-size: 13px; color: rgba(255,255,255,0.75); }
+  .footer-url  { font-family: var(--veneer); font-size: 26px; color: #fff; letter-spacing: 0.04em; text-transform: uppercase; }
+  .footer-phone { font-family: var(--veneer); font-size: 30px; color: #fff; letter-spacing: 0.04em; text-align: right; flex-shrink: 0; }
+  .footer-phone span { display: block; font-family: var(--body); font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; margin-bottom: 1px; }
+
+  /* Legal line — sits between footer and content */
+  .footer-legal {
+    position: absolute; bottom: 100px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--body); font-size: 13px;
+    color: rgba(65,37,118,0.55);
+    padding: 5px 36px; letter-spacing: 0.01em; line-height: 1.5;
+    background: var(--off-white);
+    z-index: 99;
+  }
+
+  /* ── ATTRACT MODE ── */
+  #attract-mode {
+    position: absolute; top: 100px; left: 0; right: 0; bottom: 118px;
+    display: flex; flex-direction: column;
+    transition: opacity 0.3s ease;
+  }
+  #attract-mode.hidden { opacity: 0; pointer-events: none; }
+
+  .video-panel {
+    flex: 0 0 760px;
+    position: relative; background: #1a0a2e; overflow: hidden;
+  }
+  .video-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #1a0a2e 0%, #2d1060 50%, #3d0d5e 100%);
+    gap: 20px; cursor: pointer;
+  }
+  .play-icon {
+    width: 110px; height: 110px;
+    background: rgba(230,13,140,0.25);
+    border: 4px solid rgba(230,13,140,0.7);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .play-icon svg { width: 48px; height: 48px; fill: white; margin-left: 8px; }
+  .video-label { font-family: var(--veneer); font-size: 34px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.08em; text-align: center; line-height: 1.2; }
+  .video-sub   { font-family: var(--body); font-size: 16px; color: rgba(255,255,255,0.45); text-align: center; }
+
+  .corner-bracket { position: absolute; width: 50px; height: 50px; border-color: var(--pink); border-style: solid; border-width: 0; pointer-events: none; z-index: 10; }
+  .corner-bracket.tl { top: 14px; left: 14px; border-top-width: 5px; border-left-width: 5px; }
+  .corner-bracket.tr { top: 14px; right: 14px; border-top-width: 5px; border-right-width: 5px; }
+  .corner-bracket.bl { bottom: 14px; left: 14px; border-bottom-width: 5px; border-left-width: 5px; }
+  .corner-bracket.br { bottom: 14px; right: 14px; border-bottom-width: 5px; border-right-width: 5px; }
+
+  .tap-prompt {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: rgba(230,13,140,0.88); color: white;
+    font-family: var(--veneer); font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 10px 32px; border-radius: var(--r-btn);
+    pointer-events: none; z-index: 11;
+    animation: pulsePrompt 2.4s ease-in-out infinite;
+  }
+  @keyframes pulsePrompt {
+    0%,100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+    50%      { opacity: 1;    transform: translateX(-50%) scale(1.04); }
+  }
+
+  /* Attract cards */
+  .attract-tabs {
+    flex: 1;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    gap: 14px; padding: 14px;
+    background: var(--off-white);
+  }
+
+  .attract-card {
+    background: white; border-radius: var(--r-card);
+    display: flex; flex-direction: column;
+    cursor: pointer; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(65,37,118,0.10);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .attract-card:active { transform: scale(0.97); }
+
+  .card-photo {
+    height: 140px; overflow: hidden; flex-shrink: 0;
+    position: relative;
+  }
+  .card-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    display: block;
+  }
+  .card-photo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(65,37,118,0.18) 100%);
+  }
+
+  .card-content {
+    padding: 14px 18px 16px;
+    display: flex; flex-direction: column; flex: 1;
+    position: relative;
+  }
+  .card-content::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--gradient-h);
+  }
+  .attract-card:nth-child(2) .card-content::before,
+  .attract-card:nth-child(4) .card-content::before {
+    background: linear-gradient(90deg, var(--purple) 0%, #7b2fa0 100%);
+  }
+
+  .card-num { font-family: var(--veneer); font-size: 15px; color: rgba(230,13,140,0.45); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .attract-card:nth-child(1) .card-title,
+  .attract-card:nth-child(3) .card-title { color: var(--purple); }
+  .attract-card:nth-child(2) .card-title,
+  .attract-card:nth-child(4) .card-title { color: var(--pink); }
+
+  .card-title { font-family: var(--veneer); font-size: 30px; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05; margin-bottom: 5px; }
+  .card-sub   { font-family: var(--body); font-size: 13px; color: #666; line-height: 1.35; flex: 1; }
+
+  .card-arrow {
+    align-self: flex-end; margin-top: 8px;
+    width: 38px; height: 38px;
+    background: var(--gradient-h);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-arrow svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; fill: none; }
+
+  /* ── ACTIVE MODE ── */
+  #active-mode {
+    position: absolute; top: 100px; left: 0; right: 0; bottom: 118px;
+    display: flex; flex-direction: column;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #active-mode.visible { opacity: 1; pointer-events: all; }
+
+  .tab-nav {
+    height: 108px; background: white;
+    border-bottom: 2px solid rgba(65,37,118,0.08);
+    display: flex; align-items: center;
+    padding: 0 16px; gap: 10px; flex-shrink: 0;
+  }
+  .tab-pill {
+    flex: 1; height: 70px; border-radius: var(--r-btn);
+    border: 2.5px solid rgba(65,37,118,0.2);
+    background: transparent;
+    font-family: var(--veneer); font-size: 18px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--purple); cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 0 10px; line-height: 1.15;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-pill:active { transform: scale(0.96); }
+  .tab-pill.active { background: var(--gradient-h); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(230,13,140,0.35); }
+
+  .content-area {
+    flex: 1; overflow-y: auto; overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+    padding: 36px 32px; position: relative;
+  }
+  .content-area::-webkit-scrollbar { width: 6px; }
+  .content-area::-webkit-scrollbar-thumb { background: rgba(65,37,118,0.2); border-radius: 9999px; }
+
+  .section-panel { display: none; animation: fadeIn 0.25s ease; }
+  .section-panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SHARED TYPOGRAPHY ── */
+  .section-h1 { font-family: var(--veneer); font-size: 62px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .section-intro { font-family: var(--body); font-size: 18px; color: #555; margin-bottom: 32px; line-height: 1.5; }
+
+  .btn-primary {
+    background: var(--gradient-h); color: white; border: none;
+    border-radius: var(--r-btn); font-family: var(--veneer);
+    font-size: 26px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 16px 48px; cursor: pointer;
+    transition: all 0.18s ease; display: inline-flex; align-items: center; gap: 12px;
+    box-shadow: 0 4px 16px rgba(230,13,140,0.3);
+    -webkit-tap-highlight-color: transparent; min-height: 70px;
+  }
+  .btn-primary:active { transform: scale(0.97); box-shadow: none; }
+
+  .btn-secondary {
+    background: transparent; color: var(--purple);
+    border: 3px solid var(--purple); border-radius: var(--r-btn);
+    font-family: var(--veneer); font-size: 24px; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 14px 40px; cursor: pointer; transition: all 0.18s ease;
+    display: inline-flex; align-items: center; gap: 10px; min-height: 70px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+  .btn-secondary:hover  { background: rgba(65,37,118,0.06); }
+
+  /* ─────────────────────────────
+     SECTION 1 — QUIZ (ACCORDION)
+  ───────────────────────────── */
+  .quiz-header-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .quiz-progress {
+    display: flex; gap: 7px; flex: 1; margin-right: 20px;
+  }
+  .quiz-progress .dot {
+    flex: 1; height: 6px;
+    background: rgba(65,37,118,0.15); border-radius: 9999px;
+    transition: background 0.3s;
+  }
+  .quiz-progress .dot.done    { background: var(--pink); }
+  .quiz-progress .dot.current { background: var(--purple); }
+  .quiz-q-count { font-family: var(--body); font-size: 13px; font-weight: 700; color: var(--pink); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+
+  /* Accordion stack */
+  .quiz-stack { display: flex; flex-direction: column; gap: 12px; }
+
+  .quiz-item {
+    background: white; border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(65,37,118,0.08);
+    transition: all 0.35s ease;
+  }
+
+  .quiz-item-collapsed {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px;
+  }
+  .qi-badge {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .qi-badge.correct { background: var(--lime); }
+  .qi-badge.wrong   { background: var(--pink); }
+  .qi-badge svg { width: 18px; height: 18px; stroke: white; stroke-width: 3; fill: none; }
+  .qi-statement-short {
+    font-family: var(--body); font-size: 15px; color: #666;
+    font-style: italic; flex: 1; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .qi-answer-tag {
+    font-family: var(--veneer); font-size: 18px; letter-spacing: 0.06em;
+    text-transform: uppercase; flex-shrink: 0; padding: 4px 14px;
+    border-radius: 9999px;
+  }
+  .qi-answer-tag.true-tag  { background: rgba(179,209,43,0.2); color: #3a5800; }
+  .qi-answer-tag.false-tag { background: rgba(230,13,140,0.1); color: var(--pink); }
+
+  /* Active question */
+  .quiz-active-card {
+    background: white; border-radius: 16px;
+    padding: 40px 44px 36px;
+    box-shadow: 0 6px 28px rgba(65,37,118,0.13);
+    position: relative; overflow: hidden;
+  }
+  .quiz-active-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: var(--gradient-h);
+  }
+
+  .q-label { font-family: var(--body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 16px; }
+  .q-statement { font-family: var(--veneer); font-size: 52px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05; margin-bottom: 40px; }
+
+  .quiz-buttons { display: flex; gap: 18px; margin-bottom: 28px; }
+  .quiz-btn {
+    flex: 1; height: 100px; border-radius: 14px; border: 3px solid transparent;
+    font-family: var(--veneer); font-size: 42px; letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.18s ease;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .quiz-btn:active { transform: scale(0.97); }
+  .quiz-btn.true-btn  { background: rgba(177,209,43,0.12); border-color: var(--lime); color: #4a6b00; }
+  .quiz-btn.false-btn { background: rgba(230,13,140,0.08); border-color: var(--pink); color: var(--pink); }
+  .quiz-btn.correct { background: var(--lime); border-color: var(--lime); color: #2a3d00; box-shadow: 0 4px 20px rgba(179,209,43,0.5); }
+  .quiz-btn.wrong   { background: rgba(230,13,140,0.08); border-color: var(--pink); color: var(--pink); opacity: 0.4; }
+
+  .quiz-reveal {
+    background: linear-gradient(135deg, rgba(65,37,118,0.05) 0%, rgba(230,13,140,0.05) 100%);
+    border-left: 5px solid var(--pink); border-radius: 0 12px 12px 0;
+    padding: 18px 24px; margin-bottom: 24px;
+    display: none; animation: fadeIn 0.3s ease;
+  }
+  .quiz-reveal.visible { display: block; }
+  .reveal-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--veneer); font-size: 24px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .reveal-badge.correct-badge { color: #3a5800; }
+  .reveal-badge.wrong-badge   { color: var(--pink); }
+  .quiz-reveal p { font-family: var(--body); font-size: 17px; color: var(--charcoal); line-height: 1.5; margin: 0; }
+
+  .quiz-nav { display: flex; justify-content: flex-end; margin-top: 8px; }
+
+  /* Quiz end */
+  .quiz-end { display: none; flex-direction: column; align-items: center; text-align: center; padding: 16px 0 40px; gap: 20px; animation: fadeIn 0.35s ease; }
+  .quiz-end.visible { display: flex; }
+  .end-splash { width: 140px; height: 140px; background: var(--gradient-h); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 36px rgba(230,13,140,0.35); }
+  .end-splash svg { width: 70px; height: 70px; stroke: white; stroke-width: 2; fill: none; }
+  .quiz-end h2 { font-family: var(--veneer); font-size: 66px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
+  .quiz-end > p { font-family: var(--body); font-size: 20px; color: #555; line-height: 1.5; max-width: 660px; }
+  .end-ctas { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 620px; margin-top: 6px; }
+  .quiz-end .sl-panel { background: rgba(65,37,118,0.06); border: 2px solid rgba(65,37,118,0.2); border-radius: var(--r-card); padding: 20px 24px; text-align: left; display: none; animation: fadeIn 0.3s ease; }
+  .quiz-end .sl-panel.visible { display: block; }
+  .quiz-end .sl-panel h4 { font-family: var(--veneer); font-size: 26px; color: var(--purple); text-transform: uppercase; margin-bottom: 6px; }
+  .quiz-end .sl-panel p  { font-size: 15px; margin: 0; max-width: none; }
+
+  /* ─────────────────────────────
+     SECTION 2 — CALCULATOR
+  ───────────────────────────── */
+  .calc-group { margin-bottom: 30px; }
+  .calc-group label { display: block; font-family: var(--body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple); margin-bottom: 12px; }
+  .calc-btn-row { display: flex; gap: 12px; }
+  .calc-btn {
+    flex: 1; height: 92px; border-radius: 14px;
+    border: 3px solid rgba(65,37,118,0.2); background: white;
+    font-family: var(--veneer); font-size: 34px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--purple); cursor: pointer; transition: all 0.18s ease;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 10px rgba(65,37,118,0.07);
+  }
+  .calc-btn.type-btn { font-size: 20px; flex-direction: column; gap: 3px; line-height: 1.2; padding: 10px; text-align: center; }
+  .calc-btn.type-btn span { font-family: var(--body); font-size: 12px; color: #888; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .calc-btn:active { transform: scale(0.97); }
+  .calc-btn.selected { background: var(--gradient-h); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(230,13,140,0.3); }
+  .calc-btn.selected span { color: rgba(255,255,255,0.75); }
+
+  .calc-output {
+    background: linear-gradient(135deg, var(--purple) 0%, #6b1e8f 100%);
+    border-radius: var(--r-card); padding: 40px 44px; margin-top: 30px;
+    position: relative; overflow: hidden; min-height: 260px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .output-dots { position: absolute; top: -20px; right: -20px; width: 170px; height: 170px; background-image: url('project/assets/dots-pink.png'); background-size: contain; background-repeat: no-repeat; opacity: 0.2; pointer-events: none; }
+  .output-label { font-family: var(--body); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .output-amount { font-family: var(--veneer); font-size: 92px; color: white; letter-spacing: 0.01em; line-height: 1; margin-bottom: 4px; }
+  .output-amount .output-per { font-size: 34px; color: rgba(255,255,255,0.6); margin-left: 6px; }
+  .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); }
+  .oi-label { font-family: var(--body); font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .oi-value { font-family: var(--veneer); font-size: 40px; color: white; letter-spacing: 0.02em; }
+  .output-context { margin-top: 18px; font-family: var(--body); font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+  .output-empty { font-family: var(--veneer); font-size: 32px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
+  .output-small-print { margin-top: 14px; font-family: var(--body); font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+  .calc-cta { margin-top: 28px; }
+
+  /* ─────────────────────────────
+     SECTION 3 — CARER STORIES
+  ───────────────────────────── */
+  .stories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .story-tile { background: white; border-radius: var(--r-card); overflow: hidden; box-shadow: 0 4px 20px rgba(65,37,118,0.10); display: flex; flex-direction: column; }
+  .tile-photo { height: 180px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .tile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .tile-photo-placeholder {
+    height: 180px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--veneer); font-size: 48px; color: white;
+  }
+  .story-tile:nth-child(1) .tile-photo-placeholder { background: var(--gradient-h); }
+  .story-tile:nth-child(2) .tile-photo-placeholder { background: linear-gradient(135deg, var(--purple), #6b1e8f); }
+  .story-tile:nth-child(3) .tile-photo-placeholder { background: linear-gradient(135deg, #e60d8c, #c1006e); }
+  .story-tile:nth-child(4) .tile-photo-placeholder { background: linear-gradient(135deg, var(--purple), var(--pink)); }
+
+  .tile-top { height: 5px; background: var(--gradient-h); flex-shrink: 0; }
+  .story-tile:nth-child(even) .tile-top { background: linear-gradient(90deg, var(--purple) 0%, #7b2fa0 100%); }
+  .tile-body { padding: 14px 20px 22px; display: flex; flex-direction: column; flex: 1; }
+  .tile-name { font-family: var(--body); font-size: 12px; font-weight: 700; color: var(--pink); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; text-align: center; }
+  .tile-quote { font-family: var(--body); font-size: 15px; color: var(--charcoal); line-height: 1.5; text-align: center; font-style: italic; }
+  .tile-quote::before { content: '\201C'; }
+  .tile-quote::after  { content: '\201D'; }
+  .stories-cta { margin-top: 28px; display: flex; justify-content: center; }
+
+  /* ─────────────────────────────
+     SECTION 4 — FIND OUT MORE
+  ───────────────────────────── */
+  .contact-cards { display: flex; flex-direction: column; gap: 14px; }
+  .contact-card { background: white; border-radius: var(--r-card); overflow: hidden; box-shadow: 0 4px 20px rgba(65,37,118,0.10); }
+  .cc-header { padding: 22px 26px 18px; cursor: pointer; display: flex; align-items: flex-start; gap: 16px; -webkit-tap-highlight-color: transparent; }
+  .cc-icon { width: 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cc-icon svg { width: 26px; height: 26px; stroke: white; stroke-width: 2; fill: none; }
+  .contact-card:nth-child(1) .cc-icon { background: linear-gradient(135deg, #e60d8c, #c1006e); }
+  .contact-card:nth-child(2) .cc-icon { background: linear-gradient(135deg, var(--purple), #6b1e8f); }
+  .contact-card:nth-child(3) .cc-icon { background: linear-gradient(135deg, #412576, #e60d8c); }
+  .contact-card:nth-child(4) .cc-icon { background: linear-gradient(135deg, var(--purple), var(--pink)); }
+  .cc-text { flex: 1; }
+  .cc-title { font-family: var(--veneer); font-size: 29px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.03em; line-height: 1; margin-bottom: 4px; }
+  .cc-sub   { font-family: var(--body); font-size: 15px; color: #666; line-height: 1.4; font-style: italic; }
+  .cc-expand { width: 42px; height: 42px; border-radius: 50%; border: 2.5px solid rgba(65,37,118,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; transition: all 0.2s; }
+  .cc-expand svg { width: 17px; height: 17px; stroke: var(--purple); stroke-width: 2.5; fill: none; transition: transform 0.25s; }
+  .contact-card.open .cc-expand { background: var(--gradient-h); border-color: transparent; }
+  .contact-card.open .cc-expand svg { stroke: white; transform: rotate(180deg); }
+  .cc-body { display: none; padding: 0 26px 26px; animation: fadeIn 0.25s ease; border-top: 1px solid rgba(65,37,118,0.08); margin: 0 16px; padding-top: 20px; }
+  .contact-card.open .cc-body { display: block; }
+
+  .form-row { display: flex; gap: 14px; margin-bottom: 14px; }
+  .form-field { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .form-field label { font-family: var(--body); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); }
+  .form-field input { height: 68px; border: 2.5px solid rgba(65,37,118,0.2); border-radius: 10px; padding: 0 18px; font-family: var(--body); font-size: 17px; color: var(--charcoal); background: var(--off-white); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  .form-field input:focus { border-color: var(--pink); background: white; }
+  .form-field input::placeholder { color: #aaa; }
+
+  .time-buttons { display: flex; gap: 10px; }
+  .time-btn { flex: 1; height: 68px; border: 2.5px solid rgba(65,37,118,0.2); border-radius: 10px; background: var(--off-white); font-family: var(--veneer); font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--purple); cursor: pointer; transition: all 0.18s ease; -webkit-tap-highlight-color: transparent; }
+  .time-btn:active { transform: scale(0.97); }
+  .time-btn.selected { background: var(--gradient-h); border-color: transparent; color: white; box-shadow: 0 3px 12px rgba(230,13,140,0.3); }
+
+  .form-submit { margin-top: 18px; }
+
+  .confirm-msg { display: none; background: linear-gradient(135deg, rgba(177,209,43,0.15) 0%, rgba(65,37,118,0.08) 100%); border: 2px solid var(--lime); border-radius: 12px; padding: 20px 24px; animation: fadeIn 0.3s ease; gap: 14px; align-items: flex-start; }
+  .confirm-msg.visible { display: flex; }
+  .confirm-msg svg { width: 32px; height: 32px; stroke: #4a6b00; stroke-width: 2.5; fill: none; flex-shrink: 0; margin-top: 2px; }
+  .confirm-text { font-family: var(--body); font-size: 17px; color: #2d3d00; line-height: 1.5; }
+  .confirm-text strong { display: block; font-size: 18px; margin-bottom: 3px; color: #1a2800; }
+
+  .coffee-dates { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .coffee-date { display: flex; align-items: center; gap: 14px; background: var(--off-white); border: 2px solid rgba(65,37,118,0.12); border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
+  .coffee-date:hover, .coffee-date.selected { border-color: var(--pink); background: rgba(230,13,140,0.05); }
+  .coffee-date:active { transform: scale(0.98); }
+  .cd-date     { font-family: var(--veneer); font-size: 22px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.04em; min-width: 150px; }
+  .cd-location { font-family: var(--body); font-size: 14px; color: #666; flex: 1; }
+  .cd-time     { font-family: var(--body); font-size: 13px; color: var(--pink); font-weight: 700; margin-left: auto; }
+
+  /* Online sessions */
+  .online-sessions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .online-session { display: flex; align-items: center; gap: 14px; background: rgba(65,37,118,0.04); border: 2px solid rgba(65,37,118,0.14); border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
+  .online-session:hover, .online-session.selected { border-color: var(--purple); background: rgba(65,37,118,0.09); }
+  .os-date     { font-family: var(--veneer); font-size: 22px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.04em; min-width: 150px; }
+  .os-label    { font-family: var(--body); font-size: 14px; color: #666; flex: 1; }
+  .os-time     { font-family: var(--body); font-size: 13px; color: var(--purple); font-weight: 700; margin-left: auto; }
+
+  /* ── IDLE OVERLAY ── */
+  #idle-overlay {
+    position: fixed; inset: 0;
+    background: rgba(65,37,118,0.93); z-index: 999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease; gap: 28px;
+  }
+  #idle-overlay.visible { opacity: 1; pointer-events: all; }
+  #idle-overlay .idle-logo { height: 72px; filter: brightness(0) invert(1); }
+  .idle-msg { font-family: var(--veneer); font-size: 50px; color: white; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
+  .idle-sub { font-family: var(--body); font-size: 18px; color: rgba(255,255,255,0.6); text-align: center; }
+  .idle-ring { width: 110px; height: 110px; position: relative; }
+  .idle-ring svg { width: 110px; height: 110px; transform: rotate(-90deg); }
+  .ring-bg   { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 8; }
+  .ring-fill { fill: none; stroke: var(--pink); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 314; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+  .ring-num  { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--veneer); font-size: 44px; color: white; }
+</style>
+</head>
+<body>
+<div id="root">
+
+  <!-- HEADER -->
+  <header class="kiosk-header">
+    <div class="logo-pill">
+      <img src="project/assets/logo-fostering.jpg" alt="Step by Step Fostering">
+    </div>
+    <div class="header-spacer"></div>
+    <div class="fcf-badge">
+      <span class="badge-top">Foster Care Fortnight 2026</span>
+      <span class="badge-sub">This is Fostering</span>
+    </div>
+    <div class="header-spacer"></div>
+    <button class="back-btn" id="back-btn" onclick="goToAttract()">
+      <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15,18 9,12 15,6"></polyline></svg>
+      Back
+    </button>
+  </header>
+
+  <!-- ATTRACT MODE -->
+  <div id="attract-mode">
+
+    <div class="video-panel" onclick="handleVideoTap()">
+      <div class="corner-bracket tl"></div>
+      <div class="corner-bracket tr"></div>
+      <div class="corner-bracket bl"></div>
+      <div class="corner-bracket br"></div>
+      <iframe src="https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=1&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
+      <div class="tap-prompt">TAP TO EXPLORE</div>
+    </div>
+
+    <div class="attract-tabs">
+
+      <div class="attract-card" onclick="activateSection(0)">
+        <div class="card-photo">
+          <img src="project/assets/photo-can-i-foster.jpg" alt="Could you foster?">
+        </div>
+        <div class="card-content">
+          <div class="card-num">01</div>
+          <div class="card-title">Could You Foster?</div>
+          <div class="card-sub">Take our 1-minute myth-busting quiz</div>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="attract-card" onclick="activateSection(1)">
+        <div class="card-photo">
+          <img src="project/assets/photo-luke-child.jpg" alt="Fostering allowance">
+        </div>
+        <div class="card-content">
+          <div class="card-num">02</div>
+          <div class="card-title">What You Could Receive</div>
+          <div class="card-sub">See your potential allowance</div>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="attract-card" onclick="activateSection(2)">
+        <div class="card-photo">
+          <img src="project/assets/photo-mum-daughter.jpg" alt="Hear from carers">
+        </div>
+        <div class="card-content">
+          <div class="card-num">03</div>
+          <div class="card-title">Hear From Our Carers</div>
+          <div class="card-sub">Real stories, real homes</div>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="attract-card" onclick="activateSection(3)">
+        <div class="card-photo">
+          <img src="project/assets/photo-foster-hug.jpg" alt="Find out more">
+        </div>
+        <div class="card-content">
+          <div class="card-num">04</div>
+          <div class="card-title">Find Out More</div>
+          <div class="card-sub">Take the next step</div>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTIVE MODE -->
+  <div id="active-mode">
+
+    <nav class="tab-nav">
+      <button class="tab-pill" onclick="activateSection(0)">Could You Foster?</button>
+      <button class="tab-pill" onclick="activateSection(1)">What You Could Receive</button>
+      <button class="tab-pill" onclick="activateSection(2)">Hear From Our Carers</button>
+      <button class="tab-pill" onclick="activateSection(3)">Find Out More</button>
+    </nav>
+
+    <div class="content-area" id="content-area">
+
+      <!-- SECTION 1: QUIZ -->
+      <div class="section-panel" id="section-0">
+        <h1 class="section-h1">Could You Foster?</h1>
+        <p class="section-intro">Eight quick statements — tap True or False. Each one tackles a myth that stops people enquiring.</p>
+
+        <div class="quiz-header-row">
+          <div class="quiz-progress" id="quiz-progress"></div>
+          <div class="quiz-q-count" id="quiz-q-count">1 of 8</div>
+        </div>
+
+        <div class="quiz-stack" id="quiz-stack"></div>
+
+        <div class="quiz-active-card" id="quiz-card">
+          <div class="q-label" id="q-label">Question 1 of 8</div>
+          <div class="q-statement" id="q-statement">Loading...</div>
+          <div class="quiz-buttons">
+            <button class="quiz-btn true-btn" id="btn-true" onclick="answerQuiz(true)">
+              <svg viewBox="0 0 24 24" width="26" height="26" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20,6 9,17 4,12"/></svg>
+              True
+            </button>
+            <button class="quiz-btn false-btn" id="btn-false" onclick="answerQuiz(false)">
+              <svg viewBox="0 0 24 24" width="26" height="26" stroke="currentColor" stroke-width="3" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              False
+            </button>
+          </div>
+          <div class="quiz-reveal" id="quiz-reveal">
+            <div class="reveal-badge" id="reveal-badge"></div>
+            <p id="reveal-text"></p>
+          </div>
+          <div class="quiz-nav">
+            <button class="btn-primary" id="quiz-next-btn" onclick="nextQuestion()" style="display:none">
+              Next <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="quiz-end" id="quiz-end">
+          <div class="end-splash">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <h2>You could foster with us.</h2>
+          <p>And you'd never do it alone. Every carer gets a dedicated social worker, full training, peer support and a 24/7 helpline — from day one.</p>
+          <div class="end-ctas">
+            <button class="btn-primary" onclick="activateSection(3)" style="width:100%;justify-content:center">Find out more about fostering</button>
+            <button class="btn-secondary" onclick="showSLPanel()" style="width:100%;justify-content:center">I'd rather offer a spare room flexibly</button>
+          </div>
+          <div class="sl-panel" id="sl-panel">
+            <h4>Supported Lodgings</h4>
+            <p>Not ready for a full fostering placement? Supported Lodgings lets you open your spare room to a young person on a flexible basis — offering a safe, stable base while they build their independence. A brilliant first step, and it makes a real difference.</p>
+          </div>
+          <button class="btn-secondary" onclick="resetQuiz()" style="margin-top:6px">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            Try the quiz again
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 2: CALCULATOR -->
+      <div class="section-panel" id="section-1">
+        <div class="calc-section">
+          <h1 class="section-h1">What You Could Receive</h1>
+          <p class="section-intro">Use the buttons below to see your estimated weekly, monthly and yearly allowance — includes both the child's allowance and your carer fee.</p>
+
+          <div class="calc-group">
+            <label>How many children?</label>
+            <div class="calc-btn-row">
+              <button class="calc-btn" onclick="setCalc('children',1,this)">1</button>
+              <button class="calc-btn" onclick="setCalc('children',2,this)">2</button>
+              <button class="calc-btn" onclick="setCalc('children',3,this)">3</button>
+              <button class="calc-btn" onclick="setCalc('children',4,this)">4</button>
+            </div>
+          </div>
+
+          <div class="calc-group">
+            <label>Type of placement?</label>
+            <div class="calc-btn-row">
+              <button class="calc-btn type-btn" onclick="setCalc('type','short',this)">Short Term<span>Up to two years</span></button>
+              <button class="calc-btn type-btn" onclick="setCalc('type','long',this)">Long Term<span>Over two years</span></button>
+              <button class="calc-btn type-btn" onclick="setCalc('type','respite',this)">Short Break<span>Respite care</span></button>
+            </div>
+          </div>
+
+          <div class="calc-output" id="calc-output">
+            <div class="output-dots"></div>
+            <div class="output-empty" id="output-empty">Select options above<br>to see your estimate</div>
+            <div id="output-results" style="display:none">
+              <div class="output-label">YOUR ALLOWANCE COULD BE...</div>
+              <div class="output-amount"><span id="out-weekly"></span><span class="output-per">/ week</span></div>
+              <div class="output-grid">
+                <div><div class="oi-label">Per month</div><div class="oi-value" id="out-monthly"></div></div>
+                <div><div class="oi-label">Per year</div><div class="oi-value" id="out-yearly"></div></div>
+              </div>
+              <div class="output-context">This includes both an allowance for the young person and a fee that recognises your time and care.</div>
+              <div class="output-small-print" id="out-smallprint"></div>
+            </div>
+          </div>
+
+          <div class="calc-cta">
+            <button class="btn-primary" onclick="activateSection(3)">
+              Find out more
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: CARER STORIES -->
+      <div class="section-panel" id="section-2">
+        <div class="stories-section">
+          <h1 class="section-h1">Hear From Our Carers</h1>
+          <p class="section-intro">Real carers, real homes, real impact. These are the people making a difference every day.</p>
+
+          <div class="stories-grid">
+
+            <div class="story-tile">
+              <div class="tile-photo">
+                <img src="project/assets/photo-mum-daughter.jpg" alt="Foster carer">
+              </div>
+              <div class="tile-top"></div>
+              <div class="tile-body">
+                <div class="tile-name">Jamie, foster carer</div>
+                <div class="tile-quote">We weren't sure a young person would feel comfortable with us. When you offer a calm, stable home — that's what they remember.</div>
+              </div>
+            </div>
+
+            <div class="story-tile">
+              <div class="tile-photo">
+                <img src="project/assets/photo-respite-boy.png" alt="Respite carer">
+              </div>
+              <div class="tile-top"></div>
+              <div class="tile-body">
+                <div class="tile-name">Rachel, respite carer</div>
+                <div class="tile-quote">I work full-time. Respite means I can still make a real difference — two weekends a month, and the impact is huge.</div>
+              </div>
+            </div>
+
+            <div class="story-tile">
+              <div class="tile-photo">
+                <img src="project/assets/photo-foster-bench.jpg" alt="Foster carer">
+              </div>
+              <div class="tile-top"></div>
+              <div class="tile-body">
+                <div class="tile-name">Mark, foster carer</div>
+                <div class="tile-quote">With Step by Step, the money goes back into the charity. Back into more young people. That mattered to me.</div>
+              </div>
+            </div>
+
+            <div class="story-tile">
+              <div class="tile-photo">
+                <img src="project/assets/photo-foster-hug.jpg" alt="Long-term carer">
+              </div>
+              <div class="tile-top"></div>
+              <div class="tile-body">
+                <div class="tile-name">Sue, long-term carer</div>
+                <div class="tile-quote">It's not always easy. But watching someone grow in confidence in your home — there's nothing quite like it.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="stories-cta">
+            <button class="btn-primary" onclick="activateSection(3)">
+              Ready to find out more?
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: FIND OUT MORE -->
+      <div class="section-panel" id="section-3">
+        <div class="contact-section">
+          <h1 class="section-h1">Find Out More</h1>
+          <p class="section-intro">Our team is right here — come and say hello. Or choose one of these options to follow up in your own time, no pressure.</p>
+
+          <div class="contact-cards">
+
+            <!-- Card 1: Guide -->
+            <div class="contact-card" id="cc-0">
+              <div class="cc-header" onclick="toggleCard(0)">
+                <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+                <div class="cc-text">
+                  <div class="cc-title">Get our free fostering guide</div>
+                  <div class="cc-sub">Take your time. Read it at home.</div>
+                </div>
+                <div class="cc-expand"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+              </div>
+              <div class="cc-body">
+                <div class="form-row">
+                  <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="guide-name"></div>
+                  <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="guide-email"></div>
+                </div>
+                <div class="form-submit">
+                  <button class="btn-primary" onclick="submitForm('guide')">
+                    Send me the guide
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+                  </button>
+                </div>
+                <div class="confirm-msg" id="guide-confirm">
+                  <svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+                  <div class="confirm-text"><strong>Check your inbox — your guide is on its way.</strong>It covers everything from what to expect in assessment, to the support you'll receive every step of the way.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Coffee morning -->
+            <div class="contact-card" id="cc-1">
+              <div class="cc-header" onclick="toggleCard(1)">
+                <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+                <div class="cc-text">
+                  <div class="cc-title">Come to a coffee morning</div>
+                  <div class="cc-sub">Meet our team and other carers — no pressure, just a chat.</div>
+                </div>
+                <div class="cc-expand"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+              </div>
+              <div class="cc-body">
+                <div class="coffee-dates" id="coffee-dates">
+                  <div class="coffee-date" onclick="selectDate(this,'Wednesday 28 May, Havant')">
+                    <span class="cd-date">Wed 28 May</span>
+                    <span class="cd-location">Havant</span>
+                    <span class="cd-time">10:00–12:00</span>
+                  </div>
+                  <div class="coffee-date" onclick="selectDate(this,'Tuesday 17 June, Totton')">
+                    <span class="cd-date">Tue 17 Jun</span>
+                    <span class="cd-location">Totton</span>
+                    <span class="cd-time">10:00–12:00</span>
+                  </div>
+                </div>
+                <div class="form-row" id="coffee-form" style="display:none">
+                  <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="coffee-name"></div>
+                  <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="coffee-email"></div>
+                </div>
+                <div class="form-submit" id="coffee-submit-wrap" style="display:none">
+                  <button class="btn-primary" onclick="submitForm('coffee')">
+                    Reserve my place
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+                  </button>
+                </div>
+                <div class="confirm-msg" id="coffee-confirm">
+                  <svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+                  <div class="confirm-text"><strong>We'll send you the details.</strong>See you there — it's a relaxed, no-obligation chat over coffee.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Online info sessions -->
+            <div class="contact-card" id="cc-2">
+              <div class="cc-header" onclick="toggleCard(2)">
+                <div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                <div class="cc-text">
+                  <div class="cc-title">Online information sessions</div>
+                  <div class="cc-sub">Join us via Zoom — free, informal, no commitment.</div>
+                </div>
+                <div class="cc-expand"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+              </div>
+              <div class="cc-body">
+                <div class="online-sessions" id="online-sessions">
+                  <div class="online-session" onclick="selectOnline(this,'Monday 11 May, 12-1pm')">
+                    <span class="os-date">Mon 11 May</span>
+                    <span class="os-label">Online via Zoom</span>
+                    <span class="os-time">12:00–1:00pm</span>
+                  </div>
+                  <div class="online-session" onclick="selectOnline(this,'Thursday 14 May, 6-7pm')">
+                    <span class="os-date">Thu 14 May</span>
+                    <span class="os-label">Online via Zoom</span>
+                    <span class="os-time">6:00–7:00pm</span>
+                  </div>
+                  <div class="online-session" onclick="selectOnline(this,'Monday 1 June, 12-1pm')">
+                    <span class="os-date">Mon 1 Jun</span>
+                    <span class="os-label">Online via Zoom</span>
+                    <span class="os-time">12:00–1:00pm</span>
+                  </div>
+                  <div class="online-session" onclick="selectOnline(this,'Thursday 4 June, 6-7pm')">
+                    <span class="os-date">Thu 4 Jun</span>
+                    <span class="os-label">Online via Zoom</span>
+                    <span class="os-time">6:00–7:00pm</span>
+                  </div>
+                </div>
+                <div class="form-row" id="online-form" style="display:none">
+                  <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="online-name"></div>
+                  <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="online-email"></div>
+                </div>
+                <div class="form-submit" id="online-submit-wrap" style="display:none">
+                  <button class="btn-primary" onclick="submitForm('online')">
+                    Register for this session
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+                  </button>
+                </div>
+                <div class="confirm-msg" id="online-confirm">
+                  <svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+                  <div class="confirm-text"><strong>You're registered — we'll send the Zoom link.</strong>It's a relaxed, informal session — come with your questions.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Callback -->
+            <div class="contact-card" id="cc-3">
+              <div class="cc-header" onclick="toggleCard(3)">
+                <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.82-1.82a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                <div class="cc-text">
+                  <div class="cc-title">Ask for a call back</div>
+                  <div class="cc-sub">Want to talk it through? We'll call you.</div>
+                </div>
+                <div class="cc-expand"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+              </div>
+              <div class="cc-body">
+                <div class="form-row">
+                  <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="call-name"></div>
+                  <div class="form-field"><label>Mobile number</label><input type="tel" placeholder="07700 000000" id="call-phone"></div>
+                </div>
+                <div style="margin-bottom:14px">
+                  <label style="display:block;font-family:var(--body);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:8px">Preferred time</label>
+                  <div class="time-buttons">
+                    <button class="time-btn" onclick="selectTime(this,'Morning')">Morning</button>
+                    <button class="time-btn" onclick="selectTime(this,'Afternoon')">Afternoon</button>
+                    <button class="time-btn" onclick="selectTime(this,'Evening')">Evening</button>
+                  </div>
+                </div>
+                <div class="form-submit">
+                  <button class="btn-primary" onclick="submitForm('call')">
+                    Request a call back
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+                  </button>
+                </div>
+                <div class="confirm-msg" id="call-confirm">
+                  <svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+                  <div class="confirm-text"><strong>Thanks — we'll be in touch within 48 hours.</strong>One of our friendly team will call to answer any questions, no pressure at all.</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /active-mode -->
+
+  <!-- Legal line -->
+  <div class="footer-legal">
+    Step by Step Fostering Limited is a registered fostering provider and a wholly owned subsidiary of Step by Step Charity. Charity No. 900308
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="kiosk-footer">
+    <div class="footer-qr">
+      <img src="project/assets/qr-code.png" alt="QR code">
+    </div>
+    <div class="footer-text">
+      <div class="footer-scan">Scan to find out more</div>
+      <div class="footer-url">stepbystep.org.uk/fostering</div>
+    </div>
+    <div class="footer-phone">
+      <span>Call us</span>
+      01252 346100
+    </div>
+  </footer>
+
+  <!-- IDLE OVERLAY -->
+  <div id="idle-overlay" onclick="dismissIdle()">
+    <img class="idle-logo" src="project/assets/logo-fostering.jpg" alt="Step by Step Fostering">
+    <div class="idle-msg">Still there?</div>
+    <div class="idle-ring">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"/>
+      </svg>
+      <div class="ring-num" id="ring-num">10</div>
+    </div>
+    <div class="idle-sub">Returning to start in a moment...</div>
+  </div>
+
+</div><!-- /root -->
+
+<script>
+/* ── VIEWPORT SCALING ── */
+function scaleRoot() {
+  const root = document.getElementById('root');
+  const scaleX = window.innerWidth  / 1080;
+  const scaleY = window.innerHeight / 1920;
+  const scale  = Math.min(scaleX, scaleY);
+  root.style.transform = `scale(${scale})`;
+  const offX = (window.innerWidth  - 1080 * scale) / 2;
+  const offY = (window.innerHeight - 1920 * scale) / 2;
+  root.style.position = 'absolute';
+  root.style.left = offX + 'px';
+  root.style.top  = offY + 'px';
+  document.body.style.background = '#1a0a2e';
+}
+scaleRoot();
+window.addEventListener('resize', scaleRoot);
+
+/* ── MODE SWITCHING ── */
+let currentSection = -1;
+
+function activateSection(idx) {
+  currentSection = idx;
+  resetIdleTimer();
+  document.getElementById('attract-mode').classList.add('hidden');
+  document.getElementById('active-mode').classList.add('visible');
+  document.getElementById('back-btn').classList.add('visible');
+  document.querySelectorAll('.tab-pill').forEach((t,i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.section-panel').forEach((p,i) => p.classList.toggle('active', i === idx));
+  document.getElementById('content-area').scrollTop = 0;
+}
+
+function goToAttract() {
+  currentSection = -1;
+  document.getElementById('attract-mode').classList.remove('hidden');
+  document.getElementById('active-mode').classList.remove('visible');
+  document.getElementById('back-btn').classList.remove('visible');
+  clearIdleTimer();
+  document.getElementById('content-area').scrollTop = 0;
+}
+
+function handleVideoTap() {}
+
+/* ── IDLE TIMER ── */
+let idleTimer = null;
+let idleInterval = null;
+let idleSeconds = 0;
+
+function resetIdleTimer() {
+  clearIdleTimer();
+  idleTimer = setTimeout(showIdleOverlay, 90000);
+}
+
+function clearIdleTimer() {
+  clearTimeout(idleTimer);
+  clearInterval(idleInterval);
+  hideIdleOverlay();
+}
+
+function showIdleOverlay() {
+  document.getElementById('idle-overlay').classList.add('visible');
+  idleSeconds = 10;
+  updateRing();
+  idleInterval = setInterval(() => {
+    idleSeconds--;
+    updateRing();
+    if (idleSeconds <= 0) {
+      clearInterval(idleInterval);
+      hideIdleOverlay();
+      goToAttract();
+    }
+  }, 1000);
+}
+
+function updateRing() {
+  document.getElementById('ring-num').textContent = idleSeconds;
+  const circ = 2 * Math.PI * 50;
+  document.getElementById('ring-fill').style.strokeDashoffset = circ - (idleSeconds / 10) * circ;
+}
+
+function hideIdleOverlay() {
+  document.getElementById('idle-overlay').classList.remove('visible');
+}
+
+function dismissIdle() {
+  hideIdleOverlay();
+  clearInterval(idleInterval);
+  resetIdleTimer();
+}
+
+document.getElementById('root').addEventListener('pointerdown', () => {
+  if (currentSection >= 0) resetIdleTimer();
+});
+
+/* ── QUIZ (ACCORDION) ── */
+const questions = [
+  { statement: "I have to own my home to foster", answer: false, reveal: "Renting is fine. We just want to know your tenancy is stable." },
+  { statement: "Foster carers don't receive any payment for their time", answer: false, reveal: "You receive an allowance for the young person's needs and a fee that recognises your care. Tap 'What You Could Receive' to see an estimate." },
+  { statement: "You get a say in who is placed with you", answer: true, reveal: "Matching is always a conversation. You'll share what age range and situation you feel comfortable with, and you'll meet the young person before any placement begins." },
+  { statement: "Single people and same-sex couples can foster with Step by Step", answer: true, reveal: "Carers come from every background, relationship status and orientation. What matters is the home and heart you offer." },
+  { statement: "The assessment takes over a year", answer: false, reveal: "Most assessments are completed within four to six months, with support throughout." },
+  { statement: "I have to give up my job to foster", answer: false, reveal: "Many carers continue to work — especially with older young people or respite placements." },
+  { statement: "You can start with short-break fostering before committing to a full placement", answer: true, reveal: "Respite fostering — offering short breaks rather than a full-time placement — is a brilliant way to start. Flexible, fits around work and life." },
+  { statement: "I'd be left to figure it out on my own", answer: false, reveal: "Never. You'll have a dedicated social worker, full training, peer support and a 24/7 helpline — from day one." }
+];
+
+let currentQ = 0;
+let answered  = false;
+let answeredItems = [];
+
+function renderQuestion() {
+  const q = questions[currentQ];
+
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = '';
+  questions.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
+    prog.appendChild(d);
+  });
+  document.getElementById('quiz-q-count').textContent = (currentQ + 1) + ' of ' + questions.length;
+
+  document.getElementById('q-label').textContent = 'Question ' + (currentQ + 1) + ' of ' + questions.length;
+  document.getElementById('q-statement').textContent = q.statement;
+  document.getElementById('btn-true').className  = 'quiz-btn true-btn';
+  document.getElementById('btn-false').className = 'quiz-btn false-btn';
+  document.getElementById('btn-true').disabled   = false;
+  document.getElementById('btn-false').disabled  = false;
+  document.getElementById('quiz-reveal').classList.remove('visible');
+  document.getElementById('quiz-next-btn').style.display = 'none';
+  answered = false;
+
+  document.getElementById('quiz-card').style.display = 'block';
+  document.getElementById('quiz-end').classList.remove('visible');
+
+  renderStack();
+}
+
+function renderStack() {
+  const stack = document.getElementById('quiz-stack');
+  stack.innerHTML = '';
+  answeredItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'quiz-item';
+    div.innerHTML = `
+      <div class="quiz-item-collapsed">
+        <div class="qi-badge ${item.correct ? 'correct' : 'wrong'}">
+          ${item.correct
+            ? '<svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>'
+            : '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'}
+        </div>
+        <div class="qi-statement-short">${item.statement}</div>
+        <div class="qi-answer-tag ${item.answer ? 'true-tag' : 'false-tag'}">${item.answer ? 'TRUE' : 'FALSE'}</div>
+      </div>`;
+    stack.appendChild(div);
+  });
+}
+
+function answerQuiz(userAnswer) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const correct = userAnswer === q.answer;
+
+  const btnTrue  = document.getElementById('btn-true');
+  const btnFalse = document.getElementById('btn-false');
+  if (userAnswer === true)  { btnTrue.className  = 'quiz-btn ' + (correct ? 'correct' : 'wrong'); }
+  else                      { btnFalse.className = 'quiz-btn ' + (correct ? 'correct' : 'wrong'); }
+  if (!correct) {
+    if (q.answer === true) btnTrue.className  = 'quiz-btn correct';
+    else                   btnFalse.className = 'quiz-btn correct';
+  }
+  btnTrue.disabled  = true;
+  btnFalse.disabled = true;
+
+  const reveal = document.getElementById('quiz-reveal');
+  const badge  = document.getElementById('reveal-badge');
+  badge.className = 'reveal-badge ' + (correct ? 'correct-badge' : 'wrong-badge');
+  badge.innerHTML = correct
+    ? '<svg viewBox="0 0 24 24" width="20" height="20" stroke="#3a5800" stroke-width="3" fill="none"><polyline points="20,6 9,17 4,12"/></svg> That\'s right!'
+    : '<svg viewBox="0 0 24 24" width="20" height="20" stroke="#e60d8c" stroke-width="3" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Actually...';
+  document.getElementById('reveal-text').textContent = q.reveal;
+  reveal.classList.add('visible');
+
+  const nextBtn = document.getElementById('quiz-next-btn');
+  nextBtn.style.display = 'inline-flex';
+  nextBtn.innerHTML = currentQ < questions.length - 1
+    ? 'Next <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>'
+    : 'See your results <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+
+  answeredItems.push({ correct, statement: q.statement, answer: q.answer });
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    document.getElementById('quiz-card').style.display = 'none';
+    document.getElementById('quiz-end').classList.add('visible');
+    renderStack();
+    document.getElementById('content-area').scrollTop = 0;
+  } else {
+    renderQuestion();
+    setTimeout(() => {
+      const card = document.getElementById('quiz-card');
+      const area = document.getElementById('content-area');
+      area.scrollTop = card.offsetTop - 20;
+    }, 100);
+  }
+}
+
+function showSLPanel() { document.getElementById('sl-panel').classList.add('visible'); }
+
+function resetQuiz() {
+  currentQ = 0;
+  answeredItems = [];
+  document.getElementById('quiz-end').classList.remove('visible');
+  document.getElementById('sl-panel').classList.remove('visible');
+  renderQuestion();
+}
+
+renderQuestion();
+
+/* ── CALCULATOR ── */
+const rates = {
+  short:   { 1:{week:460,month:1993,year:23920}, 2:{week:920,month:3987,year:47840}, 3:{week:1380,month:5980,year:71760}, 4:{week:1840,month:7973,year:95680} },
+  long:    { 1:{week:445,month:1928,year:23140}, 2:{week:890,month:3857,year:46280}, 3:{week:1335,month:5785,year:69420}, 4:{week:1780,month:7713,year:92560} },
+  respite: { 1:{week:525,month:656,year:7875},   2:{week:1050,month:1313,year:15750}, 3:{week:1575,month:1969,year:23625}, 4:{week:2100,month:2625,year:31500} }
+};
+const smallPrint = {
+  short:   "Estimated based on weekly rates multiplied over 52 weeks. Monthly figure is yearly total divided by 12.",
+  long:    "Estimated based on weekly rates multiplied over 52 weeks. Monthly figure is yearly total divided by 12.",
+  respite: "Assuming two nights per week, or 15 weeks per year. Monthly figure is yearly total divided by 12."
+};
+let calcState = { children: null, type: null };
+
+function setCalc(key, value, btn) {
+  calcState[key] = value;
+  btn.closest('.calc-btn-row').querySelectorAll('.calc-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateCalcOutput();
+}
+
+function updateCalcOutput() {
+  const { children, type } = calcState;
+  const empty   = document.getElementById('output-empty');
+  const results = document.getElementById('output-results');
+  if (!children || !type) { empty.style.display='block'; results.style.display='none'; return; }
+  const r = rates[type][children];
+  empty.style.display = 'none'; results.style.display = 'block';
+  document.getElementById('out-weekly').textContent  = '£' + r.week.toLocaleString();
+  document.getElementById('out-monthly').textContent = '£' + r.month.toLocaleString();
+  document.getElementById('out-yearly').textContent  = '£' + r.year.toLocaleString();
+  document.getElementById('out-smallprint').textContent = smallPrint[type];
+}
+
+/* ── CONTACT / FIND OUT MORE ── */
+let openCard = -1;
+let selectedDate = null, selectedOnline = null, selectedTime = null;
+
+function toggleCard(idx) {
+  const cards = document.querySelectorAll('.contact-card');
+  if (openCard === idx) { cards[idx].classList.remove('open'); openCard = -1; }
+  else { cards.forEach(c => c.classList.remove('open')); cards[idx].classList.add('open'); openCard = idx; }
+}
+
+function selectDate(el, dateStr) {
+  document.querySelectorAll('.coffee-date').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDate = dateStr;
+  document.getElementById('coffee-form').style.display = 'flex';
+  document.getElementById('coffee-submit-wrap').style.display = 'block';
+}
+
+function selectOnline(el, dateStr) {
+  document.querySelectorAll('.online-session').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedOnline = dateStr;
+  document.getElementById('online-form').style.display = 'flex';
+  document.getElementById('online-submit-wrap').style.display = 'block';
+}
+
+function selectTime(btn, time) {
+  document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTime = time;
+}
+
+function submitForm(type) {
+  const confirmId = { guide:'guide-confirm', coffee:'coffee-confirm', online:'online-confirm', call:'call-confirm' }[type];
+  document.getElementById(confirmId).classList.add('visible');
+  if (type==='guide')  { document.getElementById('guide-name').value=''; document.getElementById('guide-email').value=''; }
+  if (type==='coffee') { document.getElementById('coffee-name').value=''; document.getElementById('coffee-email').value=''; }
+  if (type==='online') { document.getElementById('online-name').value=''; document.getElementById('online-email').value=''; }
+  if (type==='call')   { document.getElementById('call-name').value=''; document.getElementById('call-phone').value=''; document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected')); }
+  setTimeout(() => document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible')), 6000);
+}
+</script>
+</body>
+</html>
