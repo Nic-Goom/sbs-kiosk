@@ -593,7 +593,7 @@
       <div class="corner-bracket tr"></div>
       <div class="corner-bracket bl"></div>
       <div class="corner-bracket br"></div>
-      <div id="yt-player" style="width:100%;height:100%;"></div>
+      <iframe id="yt-iframe" src="https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=1&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0&enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
       <div class="tap-prompt" id="tap-prompt">&#9654; TAP TO UNMUTE</div>
     </div>
 
@@ -1086,12 +1086,12 @@ function goToAttract() {
 }
 
 function handleVideoTap() {
-  if (ytPlayer && typeof ytPlayer.unMute === 'function') {
-    ytPlayer.unMute();
-    ytPlayer.setVolume(100);
-    const prompt = document.getElementById('tap-prompt');
-    if (prompt) prompt.style.display = 'none';
+  const iframe = document.getElementById('yt-iframe');
+  const prompt = document.getElementById('tap-prompt');
+  if (iframe) {
+    iframe.src = 'https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=0&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0';
   }
+  if (prompt) prompt.style.display = 'none';
 }
 
 /* ── IDLE TIMER ── */
@@ -1348,20 +1348,7 @@ function submitForm(type) {
   setTimeout(() => document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible')), 6000);
 }
 
-/* ── YOUTUBE PLAYER ── */
-let ytPlayer = null;
 
-const ytScript = document.createElement('script');
-ytScript.src = 'https://www.youtube.com/iframe_api';
-document.head.appendChild(ytScript);
-
-function onYouTubeIframeAPIReady() {
-  ytPlayer = new YT.Player('yt-player', {
-    videoId: '_oqfLf4yp30',
-    playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: '_oqfLf4yp30', controls: 0, rel: 0, modestbranding: 1 },
-    events: { onReady: e => e.target.playVideo() }
-  });
-}
 </script>
 </body>
 </html>
