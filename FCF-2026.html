@@ -98,6 +98,31 @@
   .back-btn:hover { background: rgba(255,255,255,0.34); }
   .back-btn.visible { display: flex; }
 
+  /* Floating mid-page back button */
+  .back-float {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    z-index: 200; display: none;
+    flex-direction: column; align-items: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-float.visible { display: flex; }
+  .back-float-btn {
+    background: var(--gradient-h);
+    border: none; border-radius: 0 16px 16px 0;
+    color: white; cursor: pointer;
+    padding: 22px 18px 22px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    box-shadow: 4px 0 20px rgba(230,13,140,0.3);
+    transition: padding-right 0.2s;
+  }
+  .back-float-btn:active { padding-right: 12px; }
+  .back-float-btn svg { width: 28px; height: 28px; stroke: white; stroke-width: 2.5; fill: none; }
+  .back-float-label {
+    font-family: var(--veneer); font-size: 20px; color: white;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
   /* ── FOOTER ── */
   .kiosk-footer {
     position: absolute; bottom: 0; left: 0; right: 0;
@@ -606,8 +631,8 @@
         </div>
         <div class="card-content">
           <div class="card-num">01</div>
-          <div class="card-title">Could You Foster?</div>
-          <div class="card-sub">Take our 1-minute myth-busting quiz</div>
+          <div class="card-title">Take the Foster Carer Quiz</div>
+          <div class="card-sub">1-minute myth-busting quiz</div>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
           </div>
@@ -662,8 +687,15 @@
   <!-- ACTIVE MODE -->
   <div id="active-mode">
 
+    <div class="back-float" id="back-float">
+      <button class="back-float-btn" onclick="goToAttract()">
+        <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+        <span class="back-float-label">Back</span>
+      </button>
+    </div>
+
     <nav class="tab-nav">
-      <button class="tab-pill" onclick="activateSection(0)">Could You Foster?</button>
+      <button class="tab-pill" onclick="activateSection(0)">Take the Quiz</button>
       <button class="tab-pill" onclick="activateSection(1)">What You Could Receive</button>
       <button class="tab-pill" onclick="activateSection(2)">Hear From Our Carers</button>
       <button class="tab-pill" onclick="activateSection(3)">Find Out More</button>
@@ -673,7 +705,7 @@
 
       <!-- SECTION 1: QUIZ -->
       <div class="section-panel" id="section-0">
-        <h1 class="section-h1">Could You Foster?</h1>
+        <h1 class="section-h1">Take the Foster Carer Quiz</h1>
         <p class="section-intro">Eight quick statements — tap True or False. Each one tackles a myth that stops people enquiring.</p>
 
         <div class="quiz-header-row">
@@ -1072,6 +1104,7 @@ function activateSection(idx) {
   document.getElementById('attract-mode').classList.add('hidden');
   document.getElementById('active-mode').classList.add('visible');
   document.getElementById('back-btn').classList.add('visible');
+  document.getElementById('back-float').classList.add('visible');
   document.querySelectorAll('.tab-pill').forEach((t,i) => t.classList.toggle('active', i === idx));
   document.querySelectorAll('.section-panel').forEach((p,i) => p.classList.toggle('active', i === idx));
   document.getElementById('content-area').scrollTop = 0;
@@ -1082,6 +1115,7 @@ function goToAttract() {
   document.getElementById('attract-mode').classList.remove('hidden');
   document.getElementById('active-mode').classList.remove('visible');
   document.getElementById('back-btn').classList.remove('visible');
+  document.getElementById('back-float').classList.remove('visible');
   clearIdleTimer();
   document.getElementById('content-area').scrollTop = 0;
 }
