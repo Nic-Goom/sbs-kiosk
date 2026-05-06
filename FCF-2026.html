@@ -550,6 +550,23 @@
 
   .form-submit { margin-top: 18px; }
 
+  .optin-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin: 14px 0 4px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .optin-row input[type="checkbox"] { display: none; }
+  .optin-box {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+    border: 2.5px solid rgba(65,37,118,0.3); background: var(--off-white);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s; margin-top: 2px;
+  }
+  .optin-box svg { display: none; width: 20px; height: 20px; stroke: white; stroke-width: 3; fill: none; }
+  .optin-row.checked .optin-box { background: var(--gradient-h); border-color: transparent; }
+  .optin-row.checked .optin-box svg { display: block; }
+  .optin-text { font-family: var(--body); font-size: 14px; color: #555; line-height: 1.5; }
+
   .confirm-msg { display: none; background: linear-gradient(135deg, rgba(177,209,43,0.15) 0%, rgba(65,37,118,0.08) 100%); border: 2px solid var(--lime); border-radius: 12px; padding: 20px 24px; animation: fadeIn 0.3s ease; gap: 14px; align-items: flex-start; }
   .confirm-msg.visible { display: flex; }
   .confirm-msg svg { width: 32px; height: 32px; stroke: #4a6b00; stroke-width: 2.5; fill: none; flex-shrink: 0; margin-top: 2px; }
@@ -743,10 +760,10 @@
           <div class="end-splash">
             <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-          <h2>You could foster with us.</h2>
-          <p>And you'd never do it alone. Every carer gets a dedicated social worker, full training, peer support and a 24/7 helpline — from day one.</p>
+          <h2>Interested? Find out more.</h2>
+          <p>Fostering looks different for everyone. Whatever your situation, our friendly team can answer your questions — no pressure, no commitment.</p>
           <div class="end-ctas">
-            <button class="btn-primary" onclick="activateSection(3)" style="width:100%;justify-content:center">Find out more about fostering</button>
+            <button class="btn-primary" onclick="activateSection(3)" style="width:100%;justify-content:center">Talk to our team</button>
             <button class="btn-secondary" onclick="showSLPanel()" style="width:100%;justify-content:center">I'd rather offer a spare room flexibly</button>
           </div>
           <div class="sl-panel" id="sl-panel">
@@ -895,6 +912,10 @@
                   <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="guide-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="guide-email"></div>
                 </div>
+                <div class="optin-row" id="guide-optin" onclick="toggleOptin(this)">
+                  <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
+                </div>
                 <div class="form-submit">
                   <button class="btn-primary" onclick="submitForm('guide')">
                     Send me the guide
@@ -934,6 +955,10 @@
                 <div class="form-row" id="coffee-form" style="display:none">
                   <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="coffee-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="coffee-email"></div>
+                </div>
+                <div class="optin-row" id="coffee-optin" onclick="toggleOptin(this)" style="display:none">
+                  <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
                 </div>
                 <div class="form-submit" id="coffee-submit-wrap" style="display:none">
                   <button class="btn-primary" onclick="submitForm('coffee')">
@@ -984,6 +1009,10 @@
                 <div class="form-row" id="online-form" style="display:none">
                   <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="online-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="online-email"></div>
+                </div>
+                <div class="optin-row" id="online-optin" onclick="toggleOptin(this)" style="display:none">
+                  <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
                 </div>
                 <div class="form-submit" id="online-submit-wrap" style="display:none">
                   <button class="btn-primary" onclick="submitForm('online')">
@@ -1358,6 +1387,7 @@ function selectDate(el, dateStr) {
   el.classList.add('selected');
   selectedDate = dateStr;
   document.getElementById('coffee-form').style.display = 'flex';
+  document.getElementById('coffee-optin').style.display = 'flex';
   document.getElementById('coffee-submit-wrap').style.display = 'block';
 }
 
@@ -1366,6 +1396,7 @@ function selectOnline(el, dateStr) {
   el.classList.add('selected');
   selectedOnline = dateStr;
   document.getElementById('online-form').style.display = 'flex';
+  document.getElementById('online-optin').style.display = 'flex';
   document.getElementById('online-submit-wrap').style.display = 'block';
 }
 
@@ -1374,6 +1405,8 @@ function selectTime(btn, time) {
   btn.classList.add('selected');
   selectedTime = time;
 }
+
+function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitForm(type) {
   const confirmId = { guide:'guide-confirm', coffee:'coffee-confirm', online:'online-confirm', call:'call-confirm' }[type];
