@@ -635,8 +635,8 @@
       <div class="corner-bracket tr"></div>
       <div class="corner-bracket bl"></div>
       <div class="corner-bracket br"></div>
-      <iframe id="yt-iframe" src="https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=1&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
-      <div id="video-overlay" style="position:absolute;inset:0;z-index:12;cursor:pointer;" onclick="handleVideoTap()"></div>
+      <iframe id="yt-iframe" src="https://www.youtube.com/embed/qKsMmo-Sozw?autoplay=1&mute=1&loop=1&playlist=qKsMmo-Sozw&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
+      <div id="video-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:12;cursor:pointer;"></div>
       <div class="tap-prompt" id="tap-prompt">&#9654; TAP TO UNMUTE</div>
     </div>
 
@@ -1207,19 +1207,28 @@ function resetAll() {
 }
 
 let videoMuted = true;
-function handleVideoTap() {
+const VIDEO_ID = 'qKsMmo-Sozw';
+
+function handleVideoTap(e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
   const iframe = document.getElementById('yt-iframe');
   const prompt = document.getElementById('tap-prompt');
-  const overlay = document.getElementById('video-overlay');
   videoMuted = !videoMuted;
   if (iframe) {
-    iframe.src = `https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=${videoMuted ? 1 : 0}&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0`;
+    iframe.src = `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=${videoMuted ? 1 : 0}&loop=1&playlist=${VIDEO_ID}&controls=0&rel=0`;
   }
   if (prompt) {
-    prompt.style.display = 'block';
     prompt.innerHTML = videoMuted ? '&#9654; TAP TO UNMUTE' : '&#9646;&#9646; TAP TO MUTE';
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('video-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', handleVideoTap);
+    overlay.addEventListener('touchend', handleVideoTap, { passive: false });
+  }
+});
 
 /* ── IDLE TIMER ── */
 let idleTimer = null;
