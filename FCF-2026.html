@@ -197,7 +197,7 @@
     background: rgba(230,13,140,0.88); color: white;
     font-family: var(--veneer); font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 10px 32px; border-radius: var(--r-btn);
-    pointer-events: none; z-index: 11;
+    pointer-events: none; z-index: 13;
     animation: pulsePrompt 2.4s ease-in-out infinite;
   }
   @keyframes pulsePrompt {
@@ -1215,7 +1215,6 @@ function handleVideoTap() {
   if (iframe) {
     iframe.src = `https://www.youtube.com/embed/_oqfLf4yp30?autoplay=1&mute=${videoMuted ? 1 : 0}&loop=1&playlist=_oqfLf4yp30&controls=0&rel=0`;
   }
-  if (overlay) overlay.style.display = 'none';
   if (prompt) {
     prompt.style.display = 'block';
     prompt.innerHTML = videoMuted ? '&#9654; TAP TO UNMUTE' : '&#9646;&#9646; TAP TO MUTE';
