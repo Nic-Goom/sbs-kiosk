@@ -1053,6 +1053,9 @@
                   <div class="form-field"><label>First name</label><input type="text" placeholder="Your first name" id="call-name"></div>
                   <div class="form-field"><label>Mobile number</label><input type="tel" placeholder="07700 000000" id="call-phone"></div>
                 </div>
+                <div class="form-row">
+                  <div class="form-field" style="flex:1"><label>Email address</label><input type="email" placeholder="your@email.com" id="call-email"></div>
+                </div>
                 <div style="margin-bottom:14px">
                   <label style="display:block;font-family:var(--body);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:8px">Preferred time</label>
                   <div class="time-buttons">
@@ -1060,6 +1063,10 @@
                     <button class="time-btn" onclick="selectTime(this,'Afternoon')">Afternoon</button>
                     <button class="time-btn" onclick="selectTime(this,'Evening')">Evening</button>
                   </div>
+                </div>
+                <div class="optin-row" id="call-optin" onclick="toggleOptin(this)">
+                  <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
                 </div>
                 <div class="form-submit">
                   <button class="btn-primary" onclick="submitForm('call')">
@@ -1116,6 +1123,12 @@
   </div>
 
 </div><!-- /root -->
+
+<!-- Hidden AC form for submission engine -->
+<div style="display:none;position:absolute;left:-9999px;top:-9999px;">
+  <div class="_form_3"></div>
+</div>
+<script src="https://stepbystep50319.activehosted.com/f/embed.php?id=3" charset="utf-8"></script>
 
 <script>
 /* ── VIEWPORT SCALING ── */
@@ -1478,14 +1491,114 @@ function selectTime(btn, time) {
 
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
+function submitToAC(fields) {
+  const acForm = document.querySelector('._form_3 form');
+  if (!acForm) { console.warn('AC form not loaded yet'); return; }
+
+  // Create hidden iframe target (prevents page navigation on submit)
+  let iframe = document.getElementById('ac-submit-iframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'ac-submit-iframe';
+    iframe.name = 'ac-submit-iframe';
+    iframe.style.cssText = 'display:none;position:absolute;left:-9999px;top:-9999px';
+    document.body.appendChild(iframe);
+  }
+
+  // Set/create fields in the AC form
+  function setField(name, value) {
+    let inp = acForm.querySelector('input[name="' + name + '"]');
+    if (!inp) {
+      inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.name = name;
+      acForm.appendChild(inp);
+    }
+    inp.value = value;
+  }
+
+  for (const [key, val] of Object.entries(fields)) {
+    setField(key, val);
+  }
+
+  acForm.target = 'ac-submit-iframe';
+  acForm.submit();
+}
+
+function showError(inputId, msg) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  inp.style.borderColor = '#e60d8c';
+  inp.placeholder = msg;
+  setTimeout(() => { inp.style.borderColor = ''; }, 3000);
+}
+
 function submitForm(type) {
   const confirmId = { guide:'guide-confirm', coffee:'coffee-confirm', online:'online-confirm', call:'call-confirm' }[type];
+  let fields = {};
+  let valid = true;
+
+  if (type === 'guide') {
+    const name  = document.getElementById('guide-name').value.trim();
+    const email = document.getElementById('guide-email').value.trim();
+    if (!name)  { showError('guide-name',  'Please enter your name');  valid = false; }
+    if (!email) { showError('guide-email', 'Please enter your email'); valid = false; }
+    if (!valid) return;
+    const optin = document.getElementById('guide-optin').classList.contains('checked');
+    fields = { fullname: name, email, kiosk_source: 'Fostering Guide', kiosk_optin: optin ? 'Yes' : 'No' };
+    document.getElementById('guide-name').value  = '';
+    document.getElementById('guide-email').value = '';
+    document.getElementById('guide-optin').classList.remove('checked');
+  }
+
+  if (type === 'coffee') {
+    const name  = document.getElementById('coffee-name').value.trim();
+    const email = document.getElementById('coffee-email').value.trim();
+    if (!name)         { showError('coffee-name',  'Please enter your name');   valid = false; }
+    if (!email)        { showError('coffee-email', 'Please enter your email');  valid = false; }
+    if (!selectedDate) { valid = false; } // date must be picked first (UI enforces this)
+    if (!valid) return;
+    const optin = document.getElementById('coffee-optin').classList.contains('checked');
+    fields = { fullname: name, email, kiosk_source: 'Coffee Morning', kiosk_date: selectedDate || '', kiosk_optin: optin ? 'Yes' : 'No' };
+    document.getElementById('coffee-name').value  = '';
+    document.getElementById('coffee-email').value = '';
+    document.getElementById('coffee-optin').classList.remove('checked');
+  }
+
+  if (type === 'online') {
+    const name  = document.getElementById('online-name').value.trim();
+    const email = document.getElementById('online-email').value.trim();
+    if (!name)           { showError('online-name',  'Please enter your name');   valid = false; }
+    if (!email)          { showError('online-email', 'Please enter your email');  valid = false; }
+    if (!selectedOnline) { valid = false; }
+    if (!valid) return;
+    const optin = document.getElementById('online-optin').classList.contains('checked');
+    fields = { fullname: name, email, kiosk_source: 'Online Session', kiosk_date: selectedOnline || '', kiosk_optin: optin ? 'Yes' : 'No' };
+    document.getElementById('online-name').value  = '';
+    document.getElementById('online-email').value = '';
+    document.getElementById('online-optin').classList.remove('checked');
+  }
+
+  if (type === 'call') {
+    const name  = document.getElementById('call-name').value.trim();
+    const phone = document.getElementById('call-phone').value.trim();
+    const email = document.getElementById('call-email').value.trim();
+    if (!name)  { showError('call-name',  'Please enter your name');   valid = false; }
+    if (!phone) { showError('call-phone', 'Please enter your number'); valid = false; }
+    if (!email) { showError('call-email', 'Please enter your email');  valid = false; }
+    if (!valid) return;
+    const optin = document.getElementById('call-optin').classList.contains('checked');
+    fields = { fullname: name, email, phone, kiosk_source: 'Call Back Request', kiosk_time: selectedTime || 'Not specified', kiosk_optin: optin ? 'Yes' : 'No' };
+    document.getElementById('call-name').value  = '';
+    document.getElementById('call-phone').value = '';
+    document.getElementById('call-email').value = '';
+    document.getElementById('call-optin').classList.remove('checked');
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+  }
+
+  submitToAC(fields);
   document.getElementById(confirmId).classList.add('visible');
-  if (type==='guide')  { document.getElementById('guide-name').value=''; document.getElementById('guide-email').value=''; }
-  if (type==='coffee') { document.getElementById('coffee-name').value=''; document.getElementById('coffee-email').value=''; }
-  if (type==='online') { document.getElementById('online-name').value=''; document.getElementById('online-email').value=''; }
-  if (type==='call')   { document.getElementById('call-name').value=''; document.getElementById('call-phone').value=''; document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected')); }
-  setTimeout(() => document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible')), 6000);
+  setTimeout(() => document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible')), 8000);
 }
 
 
