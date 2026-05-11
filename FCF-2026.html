@@ -1552,7 +1552,7 @@ function submitToAC(fields) {
 
   setVal(getOrCreate('fullname'), fields.fullname);
   setVal(getOrCreate('email'),    fields.email);
-  if (fields.phone) setVal(getOrCreate('phone'), fields.phone);
+  if (fields.phone) setVal(acForm.querySelector('input[type="tel"]') || getOrCreate('phone'), fields.phone);
 
   if (fields.kiosk_source) setVal(findByLabel('Kiosk Source'), fields.kiosk_source);
   if (fields.kiosk_date)   setVal(findByLabel('Kiosk Date'),   fields.kiosk_date);
