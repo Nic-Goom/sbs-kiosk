@@ -264,10 +264,15 @@
 
   .card-arrow {
     align-self: flex-end; margin-top: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-arrow-tap { font-family: var(--veneer); font-size: 18px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pink); }
+  .card-arrow-circle {
     width: 38px; height: 38px;
     background: var(--gradient-h);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
   .card-arrow svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; fill: none; }
 
@@ -635,7 +640,7 @@
       <div class="corner-bracket tr"></div>
       <div class="corner-bracket bl"></div>
       <div class="corner-bracket br"></div>
-      <iframe id="yt-iframe" src="https://www.youtube.com/embed/qKsMmo-Sozw?autoplay=1&mute=1&loop=1&playlist=qKsMmo-Sozw&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
+      <iframe id="yt-iframe" src="https://www.youtube.com/embed/EOEh3yeEgz4?autoplay=1&mute=1&loop=1&playlist=EOEh3yeEgz4&controls=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>
       <div id="video-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:12;cursor:pointer;"></div>
       <div class="tap-prompt" id="tap-prompt">&#9654; TAP TO UNMUTE</div>
     </div>
@@ -651,7 +656,10 @@
           <div class="card-title">Take the Foster Carer Quiz</div>
           <div class="card-sub">1-minute myth-busting quiz</div>
           <div class="card-arrow">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            <span class="card-arrow-tap">Tap here</span>
+            <div class="card-arrow-circle">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -665,7 +673,10 @@
           <div class="card-title">The Financial Impact</div>
           <div class="card-sub">See your potential allowance</div>
           <div class="card-arrow">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            <span class="card-arrow-tap">Tap here</span>
+            <div class="card-arrow-circle">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -679,7 +690,10 @@
           <div class="card-title">Hear From Our Carers</div>
           <div class="card-sub">Real stories, real homes</div>
           <div class="card-arrow">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            <span class="card-arrow-tap">Tap here</span>
+            <div class="card-arrow-circle">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -693,7 +707,10 @@
           <div class="card-title">Find Out More</div>
           <div class="card-sub">Take the next step</div>
           <div class="card-arrow">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            <span class="card-arrow-tap">Tap here</span>
+            <div class="card-arrow-circle">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </div>
           </div>
         </div>
       </div>
