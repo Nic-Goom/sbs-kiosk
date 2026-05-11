@@ -1487,26 +1487,22 @@ function selectTime(btn, time) {
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitToAC(fields) {
-  const data = new FormData();
-  data.append('u', '3');
-  data.append('f', '3');
-  data.append('s', '');
-  data.append('c', '0');
-  data.append('m', '0');
-  data.append('act', 'sub');
-  data.append('v', '2');
+  const p = new URLSearchParams();
+  p.set('u', '3'); p.set('f', '3'); p.set('s', '');
+  p.set('c', '0'); p.set('m', '0'); p.set('act', 'sub'); p.set('v', '2');
 
-  if (fields.fullname)     data.append('fullname',     fields.fullname);
-  if (fields.email)        data.append('email',        fields.email);
-  if (fields.phone)        data.append('phone',        fields.phone);
-  if (fields.kiosk_source) data.append('KIOSK_SOURCE', fields.kiosk_source);
-  if (fields.kiosk_date)   data.append('KIOSK_DATE',   fields.kiosk_date);
-  if (fields.kiosk_time)   data.append('KIOSK_TIME',   fields.kiosk_time);
-  if (fields.kiosk_optin)  data.append('KIOSK_OPTIN',  fields.kiosk_optin);
+  if (fields.fullname)     p.set('fullname',            fields.fullname);
+  if (fields.email)        p.set('email',               fields.email);
+  if (fields.phone)        p.set('phone',               fields.phone);
+  if (fields.kiosk_source) p.set('field[31893145,0]',   fields.kiosk_source);
+  if (fields.kiosk_date)   p.set('field[10906577,0]',   fields.kiosk_date);
+  if (fields.kiosk_time)   p.set('field[13352563,0]',   fields.kiosk_time);
+  if (fields.kiosk_optin)  p.set('field[50920048,0]',   fields.kiosk_optin);
 
   fetch('https://stepbystep50319.activehosted.com/proc.php', {
     method: 'POST',
-    body: data,
+    body: p.toString(),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     mode: 'no-cors'
   }).catch(err => console.warn('AC submit error:', err));
 }
