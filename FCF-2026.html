@@ -1505,17 +1505,6 @@ function submitToAC(fields) {
     document.body.appendChild(iframe);
   }
 
-  // Find an input associated with a label containing labelText
-  function findByLabel(labelText) {
-    for (const label of acForm.querySelectorAll('label')) {
-      if (label.textContent.trim().toLowerCase().includes(labelText.toLowerCase())) {
-        const forId = label.getAttribute('for');
-        if (forId) return document.getElementById(forId) || acForm.querySelector('[id="' + forId + '"]');
-      }
-    }
-    return null;
-  }
-
   // Find or create an input by name attribute
   function getOrCreate(name) {
     let inp = acForm.querySelector('[name="' + name + '"]');
@@ -1533,21 +1522,20 @@ function submitToAC(fields) {
     inp.type === 'checkbox' ? (inp.checked = val === 'Yes') : (inp.value = val);
   }
 
-  // Standard fields — find by name attribute
-  if (fields.fullname) setVal(getOrCreate('fullname'), fields.fullname);
-  if (fields.email)    setVal(getOrCreate('email'),    fields.email);
-  if (fields.phone)    setVal(getOrCreate('phone'),    fields.phone);
-
-  // Custom fields — find by label text (works regardless of AC's internal field IDs)
-  const customLabels = {
-    kiosk_source: 'Kiosk Source',
-    kiosk_date:   'Kiosk Date',
-    kiosk_time:   'Kiosk Time',
-    kiosk_optin:  'Kiosk Opt'
+  // Map our field keys to AC input name attributes
+  const acFieldNames = {
+    fullname:     'fullname',
+    email:        'email',
+    phone:        'PHONE',
+    kiosk_source: 'KIOSK_SOURCE',
+    kiosk_date:   'KIOSK_DATE',
+    kiosk_time:   'KIOSK_TIME',
+    kiosk_optin:  'KIOSK_OPTIN'
   };
-  for (const [key, labelText] of Object.entries(customLabels)) {
+
+  for (const [key, acName] of Object.entries(acFieldNames)) {
     if (fields[key] === undefined) continue;
-    setVal(findByLabel(labelText), fields[key]);
+    setVal(getOrCreate(acName), fields[key]);
   }
 
   acForm.target = 'ac-submit-iframe';
