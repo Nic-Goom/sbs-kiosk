@@ -1124,8 +1124,8 @@
 
 </div><!-- /root -->
 
-<!-- Hidden AC form for submission engine -->
-<div style="display:none;position:absolute;left:-9999px;top:-9999px;">
+<!-- AC form — off-screen but fully rendered so embed script initialises all fields -->
+<div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;">
   <div class="_form_3"></div>
 </div>
 <script src="https://stepbystep50319.activehosted.com/f/embed.php?id=3" charset="utf-8"></script>
@@ -1505,38 +1505,49 @@ function submitToAC(fields) {
     document.body.appendChild(iframe);
   }
 
-  // Standard fields by name; custom fields by AC's field[ID,0] format
-  const fieldMap = {
-    fullname:     { name: 'fullname' },
-    email:        { name: 'email' },
-    phone:        { name: 'phone' },
-    kiosk_source: { fieldId: '31893145' },
-    kiosk_date:   { fieldId: '10906577' },
-    kiosk_time:   { fieldId: '13352563' },
-    kiosk_optin:  { fieldId: '50920048' }
-  };
+  // Find an input associated with a label containing labelText
+  function findByLabel(labelText) {
+    for (const label of acForm.querySelectorAll('label')) {
+      if (label.textContent.trim().toLowerCase().includes(labelText.toLowerCase())) {
+        const forId = label.getAttribute('for');
+        if (forId) return document.getElementById(forId) || acForm.querySelector('[id="' + forId + '"]');
+      }
+    }
+    return null;
+  }
 
-  function getOrCreateInput(fieldName) {
-    let inp = acForm.querySelector('input[name="' + fieldName + '"]');
+  // Find or create an input by name attribute
+  function getOrCreate(name) {
+    let inp = acForm.querySelector('[name="' + name + '"]');
     if (!inp) {
       inp = document.createElement('input');
       inp.type = 'hidden';
-      inp.name = fieldName;
+      inp.name = name;
       acForm.appendChild(inp);
     }
     return inp;
   }
 
-  for (const [key, val] of Object.entries(fields)) {
-    const mapping = fieldMap[key];
-    if (!mapping) continue;
-    const fieldName = mapping.fieldId ? 'field[' + mapping.fieldId + ',0]' : mapping.name;
-    const inp = getOrCreateInput(fieldName);
-    if (inp.type === 'checkbox') {
-      inp.checked = (val === 'Yes');
-    } else {
-      inp.value = val;
-    }
+  function setVal(inp, val) {
+    if (!inp) return;
+    inp.type === 'checkbox' ? (inp.checked = val === 'Yes') : (inp.value = val);
+  }
+
+  // Standard fields — find by name attribute
+  if (fields.fullname) setVal(getOrCreate('fullname'), fields.fullname);
+  if (fields.email)    setVal(getOrCreate('email'),    fields.email);
+  if (fields.phone)    setVal(getOrCreate('phone'),    fields.phone);
+
+  // Custom fields — find by label text (works regardless of AC's internal field IDs)
+  const customLabels = {
+    kiosk_source: 'Kiosk Source',
+    kiosk_date:   'Kiosk Date',
+    kiosk_time:   'Kiosk Time',
+    kiosk_optin:  'Kiosk Opt'
+  };
+  for (const [key, labelText] of Object.entries(customLabels)) {
+    if (fields[key] === undefined) continue;
+    setVal(findByLabel(labelText), fields[key]);
   }
 
   acForm.target = 'ac-submit-iframe';
