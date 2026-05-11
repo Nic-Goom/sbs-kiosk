@@ -940,9 +940,9 @@
                   <div class="form-field"><label>Full name</label><input type="text" placeholder="Your full name" id="guide-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="guide-email"></div>
                 </div>
-                <div class="optin-row" id="guide-optin" onclick="toggleOptin(this)">
+                <div class="optin-row checked" id="guide-optin" onclick="toggleOptin(this)">
                   <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
+                  <span class="optin-text">Step by Step would like to send you fostering updates and news by email. Untick if you'd prefer not to.</span>
                 </div>
                 <div class="form-submit">
                   <button class="btn-primary" onclick="submitForm('guide')">
@@ -984,9 +984,9 @@
                   <div class="form-field"><label>Full name</label><input type="text" placeholder="Your full name" id="coffee-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="coffee-email"></div>
                 </div>
-                <div class="optin-row" id="coffee-optin" onclick="toggleOptin(this)" style="display:none">
+                <div class="optin-row checked" id="coffee-optin" onclick="toggleOptin(this)" style="display:none">
                   <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
+                  <span class="optin-text">Step by Step would like to send you fostering updates and news by email. Untick if you'd prefer not to.</span>
                 </div>
                 <div class="form-submit" id="coffee-submit-wrap" style="display:none">
                   <button class="btn-primary" onclick="submitForm('coffee')">
@@ -1038,9 +1038,9 @@
                   <div class="form-field"><label>Full name</label><input type="text" placeholder="Your full name" id="online-name"></div>
                   <div class="form-field"><label>Email address</label><input type="email" placeholder="your@email.com" id="online-email"></div>
                 </div>
-                <div class="optin-row" id="online-optin" onclick="toggleOptin(this)" style="display:none">
+                <div class="optin-row checked" id="online-optin" onclick="toggleOptin(this)" style="display:none">
                   <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
+                  <span class="optin-text">Step by Step would like to send you fostering updates and news by email. Untick if you'd prefer not to.</span>
                 </div>
                 <div class="form-submit" id="online-submit-wrap" style="display:none">
                   <button class="btn-primary" onclick="submitForm('online')">
@@ -1081,9 +1081,9 @@
                     <button class="time-btn" onclick="selectTime(this,'Evening')">Evening</button>
                   </div>
                 </div>
-                <div class="optin-row" id="call-optin" onclick="toggleOptin(this)">
+                <div class="optin-row checked" id="call-optin" onclick="toggleOptin(this)">
                   <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-                  <span class="optin-text">I'm happy to receive fostering stories and updates from Step by Step by email.</span>
+                  <span class="optin-text">Step by Step would like to send you fostering updates and news by email. Untick if you'd prefer not to.</span>
                 </div>
                 <div class="form-submit">
                   <button class="btn-primary" onclick="submitForm('call')">
@@ -1227,7 +1227,7 @@ function resetAll() {
   selectedTime = null;
 
   // Opt-in checkboxes
-  document.querySelectorAll('.optin-row').forEach(r => r.classList.remove('checked'));
+  document.querySelectorAll('.optin-row').forEach(r => r.classList.add('checked'));
 
   // Confirmation messages
   document.querySelectorAll('.confirm-msg').forEach(m => m.classList.remove('visible'));
@@ -1575,7 +1575,7 @@ function submitForm(type) {
     fields = { fullname: name, email, kiosk_source: 'Fostering Guide', kiosk_optin: optin ? 'Yes' : 'No' };
     document.getElementById('guide-name').value  = '';
     document.getElementById('guide-email').value = '';
-    document.getElementById('guide-optin').classList.remove('checked');
+    document.getElementById('guide-optin').classList.add('checked');
   }
 
   if (type === 'coffee') {
@@ -1589,7 +1589,7 @@ function submitForm(type) {
     fields = { fullname: name, email, kiosk_source: 'Coffee Morning', kiosk_date: selectedDate || '', kiosk_optin: optin ? 'Yes' : 'No' };
     document.getElementById('coffee-name').value  = '';
     document.getElementById('coffee-email').value = '';
-    document.getElementById('coffee-optin').classList.remove('checked');
+    document.getElementById('coffee-optin').classList.add('checked');
   }
 
   if (type === 'online') {
@@ -1603,7 +1603,7 @@ function submitForm(type) {
     fields = { fullname: name, email, kiosk_source: 'Online Session', kiosk_date: selectedOnline || '', kiosk_optin: optin ? 'Yes' : 'No' };
     document.getElementById('online-name').value  = '';
     document.getElementById('online-email').value = '';
-    document.getElementById('online-optin').classList.remove('checked');
+    document.getElementById('online-optin').classList.add('checked');
   }
 
   if (type === 'call') {
@@ -1620,7 +1620,7 @@ function submitForm(type) {
     document.getElementById('call-name').value  = '';
     document.getElementById('call-phone').value = '';
     document.getElementById('call-email').value = '';
-    document.getElementById('call-optin').classList.remove('checked');
+    document.getElementById('call-optin').classList.add('checked');
     document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
   }
 
