@@ -1505,20 +1505,27 @@ function submitToAC(fields) {
     document.body.appendChild(iframe);
   }
 
-  // Set/create fields in the AC form
-  function setField(name, value) {
-    let inp = acForm.querySelector('input[name="' + name + '"]');
-    if (!inp) {
-      inp = document.createElement('input');
-      inp.type = 'hidden';
-      inp.name = name;
-      acForm.appendChild(inp);
-    }
-    inp.value = value;
-  }
-
+// Map our keys to AC field element IDs (custom fields) or input names (standard fields)
+  const fieldMap = {
+    fullname:     { name: 'fullname' },
+    email:        { name: 'email' },
+    phone:        { id: 'x59337425' },
+    kiosk_source: { id: 'x31893145' },
+    kiosk_date:   { id: 'x10906577' },
+    kiosk_time:   { id: 'x13352563' },
+    kiosk_optin:  { id: 'x50920048' }
+  };
   for (const [key, val] of Object.entries(fields)) {
-    setField(key, val);
+    const mapping = fieldMap[key];
+    if (!mapping) continue;
+    const inp = mapping.id
+      ? document.getElementById(mapping.id)
+      : acForm.querySelector('input[name="' + mapping.name + '"]');
+    if (!inp) continue;
+    if (inp.type === 'checkbox') {
+      inp.checked = (val === 'Yes');
+    } else {
+      inp.value = val;
   }
 
   acForm.target = 'ac-submit-iframe';
