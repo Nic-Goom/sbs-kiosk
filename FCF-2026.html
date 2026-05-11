@@ -1505,23 +1505,33 @@ function submitToAC(fields) {
     document.body.appendChild(iframe);
   }
 
-// Map our keys to AC field element IDs (custom fields) or input names (standard fields)
+  // Standard fields by name; custom fields by AC's field[ID,0] format
   const fieldMap = {
     fullname:     { name: 'fullname' },
     email:        { name: 'email' },
-    phone:        { id: 'x59337425' },
-    kiosk_source: { id: 'x31893145' },
-    kiosk_date:   { id: 'x10906577' },
-    kiosk_time:   { id: 'x13352563' },
-    kiosk_optin:  { id: 'x50920048' }
+    phone:        { name: 'phone' },
+    kiosk_source: { fieldId: '31893145' },
+    kiosk_date:   { fieldId: '10906577' },
+    kiosk_time:   { fieldId: '13352563' },
+    kiosk_optin:  { fieldId: '50920048' }
   };
+
+  function getOrCreateInput(fieldName) {
+    let inp = acForm.querySelector('input[name="' + fieldName + '"]');
+    if (!inp) {
+      inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.name = fieldName;
+      acForm.appendChild(inp);
+    }
+    return inp;
+  }
+
   for (const [key, val] of Object.entries(fields)) {
     const mapping = fieldMap[key];
     if (!mapping) continue;
-    const inp = mapping.id
-      ? document.getElementById(mapping.id)
-      : acForm.querySelector('input[name="' + mapping.name + '"]');
-    if (!inp) continue;
+    const fieldName = mapping.fieldId ? 'field[' + mapping.fieldId + ',0]' : mapping.name;
+    const inp = getOrCreateInput(fieldName);
     if (inp.type === 'checkbox') {
       inp.checked = (val === 'Yes');
     } else {
