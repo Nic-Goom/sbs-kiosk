@@ -1503,24 +1503,17 @@ function selectTime(btn, time) {
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitToAC(fields) {
-  const body = new URLSearchParams();
-  body.set('u', '3');
-  body.set('f', '3');
-  body.set('s', '');
-  body.set('c', '0');
-  body.set('m', '0');
-  body.set('act', 'sub');
-  body.set('v', '2');
-  body.set('fullname', fields.fullname || '');
-  body.set('email',    fields.email    || '');
-  if (fields.kiosk_source) body.set('field[31893145,0]', fields.kiosk_source);
-  if (fields.kiosk_date)   body.set('field[10906577,0]', fields.kiosk_date);
-  // Embed phone in kiosk_time so it's visible on the AC contact without triggering phone-field validation
-  const timeVal = [fields.kiosk_time, fields.phone].filter(Boolean).join(' — Tel: ');
-  if (timeVal) body.set('field[13352563,0]', timeVal);
-  if (fields.kiosk_optin)  body.set('field[50920048,0]', fields.kiosk_optin);
+  let body = 'u=3&f=3&s=&c=0&m=0&act=sub&v=2';
+  body += '&fullname=' + encodeURIComponent(fields.fullname || '');
+  body += '&email='    + encodeURIComponent(fields.email    || '');
+  if (fields.kiosk_source) body += '&field[31893145,0]=' + encodeURIComponent(fields.kiosk_source);
+  if (fields.kiosk_date)   body += '&field[10906577,0]='  + encodeURIComponent(fields.kiosk_date);
+  if (fields.kiosk_time)   body += '&field[13352563,0]='  + encodeURIComponent(fields.kiosk_time);
+  if (fields.kiosk_optin)  body += '&field[50920048,0]='  + encodeURIComponent(fields.kiosk_optin);
   fetch('https://stepbystep50319.activehosted.com/proc.php', {
-    method: 'POST', mode: 'no-cors', body: body
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body
   }).catch(function(){});
 }
 
@@ -1587,7 +1580,8 @@ function submitForm(type) {
     if (!email) { showError('call-email', 'Please enter your email');  valid = false; }
     if (!valid) return;
     const optin = document.getElementById('call-optin').classList.contains('checked');
-    fields = { fullname: name, email, phone, kiosk_source: 'Call Back Request', kiosk_time: selectedTime || 'Not specified', kiosk_optin: optin ? 'Yes' : 'No' };
+    const timeLabel = (selectedTime || 'Not specified') + ' | Tel: ' + phone;
+    fields = { fullname: name, email, kiosk_source: 'Call Back Request', kiosk_time: timeLabel, kiosk_optin: optin ? 'Yes' : 'No' };
     document.getElementById('call-name').value  = '';
     document.getElementById('call-phone').value = '';
     document.getElementById('call-email').value = '';
