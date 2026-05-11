@@ -1124,11 +1124,6 @@
 
 </div><!-- /root -->
 
-<!-- AC form — off-screen but fully rendered so embed script initialises all fields -->
-<div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;">
-  <div class="_form_3"></div>
-</div>
-<script src="https://stepbystep50319.activehosted.com/f/embed.php?id=3" charset="utf-8"></script>
 
 <script>
 /* ── VIEWPORT SCALING ── */
@@ -1492,54 +1487,28 @@ function selectTime(btn, time) {
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitToAC(fields) {
-  const acForm = document.querySelector('._form_3 form');
-  if (!acForm) { console.warn('AC form not loaded yet'); return; }
+  const data = new FormData();
+  data.append('u', '3');
+  data.append('f', '3');
+  data.append('s', '');
+  data.append('c', '0');
+  data.append('m', '0');
+  data.append('act', 'sub');
+  data.append('v', '2');
 
-  // Create hidden iframe target (prevents page navigation on submit)
-  let iframe = document.getElementById('ac-submit-iframe');
-  if (!iframe) {
-    iframe = document.createElement('iframe');
-    iframe.id = 'ac-submit-iframe';
-    iframe.name = 'ac-submit-iframe';
-    iframe.style.cssText = 'display:none;position:absolute;left:-9999px;top:-9999px';
-    document.body.appendChild(iframe);
-  }
+  if (fields.fullname)     data.append('fullname',     fields.fullname);
+  if (fields.email)        data.append('email',        fields.email);
+  if (fields.phone)        data.append('phone',        fields.phone);
+  if (fields.kiosk_source) data.append('KIOSK_SOURCE', fields.kiosk_source);
+  if (fields.kiosk_date)   data.append('KIOSK_DATE',   fields.kiosk_date);
+  if (fields.kiosk_time)   data.append('KIOSK_TIME',   fields.kiosk_time);
+  if (fields.kiosk_optin)  data.append('KIOSK_OPTIN',  fields.kiosk_optin);
 
-  // Find or create an input by name attribute
-  function getOrCreate(name) {
-    let inp = acForm.querySelector('[name="' + name + '"]');
-    if (!inp) {
-      inp = document.createElement('input');
-      inp.type = 'hidden';
-      inp.name = name;
-      acForm.appendChild(inp);
-    }
-    return inp;
-  }
-
-  function setVal(inp, val) {
-    if (!inp) return;
-    inp.type === 'checkbox' ? (inp.checked = val === 'Yes') : (inp.value = val);
-  }
-
-  // Map our field keys to AC input name attributes
-  const acFieldNames = {
-    fullname:     'fullname',
-    email:        'email',
-    phone:        'PHONE',
-    kiosk_source: 'KIOSK_SOURCE',
-    kiosk_date:   'KIOSK_DATE',
-    kiosk_time:   'KIOSK_TIME',
-    kiosk_optin:  'KIOSK_OPTIN'
-  };
-
-  for (const [key, acName] of Object.entries(acFieldNames)) {
-    if (fields[key] === undefined) continue;
-    setVal(getOrCreate(acName), fields[key]);
-  }
-
-  acForm.target = 'ac-submit-iframe';
-  acForm.submit();
+  fetch('https://stepbystep50319.activehosted.com/proc.php', {
+    method: 'POST',
+    body: data,
+    mode: 'no-cors'
+  }).catch(err => console.warn('AC submit error:', err));
 }
 
 function showError(inputId, msg) {
