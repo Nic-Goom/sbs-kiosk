@@ -1141,6 +1141,11 @@
 
 </div><!-- /root -->
 
+<!-- AC embed — off-screen so it renders but stays invisible -->
+<div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;">
+  <div class="_form_3"></div>
+</div>
+<script src="https://stepbystep50319.activehosted.com/f/embed.php?id=3" charset="utf-8"></script>
 
 <script>
 /* ── VIEWPORT SCALING ── */
@@ -1504,24 +1509,58 @@ function selectTime(btn, time) {
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitToAC(fields) {
-  const p = new URLSearchParams();
-  p.set('u', '3'); p.set('f', '3'); p.set('s', '');
-  p.set('c', '0'); p.set('m', '0'); p.set('act', 'sub'); p.set('v', '2');
+  const acForm = document.querySelector('._form_3 form');
+  if (!acForm) { console.warn('AC form not found'); return; }
 
-  if (fields.fullname)     p.set('fullname',            fields.fullname);
-  if (fields.email)        p.set('email',               fields.email);
-  if (fields.phone)        p.set('phone',               fields.phone);
-  if (fields.kiosk_source) p.set('field[31893145,0]',   fields.kiosk_source);
-  if (fields.kiosk_date)   p.set('field[10906577,0]',   fields.kiosk_date);
-  if (fields.kiosk_time)   p.set('field[13352563,0]',   fields.kiosk_time);
-  if (fields.kiosk_optin)  p.set('field[50920048,0]',   fields.kiosk_optin);
+  // Hidden iframe so form submit doesn't navigate the page
+  let iframe = document.getElementById('ac-iframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'ac-iframe'; iframe.name = 'ac-iframe';
+    iframe.style.cssText = 'display:none;position:absolute;left:-9999px';
+    document.body.appendChild(iframe);
+  }
 
-  fetch('https://stepbystep50319.activehosted.com/proc.php', {
-    method: 'POST',
-    body: p.toString(),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    mode: 'no-cors'
-  }).catch(err => console.warn('AC submit error:', err));
+  // Find input by label text, falling back to sibling input in same container
+  function findByLabel(text) {
+    for (const label of acForm.querySelectorAll('label')) {
+      if (label.textContent.toLowerCase().includes(text.toLowerCase())) {
+        const forId = label.getAttribute('for');
+        if (forId) {
+          const el = document.getElementById(forId);
+          if (el) return el;
+        }
+        const el = label.closest('div') && label.closest('div').querySelector('input,select,textarea');
+        if (el) return el;
+      }
+    }
+    return null;
+  }
+
+  // Find or create a named input in the form
+  function getOrCreate(name) {
+    let el = acForm.querySelector('[name="' + name + '"]');
+    if (!el) {
+      el = document.createElement('input');
+      el.type = 'hidden'; el.name = name;
+      acForm.appendChild(el);
+    }
+    return el;
+  }
+
+  function setVal(el, val) { if (el) el.value = val; }
+
+  setVal(getOrCreate('fullname'), fields.fullname);
+  setVal(getOrCreate('email'),    fields.email);
+  if (fields.phone) setVal(getOrCreate('phone'), fields.phone);
+
+  if (fields.kiosk_source) setVal(findByLabel('Kiosk Source'), fields.kiosk_source);
+  if (fields.kiosk_date)   setVal(findByLabel('Kiosk Date'),   fields.kiosk_date);
+  if (fields.kiosk_time)   setVal(findByLabel('Kiosk Time'),   fields.kiosk_time);
+  if (fields.kiosk_optin)  setVal(findByLabel('Kiosk Opt'),    fields.kiosk_optin);
+
+  acForm.target = 'ac-iframe';
+  acForm.submit();
 }
 
 function showError(inputId, msg) {
