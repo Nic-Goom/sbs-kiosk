@@ -1141,12 +1141,6 @@
 
 </div><!-- /root -->
 
-<!-- AC embed — off-screen so it renders but stays invisible -->
-<div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;">
-  <div class="_form_3"></div>
-</div>
-<script src="https://stepbystep50319.activehosted.com/f/embed.php?id=3" charset="utf-8"></script>
-
 <script>
 /* ── VIEWPORT SCALING ── */
 function scaleRoot() {
@@ -1519,7 +1513,13 @@ function submitToAC(fields) {
   body.set('v', '2');
   body.set('fullname', fields.fullname || '');
   body.set('email',    fields.email    || '');
-  if (fields.phone)        body.set('phone',             fields.phone);
+  if (fields.phone) {
+    // Normalise to E.164 (+44) so AC's phone field validation accepts it
+    let ph = fields.phone.replace(/\s+/g, '');
+    if (ph.startsWith('0')) ph = '+44' + ph.slice(1);
+    else if (!ph.startsWith('+')) ph = '+44' + ph;
+    body.set('phone', ph);
+  }
   if (fields.kiosk_source) body.set('field[31893145,0]', fields.kiosk_source);
   if (fields.kiosk_date)   body.set('field[10906577,0]', fields.kiosk_date);
   if (fields.kiosk_time)   body.set('field[13352563,0]', fields.kiosk_time);
