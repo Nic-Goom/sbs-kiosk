@@ -1503,18 +1503,35 @@ function selectTime(btn, time) {
 function toggleOptin(el) { el.classList.toggle('checked'); }
 
 function submitToAC(fields) {
-  let body = 'u=3&f=3&s=&c=0&m=0&act=sub&v=2';
-  body += '&fullname=' + encodeURIComponent(fields.fullname || '');
-  body += '&email='    + encodeURIComponent(fields.email    || '');
-  if (fields.kiosk_source) body += '&field[31893145,0]=' + encodeURIComponent(fields.kiosk_source);
-  if (fields.kiosk_date)   body += '&field[10906577,0]='  + encodeURIComponent(fields.kiosk_date);
-  if (fields.kiosk_time)   body += '&field[13352563,0]='  + encodeURIComponent(fields.kiosk_time);
-  if (fields.kiosk_optin)  body += '&field[50920048,0]='  + encodeURIComponent(fields.kiosk_optin);
-  fetch('https://stepbystep50319.activehosted.com/proc.php', {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
-  }).catch(function(){});
+  let iframe = document.getElementById('ac-iframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'ac-iframe'; iframe.name = 'ac-iframe';
+    iframe.style.cssText = 'display:none;position:absolute;left:-9999px';
+    document.body.appendChild(iframe);
+  }
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://stepbystep50319.activehosted.com/proc.php';
+  form.target = 'ac-iframe';
+  form.style.display = 'none';
+
+  const params = { u:'3', f:'3', s:'', c:'0', m:'0', act:'sub', v:'2',
+    fullname: fields.fullname || '', email: fields.email || '' };
+  if (fields.kiosk_source) params['field[31893145,0]'] = fields.kiosk_source;
+  if (fields.kiosk_date)   params['field[10906577,0]'] = fields.kiosk_date;
+  if (fields.kiosk_time)   params['field[13352563,0]'] = fields.kiosk_time;
+  if (fields.kiosk_optin)  params['field[50920048,0]'] = fields.kiosk_optin;
+
+  for (const [name, value] of Object.entries(params)) {
+    const inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = name; inp.value = value;
+    form.appendChild(inp);
+  }
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(function() { document.body.removeChild(form); }, 2000);
 }
 
 function showError(inputId, msg) {
