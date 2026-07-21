@@ -1,2 +1,6 @@
 SbS Kiosk - Build Brief.md
 SbS Budget Game - Build Brief.md
+
+# Local-only
+.claude/
+serve.ps1

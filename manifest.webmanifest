@@ -1,0 +1,13 @@
+{
+  "name": "Step by Step Kiosk",
+  "short_name": "SbS Kiosk",
+  "description": "Step by Step event kiosk — prize draw entry and ways to help.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#412774",
+  "theme_color": "#412774",
+  "icons": [
+    { "src": "./project/assets/logo-secondary-white.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
