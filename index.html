@@ -438,6 +438,52 @@
   .menu-card .mn-arrow { width: 92px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .menu-card .mn-arrow svg { width: 40px; height: 40px; stroke: var(--pink); stroke-width: 3; fill: none; }
 
+  /* ── Tile 3: what £29.78 costs ── */
+  .cost-hero { text-align: center; margin-bottom: 28px; }
+  .cost-amount { font-family: var(--veneer); font-size: 180px; line-height: 0.88; color: var(--pink); letter-spacing: 0.005em; }
+  .cost-per { font-family: var(--veneer); font-size: 38px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .cost-explain { display: flex; gap: 32px; align-items: center; margin-bottom: 26px; }
+  .cost-sentence { flex: 1; font-family: var(--body); font-size: 27px; line-height: 1.5; color: var(--charcoal); }
+  .cost-portrait { flex-shrink: 0; width: 220px; text-align: center; }
+  .cost-portrait img { width: 220px; height: 220px; object-fit: cover; border-radius: 20px; box-shadow: 0 6px 22px rgba(65,39,116,0.22); }
+  .cost-portrait figcaption { font-family: var(--body); font-size: 16px; font-weight: 700; color: var(--pink); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px; }
+  .cost-weekmonth { font-family: var(--body); font-size: 22px; color: #555; line-height: 1.5; margin-bottom: 26px; text-align: center; }
+
+  .cost-expand { margin-bottom: 30px; }
+  .cost-expand-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #fff; border: 2.5px solid rgba(65,39,116,0.2); border-radius: 16px; padding: 24px 30px; cursor: pointer; -webkit-tap-highlight-color: transparent; font-family: var(--veneer); font-size: 28px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.03em; }
+  .cost-expand-btn svg { width: 30px; height: 30px; stroke: var(--pink); stroke-width: 3; fill: none; transition: transform 0.25s; flex-shrink: 0; }
+  .cost-expand.open .cost-expand-btn { border-radius: 16px 16px 0 0; }
+  .cost-expand.open .cost-expand-btn svg { transform: rotate(180deg); }
+  .cost-more { display: none; background: rgba(65,39,116,0.05); border: 2.5px solid rgba(65,39,116,0.2); border-top: none; border-radius: 0 0 16px 16px; padding: 26px 30px; }
+  .cost-expand.open .cost-more { display: block; animation: fadeIn 0.25s ease; }
+  .cost-more p { font-family: var(--body); font-size: 21px; line-height: 1.55; color: var(--charcoal); }
+
+  /* Donate band — same visual weight as the prize band */
+  .cost-donate { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .donate-opt { border-radius: 22px; padding: 28px 30px; }
+  .donate-opt.give { background: linear-gradient(120deg, var(--purple) 0%, #5a2f95 60%, var(--pink) 140%); color: #fff; display: flex; align-items: center; gap: 22px; }
+  .donate-opt.give .qr-box { width: 148px; height: 148px; background: #fff; border-radius: 14px; padding: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .donate-opt.give .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+  .donate-opt.give .qr-ph { font-family: var(--body); font-size: 12px; color: #999; text-align: center; line-height: 1.4; }
+  .donate-opt .do-title { font-family: var(--veneer); font-size: 38px; text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+  .donate-opt.give .do-sub { font-family: var(--body); font-size: 17px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+  .donate-opt.leave { background: #fff; border: 3px solid var(--purple); display: flex; flex-direction: column; }
+  .donate-opt.leave .do-title { color: var(--purple); }
+  .donate-opt.leave .do-sub { font-family: var(--body); font-size: 17px; color: #666; line-height: 1.4; margin-bottom: 20px; flex: 1; }
+  .donate-opt.leave .btn-pill { width: 100%; font-size: 26px; min-height: 74px; }
+
+  /* Leave-your-details form (revealed below the band) */
+  .donate-form { display: none; margin-top: 20px; background: rgba(65,39,116,0.05); border: 2px solid rgba(65,39,116,0.15); border-radius: 22px; padding: 32px 36px; }
+  .donate-form.show { display: block; animation: fadeIn 0.25s ease; }
+  .donate-form .df-row { display: flex; gap: 16px; }
+  .donate-form .df-row .eq-field { flex: 1; }
+  .donate-confirm { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding: 10px 0; }
+  .donate-confirm.show { display: flex; animation: fadeIn 0.3s ease; }
+  .donate-confirm .dc-splash { width: 110px; height: 110px; border-radius: 50%; background: var(--lime); display: flex; align-items: center; justify-content: center; }
+  .donate-confirm .dc-splash svg { width: 64px; height: 64px; stroke: #fff; stroke-width: 3; fill: none; }
+  .donate-confirm h3 { font-family: var(--veneer); font-size: 38px; color: var(--purple); text-transform: uppercase; }
+  .donate-confirm p { font-family: var(--body); font-size: 19px; color: #555; line-height: 1.5; max-width: 620px; }
+
   /* Shared detail typography & buttons */
   .d-h1 { font-family: var(--veneer); font-size: 66px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.98; margin-bottom: 12px; }
   .d-intro { font-family: var(--body); font-size: 23px; color: #555; line-height: 1.5; margin-bottom: 30px; }
@@ -652,7 +698,7 @@
         <img class="tile-img" src="project/assets/Abseil-_26.jpg" alt="Abseil challenge for Step by Step" style="object-position:center 35%;">
         <div class="tile-ph"><div class="tile-title">Take on a challenge?</div></div>
       </div>
-      <div class="tile num pink">
+      <div class="tile num pink" onclick="openDetail('dv-cost')">
         <div class="num-hero">&pound;29.78</div>
         <div class="num-sub">a day of support for a young person</div>
       </div>
@@ -1032,6 +1078,71 @@
         </div><!-- /Enquire panel -->
       </div>
 
+      <!-- VIEW: What £29.78 costs (Tile 3) -->
+      <div class="detail-view" id="dv-cost">
+        <div class="cost-hero">
+          <div class="cost-amount">&pound;29.78</div>
+          <div class="cost-per">a day</div>
+        </div>
+
+        <div class="cost-explain">
+          <p class="cost-sentence">It costs Step by Step &pound;29.78 a day to support a young person rebuilding their life, and that's the part we have to raise ourselves. That's about the cost of a takeaway for two.</p>
+          <figure class="cost-portrait">
+            <img src="project/assets/jess-portrait-small.jpg" alt="Jess">
+            <figcaption>Jess</figcaption>
+          </figure>
+        </div>
+
+        <p class="cost-weekmonth">In a week, that's &pound;208.46. In a month, it's around &pound;893.</p>
+
+        <div class="cost-expand" id="cost-expand">
+          <button class="cost-expand-btn" onclick="toggleCostMore()">
+            <span>Want to know more?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+          </button>
+          <div class="cost-more">
+            <p>A young person's whole journey with us, from the first knock on the door to living independently, costs around &pound;37,000. Contracts cover part of it. Step by Step has to raise around &pound;14,700 of that ourselves, for every single young person. That's what supporters make possible: the difference between a bed for tonight and a life.</p>
+          </div>
+        </div>
+
+        <div class="cost-donate">
+          <div class="donate-opt give">
+            <div class="qr-box" id="donate-qr"><span class="qr-ph">Donation<br>QR<br>(to add)</span></div>
+            <div>
+              <div class="do-title">Donate now</div>
+              <div class="do-sub" id="donate-sub">Scan to give at stepbystep.org.uk/donate</div>
+            </div>
+          </div>
+          <div class="donate-opt leave">
+            <div class="do-title">Leave your details</div>
+            <div class="do-sub">Prefer we get in touch? Pop your details in and we'll be in contact.</div>
+            <button class="btn-pill" onclick="openDonateForm()">Leave your details</button>
+          </div>
+        </div>
+
+        <div class="donate-form" id="donate-form">
+          <div id="enq-donate-form">
+            <div class="df-row">
+              <div class="eq-field"><label for="enq-donate-name">Full name</label><input type="text" id="enq-donate-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+              <div class="eq-field"><label for="enq-donate-email">Email address</label><input type="email" id="enq-donate-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+            </div>
+            <div class="optin-row checked" id="enq-donate-optin" onclick="toggleOptin(this)">
+              <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+              <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+            </div>
+            <button class="btn-pill" style="width:100%" onclick="submitEnquiry('donate')">
+              Send my details
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+            </button>
+          </div>
+          <div class="donate-confirm" id="enq-donate-confirm">
+            <div class="dc-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <h3>Thank you!</h3>
+            <p>We'll be in touch about how you can help. Thanks for supporting Step by Step.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1103,6 +1214,10 @@ const CONFIG = {
     fosteringEnquiryEnabled: true,
     slEnquiryEnabled: false,
 
+    // Donate route on the £29.78 tile
+    donateUrl: 'https://www.stepbystep.org.uk/donate/',
+    donateQr:  '',                           // e.g. 'project/assets/qr-donate.png' — blank shows a placeholder
+
     // Budget game (phase 5) — not built yet
     gameEnabled:  false,
     gameUrl:      'game.html',
@@ -1146,6 +1261,16 @@ const QUEUE_KEY = 'sbs_kiosk_queue_v1';
   }
   if (!e.fosteringEnquiryEnabled) {
     const f = document.getElementById('enq-fostering'); if (f) f.style.display = 'none';
+  }
+
+  // Donate route (£29.78 tile)
+  if (e.donateUrl) {
+    const ds = document.getElementById('donate-sub');
+    if (ds) ds.textContent = 'Scan to give at ' + e.donateUrl.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+  }
+  if (e.donateQr) {
+    const q = document.getElementById('donate-qr');
+    if (q) q.innerHTML = '<img src="' + e.donateQr + '" alt="Donate QR">';
   }
 })();
 
@@ -1212,7 +1337,8 @@ let detailStack = [];
 const DETAIL_TITLES = {
   'dv-offer-room': 'Could you offer a room?',
   'dv-sl':         'Supported Lodgings',
-  'dv-fostering':  'Fostering'
+  'dv-fostering':  'Fostering',
+  'dv-cost':       'What it costs'
 };
 function openDetail(viewId) {
   const overlay = document.getElementById('detail');
@@ -1291,11 +1417,28 @@ function detailBack() {
     goHome();
   }
 }
-/* Reset all interactive content (quizzes, calculator, enquiry forms) on exit. */
+/* Reset all interactive content (quizzes, calculator, enquiry forms, cost page) on exit. */
 function resetContentState() {
   initQuizzes();
-  ['sl', 'fostering'].forEach(resetEnquiry);
+  ['sl', 'fostering', 'donate'].forEach(resetEnquiry);
   if (typeof resetCalc === 'function') resetCalc();
+  resetCost();
+}
+
+/* ── Tile 3: cost page interactions ── */
+function toggleCostMore() {
+  const el = document.getElementById('cost-expand');
+  if (el) el.classList.toggle('open');
+  resetIdleTimer();
+}
+function openDonateForm() {
+  const df = document.getElementById('donate-form');
+  if (df) { df.classList.add('show'); df.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  resetIdleTimer();
+}
+function resetCost() {
+  const ce = document.getElementById('cost-expand'); if (ce) ce.classList.remove('open');
+  const df = document.getElementById('donate-form'); if (df) df.classList.remove('show');
 }
 
 function gameTap() {
@@ -1630,12 +1773,14 @@ function quizNext(id) {
 }
 
 /* ═══════════════ ENQUIRY FORMS (fostering + SL — one form, same queue) ═══════════════ */
+const ENQUIRY_LABELS = { sl: 'Supported Lodgings enquiry', fostering: 'Fostering enquiry', donate: 'Donation enquiry' };
 function enquirySource(key) {
-  const label = key === 'sl' ? 'Supported Lodgings enquiry' : 'Fostering enquiry';
-  return label + ' — ' + CONFIG.event.name;
+  return (ENQUIRY_LABELS[key] || 'Enquiry') + ' — ' + CONFIG.event.name;
 }
 function submitEnquiry(key) {
-  const enabled = key === 'sl' ? CONFIG.event.slEnquiryEnabled : CONFIG.event.fosteringEnquiryEnabled;
+  let enabled = true;                                    // donate uses the same live route as the prize draw
+  if (key === 'sl') enabled = CONFIG.event.slEnquiryEnabled;
+  else if (key === 'fostering') enabled = CONFIG.event.fosteringEnquiryEnabled;
   if (!enabled) return;   // defensive: the form is hidden when its AC destination isn't set up
   const name  = document.getElementById('enq-' + key + '-name').value.trim();
   const email = document.getElementById('enq-' + key + '-email').value.trim();
