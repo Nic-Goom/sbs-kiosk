@@ -1110,7 +1110,7 @@
             <div class="qr-box" id="donate-qr"><span class="qr-ph">Donation<br>QR<br>(to add)</span></div>
             <div>
               <div class="do-title">Donate now</div>
-              <div class="do-sub" id="donate-sub">Scan to give at stepbystep.org.uk/donate</div>
+              <div class="do-sub" id="donate-sub">Scan to donate</div>
             </div>
           </div>
           <div class="donate-opt leave">
@@ -1214,9 +1214,10 @@ const CONFIG = {
     fosteringEnquiryEnabled: true,
     slEnquiryEnabled: false,
 
-    // Donate route on the £29.78 tile
-    donateUrl: 'https://www.stepbystep.org.uk/donate/',
-    donateQr:  '',                           // e.g. 'project/assets/qr-donate.png' — blank shows a placeholder
+    // Donate route on the £29.78 tile. The QR is our own (Give a Little) image,
+    // so no web address is shown — just the caption below it.
+    donateCaption: 'Scan to donate',
+    donateQr:  'project/assets/qr-donate.png',   // our QR image; blank shows a placeholder
 
     // Budget game (phase 5) — not built yet
     gameEnabled:  false,
@@ -1264,9 +1265,9 @@ const QUEUE_KEY = 'sbs_kiosk_queue_v1';
   }
 
   // Donate route (£29.78 tile)
-  if (e.donateUrl) {
+  if (e.donateCaption) {
     const ds = document.getElementById('donate-sub');
-    if (ds) ds.textContent = 'Scan to give at ' + e.donateUrl.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+    if (ds) ds.textContent = e.donateCaption;
   }
   if (e.donateQr) {
     const q = document.getElementById('donate-qr');
