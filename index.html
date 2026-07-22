@@ -386,6 +386,206 @@
   #staff-detail .sd-line b { color: var(--purple); }
   #staff-detail button { margin-top: 12px; width: 100%; height: 52px; border: 2px solid var(--purple); background: white; color: var(--purple); border-radius: 9999px; font-family: var(--veneer); font-size: 18px; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; }
 
+  /* ═══════════════ TILE DETAIL OVERLAY ═══════════════ */
+  #detail {
+    position: absolute; inset: 0; z-index: 420;
+    background: var(--off-white);
+    display: none; flex-direction: column;
+  }
+  #detail.visible { display: flex; animation: fadeIn 0.25s ease; }
+  .detail-topbar {
+    height: 116px; flex-shrink: 0;
+    background: var(--gradient-h);
+    display: flex; align-items: center; gap: 22px;
+    padding: 0 30px; color: #fff; position: relative; z-index: 2;
+  }
+  .detail-back {
+    background: rgba(255,255,255,0.22); border: 2px solid rgba(255,255,255,0.55);
+    border-radius: 9999px; color: #fff; font-family: var(--veneer);
+    font-size: 24px; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 14px 30px 14px 24px; display: flex; align-items: center; gap: 12px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent; flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+  .detail-back:active { transform: scale(0.96); }
+  .detail-back svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 3; fill: none; }
+  .detail-title { font-family: var(--veneer); font-size: 34px; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1; }
+  .detail-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; padding: 44px 48px 70px; position: relative; }
+  .detail-scroll::-webkit-scrollbar { width: 8px; }
+  .detail-scroll::-webkit-scrollbar-thumb { background: rgba(65,39,116,0.22); border-radius: 9999px; }
+  .detail-view { display: none; }
+  .detail-view.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* Fixed sub-tab bar (Fostering / SL subpages, like the FCF kiosk) */
+  .detail-subtabs { flex-shrink: 0; display: flex; gap: 10px; padding: 14px 26px; background: #fff; border-bottom: 2px solid rgba(65,39,116,0.08); position: relative; z-index: 3; }
+  .subtab { flex: 1; min-height: 80px; border-radius: 9999px; border: 2.5px solid rgba(65,39,116,0.2); background: transparent; font-family: var(--veneer); font-size: 21px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--purple); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 12px; line-height: 1.08; transition: transform 0.15s ease; }
+  .subtab:active { transform: scale(0.96); }
+  .subtab.active { background: var(--gradient-h); border-color: transparent; color: #fff; box-shadow: 0 4px 16px rgba(237,40,141,0.3); }
+  .subpanel { display: none; }
+  .subpanel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* Menu landing for a detail view (choose a subpage, like the FCF cards) */
+  .view-menu { display: flex; flex-direction: column; gap: 20px; }
+  .view-menu .vm-intro { font-family: var(--body); font-size: 23px; color: #555; line-height: 1.5; margin-bottom: 4px; }
+  .menu-card { background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 6px 24px rgba(65,39,116,0.12); display: flex; align-items: stretch; cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 176px; transition: transform 0.15s ease; }
+  .menu-card:active { transform: scale(0.985); }
+  .menu-card .mn-photo { width: 250px; flex-shrink: 0; overflow: hidden; position: relative; }
+  .menu-card .mn-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .menu-card .mn-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 60%, rgba(255,255,255,0.12) 100%); }
+  .menu-card .mn-text { flex: 1; padding: 26px 30px; display: flex; flex-direction: column; justify-content: center; }
+  .menu-card .mn-title { font-family: var(--veneer); font-size: 40px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+  .menu-card .mn-sub { font-family: var(--body); font-size: 19px; color: #666; line-height: 1.4; }
+  .menu-card .mn-arrow { width: 92px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .menu-card .mn-arrow svg { width: 40px; height: 40px; stroke: var(--pink); stroke-width: 3; fill: none; }
+
+  /* Shared detail typography & buttons */
+  .d-h1 { font-family: var(--veneer); font-size: 66px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.98; margin-bottom: 12px; }
+  .d-intro { font-family: var(--body); font-size: 23px; color: #555; line-height: 1.5; margin-bottom: 30px; }
+  .d-h2 { font-family: var(--veneer); font-size: 40px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; margin: 8px 0 14px; }
+  .d-p { font-family: var(--body); font-size: 20px; color: var(--charcoal); line-height: 1.55; margin-bottom: 18px; }
+
+  .btn-pill {
+    background: var(--gradient-h); color: #fff; border: none;
+    border-radius: 9999px; font-family: var(--veneer);
+    font-size: 30px; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 22px 44px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+    box-shadow: 0 6px 22px rgba(237,40,141,0.32); transition: transform 0.15s ease;
+    min-height: 84px;
+  }
+  .btn-pill:active { transform: scale(0.97); }
+  .btn-pill svg { width: 30px; height: 30px; stroke: #fff; stroke-width: 2.5; fill: none; }
+  .btn-ghost {
+    background: transparent; color: var(--purple); border: 3px solid var(--purple);
+    border-radius: 9999px; font-family: var(--veneer);
+    font-size: 27px; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 18px 40px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    min-height: 84px; transition: transform 0.15s ease;
+  }
+  .btn-ghost:active { transform: scale(0.97); }
+
+  /* Split screen — Fostering / Supported Lodgings */
+  .split-choices { display: flex; flex-direction: column; gap: 26px; margin-top: 34px; }
+  .split-card {
+    background: #fff; border-radius: 26px; padding: 40px 44px;
+    box-shadow: 0 6px 26px rgba(65,39,116,0.12);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    display: flex; align-items: center; gap: 30px; position: relative; overflow: hidden;
+    transition: transform 0.15s ease;
+    border-left: 12px solid var(--pink);
+  }
+  .split-card:active { transform: scale(0.985); }
+  .split-card.sl { border-left-color: var(--purple); }
+  .split-card .sc-body { flex: 1; }
+  .split-card .sc-kicker { font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 8px; }
+  .split-card.sl .sc-kicker { color: var(--purple); }
+  .split-card .sc-title { font-family: var(--veneer); font-size: 48px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; margin-bottom: 12px; }
+  .split-card .sc-line { font-family: var(--body); font-size: 21px; color: #555; line-height: 1.45; }
+  .split-card .sc-arrow { width: 74px; height: 74px; border-radius: 50%; background: var(--gradient-h); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .split-card.sl .sc-arrow { background: linear-gradient(135deg, var(--purple), #6b1e8f); }
+  .split-card .sc-arrow svg { width: 34px; height: 34px; stroke: #fff; stroke-width: 3; fill: none; }
+
+  /* Detail content blocks */
+  .d-section { margin-bottom: 38px; }
+  .money-callout { background: linear-gradient(135deg, var(--purple) 0%, #6b1e8f 100%); border-radius: 24px; padding: 40px 44px; color: #fff; position: relative; overflow: hidden; }
+  .money-callout .mc-label { font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .money-callout .mc-amount { font-family: var(--veneer); font-size: 96px; line-height: 0.92; }
+  .money-callout .mc-amount span { font-size: 34px; color: rgba(255,255,255,0.65); }
+  .money-callout .mc-sub { font-family: var(--body); font-size: 19px; color: rgba(255,255,255,0.86); line-height: 1.55; margin-top: 16px; }
+  .host-quote { background: #fff; border-radius: 20px; padding: 34px 40px; box-shadow: 0 4px 22px rgba(65,39,116,0.1); border-left: 10px solid var(--lime); }
+  .host-quote p { font-family: var(--body); font-size: 23px; font-style: italic; color: var(--charcoal); line-height: 1.5; }
+  .host-quote .hq-name { font-family: var(--body); font-size: 16px; font-weight: 700; color: var(--pink); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 18px; font-style: normal; }
+  .d-list { list-style: none; }
+  .d-list li { font-family: var(--body); font-size: 20px; color: var(--charcoal); line-height: 1.5; padding-left: 44px; position: relative; margin-bottom: 16px; }
+  .d-list li::before { content: ''; position: absolute; left: 0; top: 2px; width: 28px; height: 28px; border-radius: 50%; background: rgba(161,205,61,0.28); }
+  .d-list li::after { content: ''; position: absolute; left: 9px; top: 10px; width: 11px; height: 6px; border-left: 3px solid #6b8f00; border-bottom: 3px solid #6b8f00; transform: rotate(-45deg); }
+
+  /* Reusable quiz (SL myth-buster + fostering) */
+  .quiz-progress { display: flex; gap: 8px; margin-bottom: 22px; }
+  .quiz-progress .dot { flex: 1; height: 8px; background: rgba(65,39,116,0.15); border-radius: 9999px; transition: background 0.3s; }
+  .quiz-progress .dot.done { background: var(--pink); }
+  .quiz-progress .dot.current { background: var(--purple); }
+  .quiz-card { background: #fff; border-radius: 20px; padding: 40px 44px; box-shadow: 0 6px 26px rgba(65,39,116,0.12); position: relative; overflow: hidden; }
+  .quiz-card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background: var(--gradient-h); }
+  .quiz-count { font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 16px; }
+  .quiz-statement { font-family: var(--veneer); font-size: 46px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.05; margin-bottom: 34px; }
+  .quiz-tf { display: flex; gap: 20px; margin-bottom: 26px; }
+  .quiz-tf button { flex: 1; height: 110px; border-radius: 16px; border: 3px solid transparent; font-family: var(--veneer); font-size: 44px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; gap: 14px; transition: transform 0.15s ease; }
+  .quiz-tf button:active { transform: scale(0.97); }
+  .quiz-tf .tf-true { background: rgba(161,205,61,0.14); border-color: var(--lime); color: #4a6b00; }
+  .quiz-tf .tf-false { background: rgba(237,40,141,0.08); border-color: var(--pink); color: var(--pink); }
+  .quiz-tf button.correct { background: var(--lime); border-color: var(--lime); color: #223300; box-shadow: 0 4px 20px rgba(161,205,61,0.5); }
+  .quiz-tf button.wrong { opacity: 0.4; }
+  .quiz-tf button svg { width: 30px; height: 30px; stroke: currentColor; stroke-width: 3; fill: none; }
+  .quiz-reveal { display: none; background: linear-gradient(135deg, rgba(65,39,116,0.05), rgba(237,40,141,0.05)); border-left: 6px solid var(--pink); border-radius: 0 14px 14px 0; padding: 22px 26px; margin-bottom: 26px; }
+  .quiz-reveal.show { display: block; animation: fadeIn 0.3s ease; }
+  .quiz-reveal .rv-badge { font-family: var(--veneer); font-size: 26px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .quiz-reveal .rv-badge.ok { color: #3a5800; }
+  .quiz-reveal .rv-badge.no { color: var(--pink); }
+  .quiz-reveal .rv-badge svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 3; fill: none; }
+  .quiz-reveal p { font-family: var(--body); font-size: 19px; color: var(--charcoal); line-height: 1.55; }
+  .quiz-next-row { display: flex; justify-content: flex-end; }
+  .quiz-next-row .btn-pill { display: none; }
+  .quiz-next-row .btn-pill.show { display: inline-flex; }
+  .quiz-end { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; padding: 20px 0; }
+  .quiz-end .qe-splash { width: 130px; height: 130px; border-radius: 50%; background: var(--gradient-h); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(237,40,141,0.35); }
+  .quiz-end .qe-splash svg { width: 76px; height: 76px; stroke: #fff; stroke-width: 3; fill: none; }
+  .quiz-end h2 { font-family: var(--veneer); font-size: 52px; color: var(--purple); text-transform: uppercase; line-height: 1; }
+  .quiz-end p { font-family: var(--body); font-size: 21px; color: #555; line-height: 1.5; max-width: 720px; }
+
+  /* Enquiry form (single form, both fostering + SL) */
+  .enquiry { background: rgba(65,39,116,0.05); border: 2px solid rgba(65,39,116,0.15); border-radius: 24px; padding: 38px 42px; margin-top: 12px; }
+  .enquiry h3 { font-family: var(--veneer); font-size: 40px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+  .enquiry .eq-line { font-family: var(--body); font-size: 19px; color: #555; line-height: 1.5; margin-bottom: 26px; }
+  .eq-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .eq-field label { font-family: var(--body); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); }
+  .eq-field input { height: 82px; border: 3px solid rgba(65,39,116,0.2); border-radius: 14px; padding: 0 22px; font-family: var(--body); font-size: 22px; color: var(--charcoal); background: #fff; outline: none; -webkit-appearance: none; transition: border-color 0.2s; }
+  .eq-field input:focus { border-color: var(--pink); }
+  .enquiry .optin-row { margin: 6px 0 24px; }
+  .eq-hello { font-family: var(--body); font-size: 17px; color: var(--purple); text-align: center; margin-top: 20px; font-weight: 700; }
+  .eq-confirm { display: none; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding: 12px 0; }
+  .eq-confirm.show { display: flex; animation: fadeIn 0.3s ease; }
+  .eq-confirm .ec-splash { width: 120px; height: 120px; border-radius: 50%; background: var(--lime); display: flex; align-items: center; justify-content: center; }
+  .eq-confirm .ec-splash svg { width: 70px; height: 70px; stroke: #fff; stroke-width: 3; fill: none; }
+  .eq-confirm h3 { color: var(--purple); }
+  .eq-confirm p { font-family: var(--body); font-size: 20px; color: #555; line-height: 1.5; max-width: 620px; }
+
+  /* Allowance calculator */
+  .calc-group { margin-bottom: 26px; }
+  .calc-group > label { display: block; font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple); margin-bottom: 14px; }
+  .calc-row { display: flex; gap: 14px; }
+  .calc-btn { flex: 1; min-height: 96px; border-radius: 16px; border: 3px solid rgba(65,39,116,0.2); background: #fff; font-family: var(--veneer); font-size: 40px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--purple); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; box-shadow: 0 2px 10px rgba(65,39,116,0.07); transition: transform 0.15s ease; }
+  .calc-btn:active { transform: scale(0.97); }
+  .calc-btn.type { font-size: 24px; padding: 10px; line-height: 1.12; }
+  .calc-btn.type span { font-family: var(--body); font-size: 13px; color: #888; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .calc-btn.selected { background: var(--gradient-h); border-color: transparent; color: #fff; box-shadow: 0 4px 16px rgba(237,40,141,0.3); }
+  .calc-btn.selected span { color: rgba(255,255,255,0.8); }
+  .calc-output { background: linear-gradient(135deg, var(--purple), #6b1e8f); border-radius: 24px; padding: 40px 44px; margin-top: 22px; min-height: 240px; display: flex; flex-direction: column; justify-content: center; color: #fff; }
+  .calc-empty { font-family: var(--veneer); font-size: 30px; color: rgba(255,255,255,0.4); text-transform: uppercase; text-align: center; line-height: 1.2; }
+  .calc-results { display: none; }
+  .calc-results.show { display: block; }
+  .calc-results .cr-label { font-family: var(--body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .calc-results .cr-weekly { font-family: var(--veneer); font-size: 92px; line-height: 0.95; }
+  .calc-results .cr-weekly span { font-size: 30px; color: rgba(255,255,255,0.6); }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.2); }
+  .calc-grid .cg-label { font-family: var(--body); font-size: 12px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .calc-grid .cg-value { font-family: var(--veneer); font-size: 42px; }
+  .calc-note { margin-top: 18px; font-family: var(--body); font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.55; }
+
+  /* Carer stories */
+  .stories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .story-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(65,39,116,0.1); display: flex; flex-direction: column; }
+  .story-card .st-photo { height: 300px; overflow: hidden; flex-shrink: 0; }
+  .story-card .st-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .story-card .st-bar { height: 6px; background: var(--gradient-h); flex-shrink: 0; }
+  .story-card:nth-child(even) .st-bar { background: linear-gradient(90deg, var(--purple), #7b2fa0); }
+  .story-card .st-inner { padding: 20px 26px 28px; }
+  .story-card .st-name { font-family: var(--body); font-size: 14px; font-weight: 700; color: var(--pink); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; text-align: center; }
+  .story-card .st-quote { font-family: var(--body); font-size: 18px; color: var(--charcoal); line-height: 1.5; text-align: center; font-style: italic; }
+  .story-card .st-quote::before { content: '\201C'; }
+  .story-card .st-quote::after { content: '\201D'; }
+
   /* ── IDLE OVERLAY ── */
   #idle-overlay {
     position: absolute; inset: 0; z-index: 500;
@@ -440,7 +640,7 @@
 
     <!-- SIX TILES (placeholder content — Phase 2) -->
     <div class="tiles" id="tiles">
-      <div class="tile ask has-photo">
+      <div class="tile ask has-photo" onclick="openDetail('dv-offer-room')">
         <img class="tile-img" src="project/assets/charlie-room.jpg" alt="Getting a room ready" style="object-position:center 45%;">
         <div class="tile-ph"><div class="tile-title">Could you offer a room?</div></div>
       </div>
@@ -556,6 +756,285 @@
     </div>
   </div>
 
+  <!-- TILE DETAIL OVERLAY -->
+  <div id="detail">
+    <div class="detail-topbar">
+      <button class="detail-back" onclick="detailBack()">
+        <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+        Back
+      </button>
+      <div class="detail-title" id="detail-title">Could you offer a room?</div>
+    </div>
+    <div class="detail-subtabs" id="detail-subtabs" style="display:none"></div>
+    <div class="detail-scroll" id="detail-scroll">
+
+      <!-- VIEW: Offer a room — the split -->
+      <div class="detail-view" id="dv-offer-room">
+        <h1 class="d-h1">Could you offer a room?</h1>
+        <p class="d-intro">There are two ways to open your home to a young person. Both change a life — they just work a little differently. Have a look and see which feels like you.</p>
+        <div class="split-choices">
+          <div class="split-card" onclick="openDetail('dv-fostering')">
+            <div class="sc-body">
+              <div class="sc-kicker">Fostering</div>
+              <div class="sc-title">Foster a child</div>
+              <div class="sc-line">A child who needs a family, with full support and training from us. You take on the day-to-day care, and the legal side sits with you while they're with you.</div>
+            </div>
+            <div class="sc-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="split-card sl" onclick="openDetail('dv-sl')">
+            <div class="sc-body">
+              <div class="sc-kicker">Supported Lodgings</div>
+              <div class="sc-title">Offer a spare room</div>
+              <div class="sc-line">A spare room for a young person, usually 16 to 21, who mostly needs somewhere steady while they learn to stand on their own feet. More flexible, and it fits around your life.</div>
+            </div>
+            <div class="sc-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: Supported Lodgings -->
+      <div class="detail-view" id="dv-sl">
+
+        <!-- Menu: choose a subpage -->
+        <div class="view-menu">
+          <p class="vm-intro">A spare room, a little of your time, and a young person gets a steady base to find their feet. Where would you like to start?</p>
+          <div class="menu-card" onclick="showSection('sl',0)">
+            <div class="mn-photo"><img src="project/assets/charlie-room.jpg" alt="" style="object-position:center 45%;"></div>
+            <div class="mn-text"><div class="mn-title">What it is</div><div class="mn-sub">The room, the time, the money</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="menu-card" onclick="showSection('sl',1)">
+            <div class="mn-photo"><img src="project/assets/fern-2yp.jpg" alt="" style="object-position:center 22%;"></div>
+            <div class="mn-text"><div class="mn-title">Could someone like me?</div><div class="mn-sub">A quick myth-busting quiz</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="menu-card" onclick="showSection('sl',2)">
+            <div class="mn-photo"><img src="project/assets/photo-foster-hug.jpg" alt=""></div>
+            <div class="mn-text"><div class="mn-title">Find out more</div><div class="mn-sub">Take the next step</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Subpage: About -->
+        <div class="subpanel active">
+        <p class="d-intro">A spare room, a little of your time, and a young person gets a steady base to find their feet.</p>
+
+        <div class="d-section">
+          <h2 class="d-h2">What it is</h2>
+          <p class="d-p">You open a spare room to a young person, usually 16 to 21, who mostly needs somewhere steady while they learn to stand on their own feet. You offer a room and a bit of your time — we provide the training, the support and the team behind you.</p>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">What you'd be signing up to</h2>
+          <ul class="d-list">
+            <li>A spare room, and some of your time — around an hour a day at the start, and less as they settle.</li>
+            <li>Training before you begin, and a dedicated worker with you the whole way through.</li>
+            <li>You're never on your own with it. There's always someone on the end of the phone.</li>
+          </ul>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">The money</h2>
+          <div class="money-callout">
+            <div class="mc-label">You receive around</div>
+            <div class="mc-amount">&pound;174<span>/ week</span></div>
+            <div class="mc-sub">Over &pound;9,000 a year. Two payments each week: rent, usually paid by the local authority, and a support allowance that recognises your time. Your household bills may rise a little; the allowance is designed to cover that.</div>
+          </div>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">A host's view</h2>
+          <div class="host-quote">
+            <p>I wasn't sure I had the time, but it's less than you'd think — an hour here and there — and I still do everything I did before. Watching someone get their confidence back is the best part of my week.</p>
+            <div class="hq-name">A Step by Step host &mdash; placeholder quote, awaiting sign-off</div>
+          </div>
+        </div>
+        </div><!-- /About panel -->
+
+        <!-- Subpage: Could you? -->
+        <div class="subpanel">
+          <h2 class="d-h2">Could someone like me do this?</h2>
+          <p class="d-p">Five quick true-or-false. Most people get at least one of these wrong.</p>
+          <div id="quiz-sl"></div>
+        </div>
+
+        <!-- Subpage: Enquire -->
+        <div class="subpanel">
+        <div class="enquiry" id="enq-sl">
+          <div id="enq-sl-form">
+            <h3>Want to know more?</h3>
+            <div class="eq-line">Pop your details in and we'll send everything over to read at home — no pressure, no salesperson. Or come and say hello to the team on the stand right now.</div>
+            <div class="eq-field"><label for="enq-sl-name">Full name</label><input type="text" id="enq-sl-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+            <div class="eq-field"><label for="enq-sl-email">Email address</label><input type="email" id="enq-sl-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+            <div class="optin-row checked" id="enq-sl-optin" onclick="toggleOptin(this)">
+              <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+              <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+            </div>
+            <button class="btn-pill" style="width:100%" onclick="submitEnquiry('sl')">
+              Send me the details
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+            </button>
+            <div class="eq-hello">Or come and say hello &mdash; the team's right here on the stand.</div>
+          </div>
+          <div class="eq-confirm" id="enq-sl-confirm">
+            <div class="ec-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <h3>On its way!</h3>
+            <p>We'll send everything over so you can take your time. Thanks for stopping by the Step by Step stand.</p>
+          </div>
+        </div>
+        <div class="enquiry" id="enq-sl-offline" style="display:none">
+          <h3>Come and say hello</h3>
+          <div class="eq-line" style="margin-bottom:0">We'd love to tell you more about Supported Lodgings. Come and have a chat with the team on the stand — they can answer anything and take your details there and then.</div>
+        </div>
+        </div><!-- /Enquire panel -->
+      </div>
+
+      <!-- VIEW: Fostering -->
+      <div class="detail-view" id="dv-fostering">
+
+        <!-- Menu: choose a subpage -->
+        <div class="view-menu">
+          <p class="vm-intro">A child who needs a family — with full training and a team behind you the whole way. Where would you like to start?</p>
+          <div class="menu-card" onclick="showSection('fostering',0)">
+            <div class="mn-photo"><img src="project/assets/photo-can-i-foster.jpg" alt=""></div>
+            <div class="mn-text"><div class="mn-title">Could you foster?</div><div class="mn-sub">A quick myth-busting quiz</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="menu-card" onclick="showSection('fostering',1)">
+            <div class="mn-photo"><img src="project/assets/photo-luke-child.jpg" alt=""></div>
+            <div class="mn-text"><div class="mn-title">The financial impact</div><div class="mn-sub">See your potential allowance</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="menu-card" onclick="showSection('fostering',2)">
+            <div class="mn-photo"><img src="project/assets/photo-mum-daughter.jpg" alt=""></div>
+            <div class="mn-text"><div class="mn-title">Hear from our carers</div><div class="mn-sub">Real stories, real homes</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+          <div class="menu-card" onclick="showSection('fostering',3)">
+            <div class="mn-photo"><img src="project/assets/photo-foster-hug.jpg" alt=""></div>
+            <div class="mn-text"><div class="mn-title">Find out more</div><div class="mn-sub">Take the next step</div></div>
+            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Subpage: Could you? -->
+        <div class="subpanel active">
+        <p class="d-intro">A child who needs a family — with full training and a team behind you the whole way. Here's what it really involves.</p>
+        <div class="d-section">
+          <h2 class="d-h2">Could you foster?</h2>
+          <p class="d-p">Five quick true-or-false. Each one tackles a myth that stops people asking.</p>
+          <div id="quiz-fostering"></div>
+        </div>
+        </div><!-- /Could you panel -->
+
+        <!-- Subpage: The money -->
+        <div class="subpanel">
+        <div class="d-section">
+          <h2 class="d-h2">What you could receive</h2>
+          <p class="d-p">Fostering comes with a weekly allowance — for the young person's needs, and a fee that recognises your care. Tap to see an estimate.</p>
+          <div class="calc-group">
+            <label>How many children?</label>
+            <div class="calc-row">
+              <button class="calc-btn" onclick="setCalc('children',1,this)">1</button>
+              <button class="calc-btn" onclick="setCalc('children',2,this)">2</button>
+              <button class="calc-btn" onclick="setCalc('children',3,this)">3</button>
+              <button class="calc-btn" onclick="setCalc('children',4,this)">4</button>
+            </div>
+          </div>
+          <div class="calc-group">
+            <label>Type of placement?</label>
+            <div class="calc-row">
+              <button class="calc-btn type" onclick="setCalc('type','short',this)">Short term<span>Up to two years</span></button>
+              <button class="calc-btn type" onclick="setCalc('type','long',this)">Long term<span>Over two years</span></button>
+              <button class="calc-btn type" onclick="setCalc('type','respite',this)">Short breaks<span>Respite care</span></button>
+            </div>
+          </div>
+          <div class="calc-output">
+            <div class="calc-empty" id="calc-empty">Choose the options above<br>to see your estimate</div>
+            <div class="calc-results" id="calc-results">
+              <div class="cr-label">Your allowance could be</div>
+              <div class="cr-weekly" id="calc-weekly"></div>
+              <div class="calc-grid">
+                <div><div class="cg-label">Per month</div><div class="cg-value" id="calc-monthly"></div></div>
+                <div><div class="cg-label">Per year</div><div class="cg-value" id="calc-yearly"></div></div>
+              </div>
+              <div class="calc-note" id="calc-note"></div>
+            </div>
+          </div>
+        </div>
+        </div><!-- /The money panel -->
+
+        <!-- Subpage: Our carers -->
+        <div class="subpanel">
+        <div class="d-section">
+          <h2 class="d-h2">Hear from our carers</h2>
+          <div class="stories-grid">
+            <div class="story-card">
+              <div class="st-photo"><img src="project/assets/carer-laura.jpg" alt="Laura, foster carer" style="object-position:center 30%;"></div>
+              <div class="st-bar"></div>
+              <div class="st-inner">
+                <div class="st-name">Laura, foster carer</div>
+                <div class="st-quote">Fostering gives me the opportunity to be the person I needed as a child. You can't be perfect, and you shouldn't try to be. What matters is providing a safe, stable, normal home.</div>
+              </div>
+            </div>
+            <div class="story-card">
+              <div class="st-photo"><img src="project/assets/carer-debbie.png" alt="Debbie, former foster carer and Step by Step CEO"></div>
+              <div class="st-bar"></div>
+              <div class="st-inner">
+                <div class="st-name">Debbie, former carer &amp; Step by Step CEO</div>
+                <div class="st-quote">I was able to give my foster children the stability, love and support they needed. Fostering transcended responsibility for our family; it was a privilege.</div>
+              </div>
+            </div>
+            <div class="story-card">
+              <div class="st-photo"><img src="project/assets/carer-hannah-mark.jpg" alt="Hannah and Mark, foster carers"></div>
+              <div class="st-bar"></div>
+              <div class="st-inner">
+                <div class="st-name">Hannah &amp; Mark, foster carers</div>
+                <div class="st-quote">Every child deserves the chance to thrive. Becoming foster carers lets us extend our love and care to others, supporting them through their childhood and beyond.</div>
+              </div>
+            </div>
+            <div class="story-card">
+              <div class="st-photo"><img src="project/assets/carer-dave.png" alt="Dave, foster carer"></div>
+              <div class="st-bar"></div>
+              <div class="st-inner">
+                <div class="st-name">Dave, foster carer</div>
+                <div class="st-quote">You'll be challenged and stimulated — it's a really rewarding experience. It's so satisfying to see the positive impact you've made on a young person's life.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div><!-- /Our carers panel -->
+
+        <!-- Subpage: Enquire -->
+        <div class="subpanel">
+        <div class="enquiry" id="enq-fostering">
+          <div id="enq-fostering-form">
+            <h3>Ready to find out more?</h3>
+            <div class="eq-line">Leave your details and our friendly fostering team will be in touch — no pressure, no commitment. Or come and say hello on the stand right now.</div>
+            <div class="eq-field"><label for="enq-fostering-name">Full name</label><input type="text" id="enq-fostering-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+            <div class="eq-field"><label for="enq-fostering-email">Email address</label><input type="email" id="enq-fostering-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+            <div class="optin-row checked" id="enq-fostering-optin" onclick="toggleOptin(this)">
+              <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+              <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+            </div>
+            <button class="btn-pill" style="width:100%" onclick="submitEnquiry('fostering')">
+              Ask our team to get in touch
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+            </button>
+            <div class="eq-hello">Or come and say hello &mdash; the team's right here on the stand.</div>
+          </div>
+          <div class="eq-confirm" id="enq-fostering-confirm">
+            <div class="ec-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <h3>Thanks!</h3>
+            <p>Our fostering team will be in touch soon. Thanks for stopping by the Step by Step stand.</p>
+          </div>
+        </div>
+        </div><!-- /Enquire panel -->
+      </div>
+
+    </div>
+  </div>
+
   <!-- STAFF QUEUE BADGE (discreet) -->
   <div id="staff-badge" onclick="toggleStaffDetail(event)">
     <svg viewBox="0 0 24 24"><polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -617,6 +1096,13 @@ const CONFIG = {
     // What lands in ActiveCampaign as "Kiosk Source"
     formSourceTag: 'Prize Draw — New Forest Show 2026',
 
+    // Enquiry forms. Fostering is live (goes to AC form 3). Supported Lodgings
+    // is OFF until its own AC destination is set up — while off, the SL "Find
+    // out more" captures nothing and points people to the team on the stand.
+    // Flip to true only once SL is configured in ActiveCampaign.
+    fosteringEnquiryEnabled: true,
+    slEnquiryEnabled: false,
+
     // Budget game (phase 5) — not built yet
     gameEnabled:  false,
     gameUrl:      'game.html',
@@ -650,6 +1136,15 @@ const QUEUE_KEY = 'sbs_kiosk_queue_v1';
 
   if (e.prizeImage) {
     document.getElementById('draw-prize').innerHTML = '<img src="' + e.prizeImage + '" alt="Prize">';
+  }
+
+  // Gate enquiry forms that aren't wired up in ActiveCampaign yet.
+  if (!e.slEnquiryEnabled) {
+    const f = document.getElementById('enq-sl'); if (f) f.style.display = 'none';
+    const off = document.getElementById('enq-sl-offline'); if (off) off.style.display = '';
+  }
+  if (!e.fosteringEnquiryEnabled) {
+    const f = document.getElementById('enq-fostering'); if (f) f.style.display = 'none';
   }
 })();
 
@@ -703,10 +1198,105 @@ function closeDraw() {
 }
 function goHome() {
   document.getElementById('draw-overlay').classList.remove('visible');
+  document.getElementById('detail').classList.remove('visible');
+  detailStack = [];
   hardResetForm();
+  resetContentState();
   clearIdleTimer();
   hideStaffDetail();
 }
+
+/* ── Tile detail navigation (a simple view stack) ── */
+let detailStack = [];
+const DETAIL_TITLES = {
+  'dv-offer-room': 'Could you offer a room?',
+  'dv-sl':         'Supported Lodgings',
+  'dv-fostering':  'Fostering'
+};
+function openDetail(viewId) {
+  const overlay = document.getElementById('detail');
+  if (overlay.classList.contains('visible')) {
+    const cur = document.querySelector('.detail-view.active');
+    if (cur) detailStack.push(cur.id);
+  } else {
+    detailStack = [];
+  }
+  showDetailView(viewId);
+  overlay.classList.add('visible');
+  resetIdleTimer();
+}
+function showDetailView(viewId) {
+  document.querySelectorAll('.detail-view').forEach(v => v.classList.toggle('active', v.id === viewId));
+  document.getElementById('detail-title').textContent = DETAIL_TITLES[viewId] || '';
+  const key = viewId.replace('dv-', '');
+  if (VIEW_MENUS[key]) {
+    openViewMenu(key);                 // open on the card menu — people choose where to start
+  } else {
+    const bar = document.getElementById('detail-subtabs');
+    bar.style.display = 'none'; bar.innerHTML = '';
+    document.getElementById('detail-scroll').scrollTop = 0;
+  }
+}
+
+/* ── Subpages within a detail view (Fostering / Supported Lodgings) ── */
+const VIEW_TABS = {
+  fostering: ['Could you?', 'The money', 'Our carers', 'Enquire'],
+  sl:        ['About', 'Could you?', 'Enquire']
+};
+const VIEW_MENUS = { fostering: true, sl: true };   // these views open on a card menu
+const ENQUIRY_TAB = { fostering: 3, sl: 2 };        // which subpage holds the enquiry form
+
+/* Show the card menu for a view (no subpage selected, tab bar hidden). */
+function openViewMenu(key) {
+  const view = document.getElementById('dv-' + key);
+  const menu = view.querySelector('.view-menu');
+  if (menu) menu.style.display = 'flex';
+  view.querySelectorAll(':scope > .subpanel').forEach(p => p.classList.remove('active'));
+  const bar = document.getElementById('detail-subtabs');
+  bar.style.display = 'none'; bar.innerHTML = '';
+  document.getElementById('detail-scroll').scrollTop = 0;
+}
+/* Enter a subpage — from a menu card or a tab. Tab bar appears for switching. */
+function showSection(key, index) {
+  const view = document.getElementById('dv-' + key);
+  const menu = view.querySelector('.view-menu');
+  if (menu) menu.style.display = 'none';
+  view.querySelectorAll(':scope > .subpanel').forEach((p, i) => p.classList.toggle('active', i === index));
+  buildSubtabs(key, index);
+  document.getElementById('detail-scroll').scrollTop = 0;
+  resetIdleTimer();
+}
+function buildSubtabs(key, activeIndex) {
+  const bar = document.getElementById('detail-subtabs');
+  const tabs = VIEW_TABS[key];
+  if (!tabs) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
+  bar.style.display = 'flex';
+  bar.innerHTML = tabs.map((t, i) => `<button class="subtab ${i === activeIndex ? 'active' : ''}" onclick="showSection('${key}',${i})">${t}</button>`).join('');
+}
+function detailBack() {
+  // Inside a menu view: if we're on a subpage, step back to the card menu first.
+  const activeView = document.querySelector('.detail-view.active');
+  if (activeView) {
+    const key = activeView.id.replace('dv-', '');
+    if (VIEW_MENUS[key]) {
+      const menu = activeView.querySelector('.view-menu');
+      if (menu && getComputedStyle(menu).display === 'none') { openViewMenu(key); resetIdleTimer(); return; }
+    }
+  }
+  if (detailStack.length) {
+    showDetailView(detailStack.pop());
+    resetIdleTimer();
+  } else {
+    goHome();
+  }
+}
+/* Reset all interactive content (quizzes, calculator, enquiry forms) on exit. */
+function resetContentState() {
+  initQuizzes();
+  ['sl', 'fostering'].forEach(resetEnquiry);
+  if (typeof resetCalc === 'function') resetCalc();
+}
+
 function gameTap() {
   if (CONFIG.event.gameEnabled) { window.location.href = CONFIG.event.gameUrl; }
   // else: silent — placeholder until phase 5
@@ -749,29 +1339,11 @@ function submitDraw() {
   if (!valid) { resetIdleTimer(); return; }
 
   const optin = document.getElementById('draw-optin').classList.contains('checked');
-  const now = new Date();
-  const entry = {
-    id: 'e' + now.getTime() + '_' + Math.floor(Math.random() * 1e6),
-    fullname: name,
-    email: email,
-    source: CONFIG.event.formSourceTag,
-    date: now.toLocaleDateString('en-GB'),
-    time: now.toLocaleTimeString('en-GB'),
-    optin: optin ? 'Yes' : 'No',
-    queuedAt: now.toISOString()
-  };
 
-  // 1) Store locally. If this throws, we do NOT confirm.
-  let stored = false;
-  try {
-    const q = loadQueue();
-    q.push(entry);
-    saveQueue(q);
-    stored = true;
-  } catch (err) {
-    console.error('[kiosk] could not store entry', err);
-  }
-
+  // 1) Store locally first. The confirmation is proof of a safe local store,
+  //    never of a live connection. queueEntry() also updates the staff badge
+  //    and kicks off a background drain.
+  const stored = queueEntry({ fullname: name, email, source: CONFIG.event.formSourceTag, optin });
   if (!stored) {
     // Storage failed — be honest, do not fake success.
     document.getElementById('dc-intro').textContent =
@@ -782,12 +1354,8 @@ function submitDraw() {
   // 2) Confirm to the visitor (entry is safe).
   document.getElementById('draw-form-wrap').style.display = 'none';
   document.getElementById('draw-confirm').classList.add('visible');
-  updateStaffBadge();
 
-  // 3) Try to drain in the background.
-  drainQueue();
-
-  // 4) Hard reset: clear the form immediately behind the confirmation,
+  // 3) Hard reset: clear the form immediately behind the confirmation,
   //    then return home after a short beat so the next person starts fresh.
   document.getElementById('draw-name').value = '';
   document.getElementById('draw-email').value = '';
@@ -803,6 +1371,34 @@ function loadQueue() {
   catch (e) { return []; }
 }
 function saveQueue(q) { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); }
+
+/* Store one submission (prize draw OR enquiry) in the offline queue.
+   Returns true only if it was safely stored. Same queue, one drain path,
+   parameterised by source tag. */
+function queueEntry(fields) {
+  const now = new Date();
+  const entry = {
+    id: 'e' + now.getTime() + '_' + Math.floor(Math.random() * 1e6),
+    fullname: fields.fullname,
+    email: fields.email,
+    source: fields.source,
+    date: now.toLocaleDateString('en-GB'),
+    time: fields.time || now.toLocaleTimeString('en-GB'),
+    optin: fields.optin ? 'Yes' : 'No',
+    queuedAt: now.toISOString()
+  };
+  try {
+    const q = loadQueue();
+    q.push(entry);
+    saveQueue(q);
+  } catch (err) {
+    console.error('[kiosk] could not store entry', err);
+    return false;
+  }
+  updateStaffBadge();
+  drainQueue();
+  return true;
+}
 
 let sentThisSession = 0;
 let draining = false;
@@ -898,7 +1494,8 @@ const IDLE_COUNTDOWN = 6;
 const IDLE_MS = Math.max(0, (CONFIG.event.idleSeconds - IDLE_COUNTDOWN)) * 1000;
 
 function isEngaged() {
-  return document.getElementById('draw-overlay').classList.contains('visible');
+  return document.getElementById('draw-overlay').classList.contains('visible')
+      || document.getElementById('detail').classList.contains('visible');
 }
 function resetIdleIfActive() { if (isEngaged()) resetIdleTimer(); }
 
@@ -938,6 +1535,167 @@ function dismissIdle() {
 // Any interaction while engaged resets the idle countdown.
 document.getElementById('root').addEventListener('pointerdown', () => { if (isEngaged()) resetIdleTimer(); });
 
+/* ═══════════════ QUIZ ENGINE (reusable) ═══════════════ */
+const QUIZ_DATA = {
+  sl: [
+    { s: "There's an upper age limit for hosts.", a: false, r: "There's no upper age limit at all — you just need to be 21 or over with a spare room. Our hosts own their homes or rent, are single or in couples, work full time, work part time, are retired or between jobs. David started hosting after he retired." },
+    { s: "You get a say in which young person moves in.", a: true, r: "You have full control over who lives with you. We match carefully — on your preferences, your household and how you live — and nothing is arranged without talking it through. A placement only goes ahead once you're happy with it." },
+    { s: "Hosting means being around most of the day.", a: false, r: "At the start it's about an hour a day, and it drops away as they find their feet — often around an hour a week by the time they're ready to move on. Lorraine hosts, works full time and still gets away in her caravan at weekends." },
+    { s: "A host's role is to support, not to parent.", a: true, r: "You're there to support, not to parent — helping them make decisions that keep them safe. Cooking together, a hand with a budget, a nudge about college, someone to talk to. You agree the ground rules together, and you keep your own evenings, hobbies and space." },
+    { s: "Hosting will leave you out of pocket.", a: false, r: "You receive two payments each week: rent, usually paid by the local authority, and a support allowance of £70 or more that recognises your time. A host in Basingstoke receives around £174 a week — over £9,000 a year. Your bills may rise a little; the allowance is designed to cover that." }
+  ],
+  fostering: [
+    { s: "You have to own your home to foster.", a: false, r: "Renting is fine — we just need to know your tenancy is stable. Our carers own their homes and rent them, are single, married and in couples, of every background and orientation. What matters is the home and the heart you offer." },
+    { s: "You get a say in who is placed with you.", a: true, r: "Matching is always a conversation. You share the age range and situations you feel comfortable with, and you meet the young person before any placement begins. Nothing is decided without you." },
+    { s: "The assessment takes over a year.", a: false, r: "Most assessments are completed within four to six months, with support and training throughout. You're guided through every step." },
+    { s: "You can start with short breaks before committing to a full placement.", a: true, r: "Short-break (respite) fostering — offering a weekend or a week rather than a full-time placement — is a brilliant way to begin. It's flexible and fits around work and family life." },
+    { s: "You'd be left to figure it out on your own.", a: false, r: "Never. You'll have a dedicated social worker, full training, a community of other carers and a 24/7 helpline — from day one and all the way through." }
+  ]
+};
+const QUIZ_END = {
+  sl:        { h: "Sound like you?", p: "Most people are more ready for this than they think. Leave your details below and we'll tell you everything — no pressure at all." },
+  fostering: { h: "Could you foster?", p: "If any of that surprised you, you're not alone. See what you could receive, hear from our carers, or leave your details and we'll be in touch." }
+};
+
+const quizState = {};
+const SVG_CHECK = '<svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>';
+const SVG_CROSS = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const SVG_ARROW = '<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>';
+
+function initQuizzes() { Object.keys(QUIZ_DATA).forEach(quizInit); }
+function quizInit(id) {
+  if (!QUIZ_DATA[id] || !document.getElementById('quiz-' + id)) return;
+  quizState[id] = { i: 0, answered: false, done: false };
+  renderQuiz(id);
+}
+function renderQuiz(id) {
+  const st = quizState[id], data = QUIZ_DATA[id], c = document.getElementById('quiz-' + id);
+  if (!c || !st) return;
+  if (st.done) {
+    const e = QUIZ_END[id] || { h: 'Nicely done', p: '' };
+    const tab = ENQUIRY_TAB[id];
+    const cta = (tab != null) ? `<button class="btn-pill" onclick="showSection('${id}',${tab})">Leave your details ${SVG_ARROW}</button>` : '';
+    c.innerHTML = `<div class="quiz-end"><div class="qe-splash">${SVG_CHECK}</div><h2>${e.h}</h2><p>${e.p}</p>${cta}</div>`;
+    return;
+  }
+  const q = data[st.i], n = data.length;
+  const dots = data.map((_, i) => `<div class="dot ${i < st.i ? 'done' : (i === st.i ? 'current' : '')}"></div>`).join('');
+  c.innerHTML =
+    `<div class="quiz-progress">${dots}</div>
+     <div class="quiz-card">
+       <div class="quiz-count">${st.i + 1} of ${n}</div>
+       <div class="quiz-statement">${q.s}</div>
+       <div class="quiz-tf">
+         <button class="tf-true" onclick="quizAnswer('${id}',true)">${SVG_CHECK}True</button>
+         <button class="tf-false" onclick="quizAnswer('${id}',false)">${SVG_CROSS}False</button>
+       </div>
+       <div class="quiz-reveal"><div class="rv-badge"></div><p></p></div>
+       <div class="quiz-next-row"><button class="btn-pill" onclick="quizNext('${id}')"></button></div>
+     </div>`;
+}
+function quizAnswer(id, ans) {
+  const st = quizState[id]; if (!st || st.answered) return; st.answered = true;
+  const q = QUIZ_DATA[id][st.i], correct = ans === q.a, c = document.getElementById('quiz-' + id);
+  const btnT = c.querySelector('.tf-true'), btnF = c.querySelector('.tf-false');
+  (q.a ? btnT : btnF).classList.add('correct');
+  if (!correct) (ans ? btnT : btnF).classList.add('wrong');
+  btnT.disabled = btnF.disabled = true;
+  const rev = c.querySelector('.quiz-reveal'); rev.classList.add('show');
+  const badge = rev.querySelector('.rv-badge');
+  badge.className = 'rv-badge ' + (correct ? 'ok' : 'no');
+  badge.innerHTML = correct ? (SVG_CHECK + " That's right") : (SVG_CROSS + " Actually…");
+  rev.querySelector('p').textContent = q.r;
+  const last = st.i === QUIZ_DATA[id].length - 1;
+  const next = c.querySelector('.quiz-next-row .btn-pill');
+  next.innerHTML = (last ? 'Done ' : 'Next ') + SVG_ARROW;
+  next.classList.add('show');
+  resetIdleTimer();
+}
+function quizNext(id) {
+  const st = quizState[id]; st.i++; st.answered = false;
+  if (st.i >= QUIZ_DATA[id].length) st.done = true;
+  renderQuiz(id);
+  const c = document.getElementById('quiz-' + id);
+  if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  resetIdleTimer();
+}
+
+/* ═══════════════ ENQUIRY FORMS (fostering + SL — one form, same queue) ═══════════════ */
+function enquirySource(key) {
+  const label = key === 'sl' ? 'Supported Lodgings enquiry' : 'Fostering enquiry';
+  return label + ' — ' + CONFIG.event.name;
+}
+function submitEnquiry(key) {
+  const enabled = key === 'sl' ? CONFIG.event.slEnquiryEnabled : CONFIG.event.fosteringEnquiryEnabled;
+  if (!enabled) return;   // defensive: the form is hidden when its AC destination isn't set up
+  const name  = document.getElementById('enq-' + key + '-name').value.trim();
+  const email = document.getElementById('enq-' + key + '-email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  let valid = true;
+  if (!name)    { fieldError('enq-' + key + '-name',  'Please enter your name');   valid = false; }
+  if (!emailOk) { fieldError('enq-' + key + '-email', 'Please enter a valid email'); valid = false; }
+  if (!valid) { resetIdleTimer(); return; }
+  const optin = document.getElementById('enq-' + key + '-optin').classList.contains('checked');
+  const stored = queueEntry({ fullname: name, email, source: enquirySource(key), optin });
+  if (!stored) {
+    document.querySelector('#enq-' + key + '-form .eq-line').textContent =
+      "Sorry — we couldn't save that just now. Please let a member of the team know.";
+    return;
+  }
+  document.getElementById('enq-' + key + '-form').style.display = 'none';
+  document.getElementById('enq-' + key + '-confirm').classList.add('show');
+  resetIdleTimer();
+}
+function resetEnquiry(key) {
+  const form = document.getElementById('enq-' + key + '-form');
+  if (!form) return;
+  form.style.display = '';
+  const n = document.getElementById('enq-' + key + '-name'), e = document.getElementById('enq-' + key + '-email');
+  if (n) { n.value = ''; n.style.borderColor = ''; }
+  if (e) { e.value = ''; e.style.borderColor = ''; }
+  const o = document.getElementById('enq-' + key + '-optin'); if (o) o.classList.add('checked');
+  const c = document.getElementById('enq-' + key + '-confirm'); if (c) c.classList.remove('show');
+}
+
+/* ═══════════════ ALLOWANCE CALCULATOR (fostering) ═══════════════ */
+const CALC_RATES = {
+  short:   { 1:{w:460,m:1993,y:23920}, 2:{w:920,m:3987,y:47840}, 3:{w:1380,m:5980,y:71760}, 4:{w:1840,m:7973,y:95680} },
+  long:    { 1:{w:445,m:1928,y:23140}, 2:{w:890,m:3857,y:46280}, 3:{w:1335,m:5785,y:69420}, 4:{w:1780,m:7713,y:92560} },
+  respite: { 1:{w:525,m:656,y:7875},   2:{w:1050,m:1313,y:15750}, 3:{w:1575,m:1969,y:23625}, 4:{w:2100,m:2625,y:31500} }
+};
+const CALC_NOTE = {
+  short:   "Estimated from weekly rates over 52 weeks; the monthly figure is the yearly total divided by 12.",
+  long:    "Estimated from weekly rates over 52 weeks; the monthly figure is the yearly total divided by 12.",
+  respite: "Assumes around two nights a week (about 15 weeks a year); the monthly figure is the yearly total divided by 12."
+};
+let calcState = { children: null, type: null };
+function setCalc(key, val, btn) {
+  calcState[key] = val;
+  btn.closest('.calc-row').querySelectorAll('.calc-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateCalc();
+  resetIdleTimer();
+}
+function updateCalc() {
+  const { children, type } = calcState;
+  const empty = document.getElementById('calc-empty'), res = document.getElementById('calc-results');
+  if (!empty || !res) return;
+  if (!children || !type) { empty.style.display = 'block'; res.classList.remove('show'); return; }
+  const r = CALC_RATES[type][children];
+  empty.style.display = 'none'; res.classList.add('show');
+  document.getElementById('calc-weekly').innerHTML = '£' + r.w.toLocaleString() + '<span> / week</span>';
+  document.getElementById('calc-monthly').textContent = '£' + r.m.toLocaleString();
+  document.getElementById('calc-yearly').textContent  = '£' + r.y.toLocaleString();
+  document.getElementById('calc-note').textContent = CALC_NOTE[type];
+}
+function resetCalc() {
+  calcState = { children: null, type: null };
+  document.querySelectorAll('#dv-fostering .calc-btn').forEach(b => b.classList.remove('selected'));
+  const empty = document.getElementById('calc-empty'), res = document.getElementById('calc-results');
+  if (empty) empty.style.display = 'block';
+  if (res) res.classList.remove('show');
+}
+
 /* ═══════════════ SERVICE WORKER ═══════════════ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -948,6 +1706,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ═══════════════ INIT ═══════════════ */
+initQuizzes();
 updateStaffBadge();
 if (loadQueue().length) drainQueue();
 </script>
