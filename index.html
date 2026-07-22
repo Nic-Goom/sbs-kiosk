@@ -282,7 +282,7 @@
 
   /* ── DRAW ENTRY OVERLAY ── */
   #draw-overlay {
-    position: absolute; inset: 0; z-index: 400;
+    position: absolute; inset: 0; z-index: 460;   /* above the detail view (420) so the form sits on top */
     background: rgba(26,10,46,0.55);
     display: none; align-items: center; justify-content: center;
     padding: 60px;
@@ -483,6 +483,37 @@
   .donate-confirm .dc-splash svg { width: 64px; height: 64px; stroke: #fff; stroke-width: 3; fill: none; }
   .donate-confirm h3 { font-family: var(--veneer); font-size: 38px; color: var(--purple); text-transform: uppercase; }
   .donate-confirm p { font-family: var(--body); font-size: 19px; color: #555; line-height: 1.5; max-width: 620px; }
+
+  /* ── Prize draw details page (opened by ENTER DRAW) ── */
+  .draw-hero-img { width: 100%; height: 420px; object-fit: cover; border-radius: 20px; margin-bottom: 22px; box-shadow: 0 8px 28px rgba(65,39,116,0.18); }
+  .d-badge { display: inline-block; white-space: nowrap; font-family: var(--veneer); font-size: 26px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--purple); background: var(--yellow); padding: 6px 22px; border-radius: 9999px; margin-bottom: 16px; }
+  .d-dates { display: flex; gap: 16px; margin: 6px 0 4px; }
+  .d-date { flex: 1; background: #fff; border: 2px solid rgba(65,39,116,0.14); border-radius: 16px; padding: 18px 22px; }
+  .d-date .dd-label { font-family: var(--body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); margin-bottom: 6px; }
+  .d-date .dd-value { font-family: var(--veneer); font-size: 25px; color: var(--purple); text-transform: uppercase; line-height: 1.05; }
+  .d-terms-list { list-style: disc; padding-left: 26px; }
+  .d-terms-list li { font-family: var(--body); font-size: 18px; color: #444; line-height: 1.55; margin-bottom: 12px; }
+  .draw-enter-cta { text-align: center; margin: 30px 0 10px; }
+  .draw-enter-cta .btn-pill { font-size: 34px; padding: 24px 56px; min-height: 92px; }
+
+  /* ── Full T&Cs pop-out ── */
+  #terms-modal { position: absolute; inset: 0; z-index: 470; background: rgba(26,10,46,0.6); display: none; align-items: center; justify-content: center; padding: 50px; }
+  #terms-modal.visible { display: flex; animation: fadeIn 0.25s ease; }
+  .terms-card { width: 100%; max-width: 900px; max-height: 100%; background: #fff; border-radius: 26px; padding: 46px 52px 40px; position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; box-shadow: 0 20px 70px rgba(0,0,0,0.4); }
+  .terms-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px; border-radius: 26px 26px 0 0; background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 30%, var(--lime) 62%, var(--yellow) 100%); }
+  .terms-close { position: absolute; top: 22px; right: 22px; width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(65,39,116,0.2); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; z-index: 2; }
+  .terms-close svg { width: 26px; height: 26px; stroke: var(--purple); stroke-width: 3; fill: none; }
+  .terms-card h2 { font-family: var(--veneer); font-size: 50px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 4px; padding-right: 60px; }
+  .terms-card .tc-lead { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 8px; }
+  .terms-card h3 { font-family: var(--veneer); font-size: 28px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.02em; margin: 26px 0 10px; }
+  .terms-card h4 { font-family: var(--body); font-size: 17px; font-weight: 700; color: var(--purple); margin: 16px 0 4px; }
+  .terms-card p { font-family: var(--body); font-size: 17px; color: #333; line-height: 1.6; margin-bottom: 12px; }
+  .terms-card ul { list-style: disc; padding-left: 24px; margin-bottom: 12px; }
+  .terms-card li { font-family: var(--body); font-size: 17px; color: #333; line-height: 1.55; margin-bottom: 7px; }
+  .terms-card .tc-dates { list-style: none; padding-left: 0; }
+  .terms-card .tc-dates li { font-weight: 700; color: var(--purple); }
+  .terms-card a { color: var(--pink); word-break: break-word; }
+  .terms-card .tc-updated { margin-top: 20px; font-size: 14px; color: #888; }
 
   /* Shared detail typography & buttons */
   .d-h1 { font-family: var(--veneer); font-size: 66px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.98; margin-bottom: 12px; }
@@ -726,7 +757,7 @@
           <div class="draw-head" id="draw-head">Win a Stay in the New Forest</div>
           <div class="draw-sub" id="draw-sub">Enter in under a minute. No purchase, no catch.</div>
         </div>
-        <button class="draw-enter" onclick="openDraw()">
+        <button class="draw-enter" onclick="openDetail('dv-draw')">
           Enter draw
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
         </button>
@@ -1078,6 +1109,56 @@
         </div><!-- /Enquire panel -->
       </div>
 
+      <!-- VIEW: Prize draw details (opened by ENTER DRAW) -->
+      <div class="detail-view" id="dv-draw">
+        <img class="draw-hero-img" src="project/assets/the-montagu-arms-exterior.jpg" alt="The Montagu Arms, Beaulieu">
+        <span class="d-badge">Free to enter</span>
+        <h1 class="d-h1">Win a Stay in the New Forest</h1>
+        <p class="d-intro">We're giving one lucky winner a night's bed and continental breakfast for 2 adults, 2 children and your dog in a family room at The Montagu Arms, Beaulieu, subject to availability.</p>
+
+        <div class="draw-enter-cta">
+          <button class="btn-pill" onclick="openDraw()">Enter the draw <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">The prize</h2>
+          <ul class="d-list">
+            <li>One night's bed and continental breakfast at The Montagu Arms, Beaulieu</li>
+            <li>A family room for 2 adults and 2 children</li>
+            <li>Your dog is welcome too</li>
+            <li>Subject to availability — valid Sunday to Thursday</li>
+          </ul>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">How it works</h2>
+          <p class="d-p">Entering is free — just add your details and you're in with a chance of winning. It only takes a minute.</p>
+          <div class="d-dates">
+            <div class="d-date"><div class="dd-label">Closes</div><div class="dd-value">5pm, Wed 30 Sept 2026</div></div>
+            <div class="d-date"><div class="dd-label">Voucher valid until</div><div class="dd-value">6 Jan 2028</div></div>
+            <div class="d-date"><div class="dd-label">Open to</div><div class="dd-value">UK residents 18+</div></div>
+          </div>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">Before you enter</h2>
+          <ul class="d-list">
+            <li>Free to enter. No donation necessary.</li>
+            <li>Open to UK residents aged 18 and over.</li>
+            <li>Closes 5pm on Wednesday 30 September 2026.</li>
+            <li>One winner is drawn at random from all valid entries after the competition closes.</li>
+            <li>The prize is non-transferable and there is no cash alternative.</li>
+          </ul>
+          <button class="btn-ghost" style="margin-top:12px" onclick="openTerms()">
+            Read the full terms &amp; conditions
+          </button>
+        </div>
+
+        <div class="draw-enter-cta">
+          <button class="btn-pill" onclick="openDraw()">Enter the draw <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+        </div>
+      </div>
+
       <!-- VIEW: What £29.78 costs (Tile 3) -->
       <div class="detail-view" id="dv-cost">
         <div class="cost-hero">
@@ -1143,6 +1224,107 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- FULL T&Cs POP-OUT -->
+  <div id="terms-modal">
+    <div class="terms-card">
+      <button class="terms-close" onclick="closeTerms()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2>Terms &amp; Conditions</h2>
+      <p class="tc-lead">Montagu Arms Free Prize Draw. Please read these terms before entering. By entering the draw you accept them.</p>
+
+      <h3>1. The promoter</h3>
+      <p>This free prize draw is promoted by Step by Step Partnership, a registered charity in England and Wales (charity number 900308) and a company limited by guarantee (company number 2431825), whose registered office is at 36 Crimea Road, Aldershot, Hampshire, GU11 1UD.</p>
+      <p>The prize has been generously donated by The Montagu Arms Hotel, Beaulieu, New Forest, Hampshire, SO42 7ZL. The Montagu Arms is not the promoter of this draw and is not responsible for running it. Any questions about the draw itself should come to Step by Step.</p>
+      <p>This promotion is not sponsored, endorsed or administered by any social media platform on which it may appear.</p>
+
+      <h3>2. Free to enter</h3>
+      <p>This draw is free to enter. No purchase or donation is necessary.</p>
+      <p>You do not need to donate to take part, and donating does not increase your chance of winning. Everyone who enters has the same chance, whether or not they choose to support us in any other way.</p>
+
+      <h3>3. Who can enter</h3>
+      <p>The draw is open to residents of the United Kingdom aged 18 or over at the date of entry.</p>
+      <p>The following people are not eligible to enter:</p>
+      <ul>
+        <li>Employees, trustees and volunteers of Step by Step Partnership</li>
+        <li>Employees of The Montagu Arms Hotel</li>
+        <li>The immediate families and households of either group</li>
+      </ul>
+      <p>We may ask a winner to confirm their age and place of residence before the prize is awarded.</p>
+
+      <h3>4. How to enter</h3>
+      <p>Enter by completing the entry form at stepbystep.org.uk/montagu-arms-draw, or by scanning the QR code on our promotional material, and submitting the details requested.</p>
+      <p>One entry per person. Where more than one entry is received from the same person, only the first will be counted and the others will be set aside.</p>
+      <p>Entries submitted by automated means, in bulk, or by anyone on behalf of another person are not valid. We reserve the right to disqualify any entry we reasonably believe to be automated, duplicated, fraudulent or otherwise in breach of these terms, and to draw an alternative winner. Our decision is final.</p>
+      <p>Entries are not accepted by post, telephone, email or social media.</p>
+      <p>We cannot accept responsibility for entries that are lost, delayed, incomplete or not received for reasons outside our reasonable control.</p>
+
+      <h3>5. When the draw opens and closes</h3>
+      <ul class="tc-dates">
+        <li>Entries open: 09:00 on Tuesday 28 July 2026</li>
+        <li>Entries close: 17:00 on Wednesday 30 September 2026</li>
+        <li>The draw takes place: Friday 2 October 2026</li>
+      </ul>
+      <p>Entries received outside this period are not valid and will not go into the draw.</p>
+
+      <h3>6. The prize</h3>
+      <p>One prize is available. There is one winner.</p>
+      <p>The prize is one night's bed and continental breakfast for two adults, two children and one dog, in a family room at The Montagu Arms Hotel, Beaulieu. The winner may choose between a House Suite and a Courtyard Retreat, subject to availability.</p>
+      <p>Please note the following conditions, which are part of the prize.</p>
+      <ul>
+        <li>The stay is subject to availability, including the choice of room.</li>
+        <li>The stay may be taken on a Sunday, Monday, Tuesday, Wednesday or Thursday only. It cannot be taken on a Friday or Saturday.</li>
+        <li>The following dates are excluded: Bank Holidays, Valentine's Day, Mother's Day, and 23 to 31 December.</li>
+        <li>Reservations must be made in advance and directly with The Montagu Arms, and are subject to availability on the dates requested. We would encourage the winner to book as far ahead as possible.</li>
+        <li>The prize must be taken, and the voucher surrendered to The Montagu Arms, before its expiry date of 6 January 2028.</li>
+        <li>The prize covers accommodation and continental breakfast only. Anything else, including dinner, drinks, room service, spa treatments and any other charges, is at the winner's own expense.</li>
+        <li>The prize is non-transferable. It cannot be sold, exchanged or passed to anyone else.</li>
+        <li>The voucher is non-refundable, cannot be redeemed for cash and has no monetary value. There is no cash alternative.</li>
+        <li>Standard hotel policies apply during the stay, including those relating to dogs, damage and conduct.</li>
+        <li>If the prize becomes unavailable for reasons outside our control, we reserve the right to substitute a prize of equal or greater value.</li>
+      </ul>
+
+      <h3>7. The draw</h3>
+      <p>One winner will be selected at random from all valid entries received, using a random number generator, after entries close.</p>
+      <p>Before the draw is run, entries are checked and any that are invalid under these terms are set aside. This includes duplicate entries from the same person, which we identify using the email address given. The draw is witnessed and a record is kept.</p>
+
+      <h3>8. The winner</h3>
+      <p>We will contact the winner using the details given on their entry within seven days of the draw.</p>
+      <p>If we are unable to reach the winner, or the winner does not respond, within fourteen days of the draw, we reserve the right to withdraw the prize and draw an alternative winner.</p>
+      <p>We will publish the first name and county of the winner on our website and social media, unless they ask us not to. If you would prefer this not to happen, please tell us when we contact you and we will respect that.</p>
+      <p>The winner may be asked to take part in reasonable publicity about the prize. There is no obligation to do so, and the prize does not depend on it.</p>
+
+      <h3>9. Your personal information</h3>
+      <p>Step by Step Partnership is the data controller for the information you give us when you enter.</p>
+      <h4>What we collect and why.</h4>
+      <p>We collect the details on the entry form so that we can run the draw, check eligibility, identify duplicate entries, contact the winner and arrange the prize. Our lawful basis for this is that the processing is necessary to perform our contract with you: these terms form that contract, and you enter into it when you submit your entry.</p>
+      <p>Hearing from Step by Step is separate and entirely optional. You can enter the draw without agreeing to hear from us. If you would like to, there are separate tick boxes for email and for text message. Neither is ticked for you, and neither is a condition of entering. You can change your mind at any time using the unsubscribe link in any message, or by contacting us.</p>
+      <p>Hearing from The Montagu Arms is a separate choice again. There is a separate tick box if you would like The Montagu Arms Hotel to contact you with their own news and offers. If you tick it, we will pass your name and email address to The Montagu Arms so that they can do so. They will then hold that information as data controller in their own right, and their own privacy notice will apply. If you do not tick it, we will not pass your details to them. You can withdraw this at any time, either with us or directly with the hotel.</p>
+      <h4>What we share if you win.</h4>
+      <p>If you win, we will pass your name and email address to The Montagu Arms so that they can arrange your stay. This is the only circumstance in which we share the details of an entrant who has not asked us to.</p>
+      <p>We do not share entrants' details with anyone else, and we never sell or swap them.</p>
+      <p>If you do not tick any of the boxes, the only message you will receive from us about this draw is a confirmation that your entry has been received.</p>
+      <h4>How long we keep it.</h4>
+      <p>If you enter and do not opt in to hearing from us, we keep your entry details for six months after the draw, and then delete them. This allows us to run a further draw if the first winner cannot be reached, and to deal with any query about the draw.</p>
+      <p>If you win, we keep your details until six months after the voucher expiry date of 6 January 2028, because we need a record while the prize can still be claimed.</p>
+      <p>If you opt in to hearing from us, we keep your details until you tell us to stop. We review our marketing list every 24 months and get back in touch with anyone we have not heard from, to check they still want to hear from us.</p>
+      <h4>Your rights.</h4>
+      <p>You have the right to ask for a copy of the information we hold about you, to have it corrected or deleted, to object to how we use it, to ask us to restrict how we use it, and to receive it in a portable form. You can also complain to the Information Commissioner's Office at ico.org.uk.</p>
+      <p>Full details of how we handle personal information are in our privacy statement at <a href="https://www.stepbystep.org.uk/legal/privacy-statement/">stepbystep.org.uk/legal/privacy-statement</a>.</p>
+
+      <h3>10. General</h3>
+      <p>We reserve the right to amend these terms, or to cancel or suspend the draw, where it is reasonably necessary to do so and where the change does not unfairly disadvantage anyone who has already entered. Any changes will be published on this page.</p>
+      <p>We are not responsible for any loss or disappointment arising from a person's inability to take up the prize within the conditions set out above.</p>
+      <p>Step by Step Partnership follows the Code of Fundraising Practice. This is a free prize draw within the meaning of the Gambling Act 2005 and is not a lottery.</p>
+      <p>If something has gone wrong, please tell us. Email us at fundraising@stepbystep.org.uk and we will look into it. If you are not satisfied with our response, you can raise the matter with the Fundraising Regulator at fundraisingregulator.org.uk.</p>
+      <p>These terms are governed by the law of England and Wales, and any dispute will be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+      <p>Promoted by Step by Step Partnership, registered charity 900308, 36 Crimea Road, Aldershot, GU11 1UD.</p>
+      <p class="tc-updated">Last updated: 20 July 2026</p>
+
+      <button class="btn-ghost" style="width:100%; margin-top:10px" onclick="closeTerms()">Close</button>
     </div>
   </div>
 
@@ -1319,13 +1501,15 @@ function openDraw() {
   resetIdleTimer();
 }
 function closeDraw() {
+  // Closing the form reveals the prize-details page behind it; resume its idle timer.
   document.getElementById('draw-overlay').classList.remove('visible');
   hardResetForm();
-  clearIdleTimer();
+  resetIdleTimer();
 }
 function goHome() {
   document.getElementById('draw-overlay').classList.remove('visible');
   document.getElementById('detail').classList.remove('visible');
+  document.getElementById('terms-modal').classList.remove('visible');
   detailStack = [];
   hardResetForm();
   resetContentState();
@@ -1336,6 +1520,7 @@ function goHome() {
 /* ── Tile detail navigation (a simple view stack) ── */
 let detailStack = [];
 const DETAIL_TITLES = {
+  'dv-draw':       'Free Prize Draw',
   'dv-offer-room': 'Could you offer a room?',
   'dv-sl':         'Supported Lodgings',
   'dv-fostering':  'Fostering',
@@ -1426,12 +1611,26 @@ function resetContentState() {
   resetCost();
 }
 
-/* ── Tile 3: cost page interactions ── */
-function toggleCostMore() {
-  const el = document.getElementById('cost-expand');
+/* Generic expand/collapse for tap-to-expand panels (cost page). */
+function toggleExpand(id) {
+  const el = document.getElementById(id);
   if (el) el.classList.toggle('open');
   resetIdleTimer();
 }
+
+/* Full T&Cs pop-out — opens over the prize-details page, Close returns to it. */
+function openTerms() {
+  const m = document.getElementById('terms-modal');
+  m.classList.add('visible');
+  const card = m.querySelector('.terms-card'); if (card) card.scrollTop = 0;
+  resetIdleTimer();
+}
+function closeTerms() {
+  document.getElementById('terms-modal').classList.remove('visible');
+  resetIdleTimer();
+}
+/* ── Tile 3: cost page interactions ── */
+function toggleCostMore() { toggleExpand('cost-expand'); }
 function openDonateForm() {
   const df = document.getElementById('donate-form');
   if (df) { df.classList.add('show'); df.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
