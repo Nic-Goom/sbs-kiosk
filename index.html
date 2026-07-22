@@ -236,7 +236,7 @@
   .draw-prize .prize-ph { font-family: var(--veneer); font-size: 22px; color: rgba(255,255,255,0.7); text-transform: uppercase; text-align: center; padding: 10px; }
   .draw-text { flex: 1; color: white; }
   .draw-free {
-    display: inline-block;
+    display: inline-block; white-space: nowrap;
     font-family: var(--veneer); font-size: 26px; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--purple); background: var(--yellow);
     padding: 4px 18px; border-radius: var(--r-btn); margin-bottom: 10px;
@@ -311,7 +311,7 @@
   }
   .draw-close svg { width: 26px; height: 26px; stroke: var(--purple); stroke-width: 3; fill: none; }
   .draw-card h2 { font-family: var(--veneer); font-size: 58px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; margin-bottom: 6px; }
-  .draw-card .dc-free { font-family: var(--veneer); font-size: 24px; color: var(--pink); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .draw-card .dc-free { font-family: var(--veneer); font-size: 24px; color: var(--pink); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; white-space: nowrap; }
   .draw-card .dc-intro { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 28px; }
 
   .form-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
@@ -1107,7 +1107,8 @@ const CONFIG = {
     gameEnabled:  false,
     gameUrl:      'game.html',
 
-    idleSeconds:  20                         // idle timeout back to home
+    idleSeconds:        20,                  // idle-to-home while the prize-draw form is open (privacy)
+    idleSecondsContent: 75                   // idle-to-home while reading content pages (fostering, quizzes, SL)
   },
 
   /* ── ActiveCampaign direct POST (not event-specific).
@@ -1491,7 +1492,6 @@ let idleTimer = null, idleInterval = null, idleSeconds = 0;
 // Total idle-to-home = CONFIG.event.idleSeconds. The last IDLE_COUNTDOWN
 // seconds are a visible "Still there?" grace warning.
 const IDLE_COUNTDOWN = 6;
-const IDLE_MS = Math.max(0, (CONFIG.event.idleSeconds - IDLE_COUNTDOWN)) * 1000;
 
 function isEngaged() {
   return document.getElementById('draw-overlay').classList.contains('visible')
@@ -1499,9 +1499,18 @@ function isEngaged() {
 }
 function resetIdleIfActive() { if (isEngaged()) resetIdleTimer(); }
 
+/* Two-tier timeout: short while the prize-draw form is open (so the next
+   person can't see the last entrant's email), longer while reading content. */
+function idleWarnMs() {
+  const drawOpen = document.getElementById('draw-overlay').classList.contains('visible');
+  const total = drawOpen ? CONFIG.event.idleSeconds
+                         : (CONFIG.event.idleSecondsContent || CONFIG.event.idleSeconds);
+  return Math.max(0, total - IDLE_COUNTDOWN) * 1000;
+}
+
 function resetIdleTimer() {
   clearIdleTimer();
-  idleTimer = setTimeout(showIdleOverlay, IDLE_MS);
+  idleTimer = setTimeout(showIdleOverlay, idleWarnMs());
 }
 function clearIdleTimer() {
   clearTimeout(idleTimer);

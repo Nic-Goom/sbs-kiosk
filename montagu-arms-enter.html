@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#412774">
+<title>Enter — Win a Stay in the New Forest — Step by Step</title>
+<link rel="stylesheet" href="montagu.css">
+</head>
+<body>
+  <div class="stripe"></div>
+  <header>
+    <div class="wrap">
+      <img src="project/assets/logo-primary-white.png" alt="Step by Step">
+      <a class="h-cta" href="https://www.stepbystep.org.uk/donate/">Donate</a>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb"><a href="montagu-arms-draw.html">&larr; Win a Stay in the New Forest</a></div>
+      <h1>Enter the draw</h1>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="entry">
+        <p class="lead">Free to enter — just add your details below to be in with a chance of winning a family stay at The Montagu Arms.</p>
+
+        <form id="draw-form" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="fn">First name</label><input type="text" id="fn" name="fn" autocomplete="given-name"></div>
+            <div class="field"><label for="ln">Last name</label><input type="text" id="ln" name="ln" autocomplete="family-name"></div>
+          </div>
+          <div class="field"><label for="em">Email address</label><input type="email" id="em" name="em" autocomplete="email" placeholder="your@email.com"></div>
+
+          <label class="consent"><input type="checkbox" id="c-sbs"><span>I would like to receive news, young people's stories, and appeals via email. I'm aware that I can opt out at any time.</span></label>
+          <label class="consent"><input type="checkbox" id="c-montagu"><span>I would like to receive emails from the Montagu Arms.</span></label>
+          <label class="consent"><input type="checkbox" id="c-data"><span><span class="req">*</span> Yes, I give permission to store and process my data.</span></label>
+
+          <div class="form-submit">
+            <button type="submit" class="btn btn-pink">Enter the draw</button>
+          </div>
+          <div class="notice" id="form-notice"></div>
+          <p class="form-note">Free to enter. No donation necessary. Open to UK residents aged 18 and over. Closes 5pm on Wednesday 30 September 2026. <a href="montagu-arms-terms.html">Read the full terms &amp; conditions</a>.</p>
+        </form>
+
+        <div class="confirm" id="draw-confirm">
+          <div class="tick"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+          <h3>You're entered!</h3>
+          <p>Good luck — and thank you for supporting Step by Step. The winner will be drawn after the competition closes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <img src="project/assets/logo-secondary-white.png" alt="Step by Step">
+      <div class="f-legal">Step by Step is a registered charity supporting young people facing homelessness. Charity No. 900308. <a href="https://www.stepbystep.org.uk/">stepbystep.org.uk</a></div>
+    </div>
+  </footer>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   ENTRY CONFIG
+   Fill in `entryEndpoint` + `fields` once the ActiveCampaign entry
+   form exists. While `entryEndpoint` is blank the form does NOT submit
+   anywhere and does NOT fake success — it shows an honest notice.
+   ───────────────────────────────────────────────────────────── */
+const ENTRY = {
+  entryEndpoint: '',          // e.g. 'https://stepbystep50319.activehosted.com/proc.php'
+  meta: {},                   // AC hidden fields (u, f, s, c, m, act, v, or)
+  fields: {
+    firstname: 'firstname', lastname: 'lastname', email: 'email',
+    consentSbs: '', consentMontagu: '', source: ''
+  }
+};
+
+const form = document.getElementById('draw-form');
+const notice = document.getElementById('form-notice');
+function markError(el, on) { el.classList.toggle('field-error', on); }
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const fn = document.getElementById('fn'), ln = document.getElementById('ln'), em = document.getElementById('em');
+  const data = document.getElementById('c-data');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim());
+
+  let ok = true;
+  [ [fn, !!fn.value.trim()], [ln, !!ln.value.trim()], [em, emailOk] ].forEach(([el, valid]) => { markError(el, !valid); if (!valid) ok = false; });
+  if (!data.checked) { ok = false; notice.textContent = 'Please tick the box to allow us to store your entry.'; notice.classList.add('show'); }
+  else notice.classList.remove('show');
+  if (!ok) return;
+
+  if (!ENTRY.entryEndpoint) {
+    notice.textContent = "Thanks! Entries aren't quite open yet — the draw opens on 28 July 2026. Please check back then to enter.";
+    notice.classList.add('show');
+    return;
+  }
+
+  const p = new URLSearchParams();
+  Object.entries(ENTRY.meta).forEach(([k, v]) => p.append(k, v));
+  p.append(ENTRY.fields.firstname, fn.value.trim());
+  p.append(ENTRY.fields.lastname,  ln.value.trim());
+  p.append(ENTRY.fields.email,     em.value.trim());
+  if (ENTRY.fields.consentSbs)     p.append(ENTRY.fields.consentSbs,     document.getElementById('c-sbs').checked ? 'Yes' : 'No');
+  if (ENTRY.fields.consentMontagu) p.append(ENTRY.fields.consentMontagu, document.getElementById('c-montagu').checked ? 'Yes' : 'No');
+  if (ENTRY.fields.source)         p.append(ENTRY.fields.source, 'Montagu Arms Draw — Website');
+
+  fetch(ENTRY.entryEndpoint, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: p.toString() }).catch(() => {});
+  form.style.display = 'none';
+  document.getElementById('draw-confirm').classList.add('show');
+});
+</script>
+</body>
+</html>
