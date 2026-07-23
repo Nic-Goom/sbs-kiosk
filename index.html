@@ -515,6 +515,40 @@
   .terms-card a { color: var(--pink); word-break: break-word; }
   .terms-card .tc-updated { margin-top: 20px; font-size: 14px; color: #888; }
 
+  /* ── Tile 6: Real stories (photo-led grid, data-driven & reflowing) ── */
+  .view-menu.stories-grid { display: flex; flex-direction: column; gap: 12px; }
+  .sg-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 520px; gap: 16px; }
+  .story-tile2 { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 6px 24px rgba(65,39,116,0.12); display: flex; flex-direction: column; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; min-height: 0; }
+  .story-tile2:active { transform: scale(0.985); }
+  .story-tile2 .st2-photo { flex: 1; overflow: hidden; position: relative; min-height: 0; }
+  .story-tile2 .st2-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .story-tile2 .st2-cap { padding: 20px 26px 24px; flex-shrink: 0; }
+  .story-tile2 .st2-name { font-family: var(--veneer); font-size: 40px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+  .story-tile2 .st2-role { font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); margin-bottom: 9px; }
+  .story-tile2 .st2-hook { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.4; font-style: italic; }
+  .story-tile2.tbc { border: 3px dashed rgba(65,39,116,0.25); box-shadow: none; background: rgba(65,39,116,0.03); cursor: default; }
+  .story-tile2 .tbc-photo { flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(65,39,116,0.06); color: rgba(65,39,116,0.4); font-family: var(--veneer); font-size: 26px; text-align: center; text-transform: uppercase; line-height: 1.2; }
+  .stories-disclaimer { flex-shrink: 0; text-align: center; font-family: var(--body); font-size: 15px; color: rgba(65,39,116,0.55); }
+
+  /* Story reveal panel */
+  .story-panel .sp-top { display: flex; gap: 32px; align-items: center; margin-bottom: 30px; }
+  .story-panel .sp-photo { width: 300px; height: 300px; border-radius: 20px; object-fit: cover; object-position: center top; flex-shrink: 0; box-shadow: 0 6px 22px rgba(65,39,116,0.22); }
+  .story-panel .sp-name { font-family: var(--veneer); font-size: 62px; color: var(--purple); text-transform: uppercase; line-height: 1; }
+  .story-panel .sp-body { margin-bottom: 34px; }
+  .story-panel .sp-pull { font-family: var(--veneer); font-size: 42px; color: var(--purple); line-height: 1.12; letter-spacing: 0.01em; margin-bottom: 26px; }
+  .story-panel .sp-q { font-family: var(--body); font-size: 24px; font-weight: 700; color: var(--purple); line-height: 1.35; margin: 28px 0 10px; }
+  .story-panel .sp-p { font-family: var(--body); font-size: 24px; color: var(--charcoal); line-height: 1.55; margin-bottom: 16px; }
+  .story-panel .sp-pq { font-family: var(--body); font-size: 24px; font-style: italic; color: var(--purple); line-height: 1.5; margin-bottom: 16px; padding-left: 22px; border-left: 4px solid rgba(237,40,141,0.4); }
+  .story-panel .sp-disclaimer { font-family: var(--body); font-size: 17px; font-style: italic; color: #888; margin-top: 22px; }
+  .story-panel .sp-stats { display: flex; gap: 14px; margin-bottom: 26px; }
+  .story-panel .sp-stat { flex: 1; background: rgba(161,205,61,0.14); border-radius: 16px; padding: 20px 18px; text-align: center; }
+  .story-panel .sp-stat b { display: block; font-family: var(--veneer); font-size: 46px; color: var(--purple); line-height: 1; }
+  .story-panel .sp-stat span { font-family: var(--body); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b8f00; margin-top: 6px; display: block; }
+  .story-continue { display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
+  .story-continue .sc-label { font-family: var(--body); font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); text-align: center; margin-bottom: 2px; }
+  .story-continue .btn-pill, .story-continue .btn-ghost { width: 100%; }
+  .story-tbc-note { font-family: var(--body); font-size: 22px; color: #666; line-height: 1.5; background: rgba(65,39,116,0.05); border: 2px dashed rgba(65,39,116,0.2); border-radius: 18px; padding: 30px 34px; }
+
   /* Shared detail typography & buttons */
   .d-h1 { font-family: var(--veneer); font-size: 66px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.98; margin-bottom: 12px; }
   .d-intro { font-family: var(--body); font-size: 23px; color: #555; line-height: 1.5; margin-bottom: 30px; }
@@ -739,7 +773,7 @@
         <!-- Greeting shown on tap-through (detail view built in a later phase), not on the face -->
         <div class="tile-greeting" hidden>Think you know youth homelessness?</div>
       </div>
-      <div class="tile has-photo">
+      <div class="tile has-photo" onclick="openDetail('dv-stories')">
         <img class="tile-img" src="project/assets/opportunities-riv.jpg" alt="A young person supported by Step by Step" style="object-position:center 20%;">
         <div class="tile-ph"><div class="tile-title">Real stories</div></div>
       </div>
@@ -1159,6 +1193,9 @@
         </div>
       </div>
 
+      <!-- VIEW: Real stories (Tile 6) - rendered by initStories() -->
+      <div class="detail-view" id="dv-stories"></div>
+
       <!-- VIEW: What £29.78 costs (Tile 3) -->
       <div class="detail-view" id="dv-cost">
         <div class="cost-hero">
@@ -1524,9 +1561,11 @@ const DETAIL_TITLES = {
   'dv-offer-room': 'Could you offer a room?',
   'dv-sl':         'Supported Lodgings',
   'dv-fostering':  'Fostering',
-  'dv-cost':       'What it costs'
+  'dv-cost':       'What it costs',
+  'dv-stories':    'Real Stories'
 };
 function openDetail(viewId) {
+  if (!document.getElementById(viewId)) return;   // target not built yet (e.g. Tile 4/5 exits) — do nothing
   const overlay = document.getElementById('detail');
   if (overlay.classList.contains('visible')) {
     const cur = document.querySelector('.detail-view.active');
@@ -1556,14 +1595,14 @@ const VIEW_TABS = {
   fostering: ['Could you?', 'The money', 'Our carers', 'Enquire'],
   sl:        ['About', 'Could you?', 'Enquire']
 };
-const VIEW_MENUS = { fostering: true, sl: true };   // these views open on a card menu
+const VIEW_MENUS = { fostering: true, sl: true, stories: true };   // these views open on a card menu
 const ENQUIRY_TAB = { fostering: 3, sl: 2 };        // which subpage holds the enquiry form
 
 /* Show the card menu for a view (no subpage selected, tab bar hidden). */
 function openViewMenu(key) {
   const view = document.getElementById('dv-' + key);
   const menu = view.querySelector('.view-menu');
-  if (menu) menu.style.display = 'flex';
+  if (menu) menu.style.display = '';   // revert to CSS (flex for card lists, grid for the stories 2x2)
   view.querySelectorAll(':scope > .subpanel').forEach(p => p.classList.remove('active'));
   const bar = document.getElementById('detail-subtabs');
   bar.style.display = 'none'; bar.innerHTML = '';
@@ -2059,8 +2098,160 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+/* ═══════════════ TILE 6: REAL STORIES (data-driven) ═══════════════
+   One entry per person. Add a card later by adding an entry here — the grid
+   and story panels render from this list; no layout code to touch.
+   Exits: type 'single' (one button) or 'choice' (a label + options).
+   Story blocks: pull | q | p | disc | stats. */
+const STORIES = [
+  {
+    name: 'Jess', role: 'Young Person', photo: 'jess-portrait-small.jpg', pseudonym: false,
+    hook: 'Left home at 16 — and found her feet.',
+    exit: { type: 'choice', label: 'Want to know more?', options: [
+      { text: 'See what that support costs', view: 'dv-cost', style: 'pill' },
+      { text: 'Think you know youth homelessness?', view: 'dv-homelessness', style: 'ghost' }
+    ]},
+    story: [
+      { t: 'q', text: `How did you come to be supported by Step by Step?` },
+      { t: 'p', text: `I left my family home at aged 16. My mother struggled with her mental health resulting in emotional abuse and neglect. I began staying with my best friend's family and didn't return home. I was in communication with my local council team and they referred to me to Step by Step when they heard about my situation.` },
+      { t: 'q', text: `What was it like when you first moved in?` },
+      { t: 'p', text: `I was really scared to have to move but once I had a meeting with my Step by Step Support Worker, everything was explained to me, which helped to reassure me a lot. My friend's parents decided to train to become Supported Lodgings hosts so I could continue to live with them, with support every step of the way from Step by Step.` },
+      { t: 'q', text: `How were you supported?` },
+      { t: 'p', text: `The family were so welcoming, as I had been staying for a few months prior to my official moving in day. My Support Worker met with me routinely and I was able to be open about any struggles I was facing at the time. My Support Worker guided me through financial support resources and meetings, as well as helped me fill out any paperwork I was unsure about.` },
+      { t: 'q', text: `What difference did it make to you?` },
+      { t: 'p', text: `It gave me the chance to figure out who I am and who I want to be. People believed in me and were a consistent support network for me. Even now I have left my hosts' home, I remain in contact with them and they continue to be a part of my close support network.` },
+      { t: 'q', text: `What are you doing now?` },
+      { t: 'p', text: `I am currently studying to be a primary school teacher at university as well as work as a private tutor. Without Step by Step, I wouldn't be where I am today. I couldn't keep living at home within the circumstances so I'm not sure what I have done if this charity wasn't an option for me. I am healthy, happy and supported after being with Step by Step.` },
+      { t: 'q', text: `Do you have a message for our supporters?` },
+      { t: 'p', text: `Step by Step's work is the reason I am not homeless. It's the reason I am able to go to university and have grown to find myself over the years. They can help in more ways than you realise, and that's why I want to give back by doing their Spinnaker Tower abseil. There are so many reasons why a young person can lose their home, and that's why Step by Step is so important.` }
+    ]
+  },
+  {
+    name: 'Lorraine', role: 'Supported Lodgings Host', photo: 'lorraine-portrait-small.jpg', pseudonym: false,
+    hook: `"They bring life to the house — I wouldn't have it any other way."`,
+    exit: { type: 'single', text: 'Could you offer a room?', view: 'dv-sl' },
+    story: [
+      { t: 'pull', text: `They bring life to the house — I wouldn't have it any other way.` },
+      { t: 'p', text: `For Lorraine, becoming a Supported Lodgings host with Step by Step was a natural step. With her own children growing up and moving out, she found herself with space to spare and a desire for company at home. "I thought about foster care," she explains, "but it never felt quite right for me. Then I saw an advert for Supported Lodgings, and I thought, actually, I can do this."` },
+      { t: 'p', text: `Lorraine, who lives in Swindon, has now been hosting young people for over five years. She works full-time and enjoys spending time in her caravan, often heading off for weekend breaks. Far from being a barrier, her lifestyle has worked well with the independence that Supported Lodgings encourages.` },
+      { t: 'p', text: `"You're not there to parent them," she says. "You're there to support them as they move towards independence. Sometimes that means helping them with cooking or laundry, but mostly it's just being there, guiding them to make good decisions and stay safe."` },
+      { t: 'p', text: `One of Lorraine's most memorable placements was a young man from Vietnam who had come to the UK alone as a teenager. "He loved to cook," she smiles. "He wasn't keen on British food, but he was an incredible cook and really appreciated having the freedom to make meals from his own culture."` },
+      { t: 'p', text: `The journey wasn't always easy. Language barriers meant Lorraine often relied on interpreters during meetings, and she had to be vigilant about exploitation when the young man first entered employment. But through consistent support and open communication, she helped him navigate college, find work, and build a life with his partner and new baby. "They moved on into a lovely flat together, and I was so proud of them," she recalls.` },
+      { t: 'p', text: `Lorraine has supported many young people, often those who have experienced trauma and face challenges with mental health or relationships. But she believes that empathy, structure, and trust can go a long way. "Every young person I've had has been lovely," she says. "They might struggle sometimes, but that's often because of what they've been through. They just need someone to care."` },
+      { t: 'p', text: `When asked why she chose Supported Lodgings over renting privately to a lodger, Lorraine doesn't hesitate: "I want to make a difference. I don't just want someone to come in and do their own thing. I want them to feel supported, to have someone to talk to, and to help them move forward."` },
+      { t: 'p', text: `She admits that the extra income is helpful and that she enjoys having company at home. But it's clear that Lorraine's motivation runs deeper. "I like the life it brings to the house," she says. "I don't want to live on my own. Hosting makes the house feel alive."` },
+      { t: 'p', text: `Lorraine praises the support she receives from Step by Step. "They're always there when I need them. We have regular meetings, and if there are any concerns, we deal with them together. It never feels like I'm doing it on my own."` },
+      { t: 'p', text: `Lorraine says hosting has been one of the most rewarding things she's done. "I really enjoy being a host... I like the company in the house," she says. She also acknowledges the practical benefits: "It's nice to have a bit of extra money," she smiles. But what really matters is the connection. "They bring a different life to the home... I'd much rather have a couple of young people with me. They just need someone to be there for them and guide them and support them."` }
+    ]
+  },
+  {
+    name: 'Laura', role: 'Foster Carer', photo: 'carer-laura.jpg', pseudonym: true, imgPos: 'center 30%',
+    hook: `"Fostering lets me be the person I needed as a child."`,
+    exit: { type: 'single', text: 'Find out about fostering', view: 'dv-fostering' },
+    story: [
+      { t: 'pull', text: `Fostering gives me the opportunity to be the person I needed as a child.` },
+      { t: 'p', text: `We sat down with Laura*, one of our incredible foster carers, to hear about her journey into fostering and the difference it has made to her life and the child she supports.` },
+      { t: 'p', text: `Laura lives with her daughter and their cat. She works full time as a manager, mainly from home, and describes herself as close friends with her daughter's dad, who is a part of her support network. She began fostering around nine months ago, after years of thinking about it.` },
+      { t: 'p', text: `"I've always wanted to foster," Laura explains. "But it was important to make sure it was the right time for my family."` },
+      { t: 'p', text: `Growing up, Laura saw first-hand what it meant to open your home to others. Her mum had what she describes as "the biggest heart", always welcoming her friends if they were struggling at home. Whether it was a hot meal or a place to stay, Laura's mum created a safe and caring space. She also fostered when Laura was a teenager, which left a lasting impression.` },
+      { t: 'p', text: `Later in life, Laura's work brought her into contact with care leavers. Hearing their experiences, and understanding how much a stable, nurturing home can matter, strengthened her motivation. "It made me realise how much of a difference just one person believing in you can make."` },
+      { t: 'p', text: `Laura reflects that fostering is deeply personal for her. "It gives me the opportunity to be the person I needed as a child."` },
+      { t: 'p', text: `For a long time, Laura put fostering on hold for one important reason: her daughter. Their bond is incredibly strong, and Laura wanted to be sure it was the right time for both of them. That moment came when her daughter began to gain independence. "She started spending more time in her room, talking to friends, doing her own thing. I realised she didn't need me in quite the same way anymore. That's when I thought, maybe I can do this now."` },
+      { t: 'p', text: `Speaking to the team at Step by Step helped turn that thought into action. "They made the whole process feel manageable, much easier than I'd built it up to be in my head."` },
+      { t: 'p', text: `Like many people considering fostering, Laura had her concerns. She questioned whether she would be "good enough" and worried about being judged, especially when it came to sharing her own life experiences during the assessment process. "I'd heard people say how intrusive it could be, and that made me nervous. Opening up like that isn't something I'd really done before." "They do ask questions about your past and upbringing, but it's to show the resilience you've developed rather than to catch you out. The social workers at Step by Step are not judgmental at all and really want the best for you so this makes you feel at ease."` },
+      { t: 'p', text: `She also had worries about how fostering might affect her home life, particularly her relationship with her daughter. "We talked about it openly. Years ago, she wasn't ready, so we waited. Now, we make sure we still have our time together every evening. It's actually helped her grow more independent too."` },
+      { t: 'p', text: `Some of Laura's initial assumptions about fostering turned out not to be true. She believed she might not be able to foster as a single person or continue working alongside it. "That was a big misconception for me. You can absolutely do both." What reassured her most was the support from Step by Step. "They were always there to answer questions, never judgmental, and they genuinely made me feel like I could do this."` },
+      { t: 'p', text: `Training, including the Skills to Foster course, gave her the confidence and preparation she needed, as well as the opportunity to connect with other foster carers.` },
+      { t: 'p', text: `When the time came to welcome her foster child into her home, Laura describes a mix of excitement and nerves. "It was scary and exciting at the same time. I knew I wanted to do this long term, so I worried about letting them down." To help them settle in, Laura created a warm and thoughtful welcome, including a keepsake box, small gifts, and familiar comforts. They had already spent time together before the placement, which helped build trust from the start.` },
+      { t: 'p', text: `Now, daily life has found its rhythm. "Every day is different, just like with any child. That's what makes it so rewarding." From morning routines and school runs to shared meals, games, and weekend outings, Laura has created a home filled with structure, care, and connection.` },
+      { t: 'p', text: `The impact has been profound. "Seeing how much happier they are is everything. They tell me this is the best family ever." Laura has witnessed incredible progress, from improved sleep and routines to growing confidence in school and daily life. One moment stands out above all. "They wrote me a birthday card that said, 'Thank you for making me feel safe.' That meant everything."` },
+      { t: 'p', text: `Of course, fostering comes with challenges. Hearing about a young person's past experiences can be difficult, and there are times when emotions and behaviours feel overwhelming. "You can't be perfect, and you shouldn't try to be. What matters is providing a safe, stable, normal home."` },
+      { t: 'p', text: `Support from Step by Step has been a constant throughout. "They're always there, at the end of the phone whenever you need them. You're never on your own."` },
+      { t: 'p', text: `Fostering has not only changed the life of the young person in Laura's care, it has changed hers too. "It's life-changing. It gives you purpose. You see the difference you can make so quickly." She reflects on how the experience has helped her grow, learning to be patient, to ask for support, and to recognise the impact she is making. "We're building this journey together. We have a happy child who feels safe and loved, and that's what matters."` },
+      { t: 'p', text: `For anyone thinking about becoming a foster carer, Laura's message is simple: "Just do it. You are good enough. You will be supported every step of the way, and you can make such a difference."` },
+      { t: 'disc', text: `*Name changed to protect foster carer and child.` }
+    ]
+  },
+  {
+    name: 'Anne', role: 'Legacy Giver', photo: 'anne-portrait-small.jpg', pseudonym: false,
+    hook: 'Why I left a gift in my will.',
+    exit: { type: 'single', text: 'Support young people', view: 'dv-cost' },
+    story: [
+      { t: 'p', text: `"For some time, I have made regular contributions to Step by Step as I want to help boost young people's chances when they have had a difficult start to their lives. I then decided to research further into the charity.` },
+      { t: 'p', text: `"Importantly to me, Step by Step prepares young people carefully for independence. There are so many elements to this that many of us take for granted because we have a network of adults teaching us gradually how to be an adult. How hard it must be without family to support and guide.` },
+      { t: 'p', text: `"So a couple of years ago, I took the plunge and had a new will drawn-up and included Step by Step. I hope my legacy will help more young people to find a safe space in which to grow up and become independent, and to have the opportunity to do things other young people might take for granted."` }
+    ]
+  },
+  {
+    name: 'Holly', role: 'Marathon Fundraiser', photo: 'holly-portrait-small.jpg', pseudonym: false,
+    hook: 'Running became my saviour.',
+    exit: { type: 'single', text: 'Take on a challenge', view: 'dv-challenges' },
+    story: [
+      { t: 'stats', items: [ { n: '£2,644', l: 'raised' }, { n: '106%', l: 'of target' }, { n: '91', l: 'donors' } ] },
+      { t: 'q', text: `Tell us a bit about yourself...` },
+      { t: 'p', text: `My name is Holly Becket. I'm 27 years old and work as a Land Manager in London. My role involves securing planning consent for residential developments. I've been running on and off for the past five years, but I've never gone beyond a half marathon, mostly because I've been too nervous to take the leap! Outside of running, I enjoy going to the gym and playing netball.` },
+      { t: 'q', text: `Why did you choose to run for Step by Step?` },
+      { t: 'p', text: `Step by Step is an incredible charity that truly deserves greater recognition. I was first introduced to the charity when I started working at Croudace, as they are one of our partner charities. Every teenager and young adult deserves a supportive upbringing, and becoming an adult can be daunting enough without limited support, it must be incredibly overwhelming. Since accepting my London Marathon place, I've visited the Foyer accommodation in Aldershot. It was really valuable to gain a deeper understanding of the work the charity does. I am truly honoured to be running for an amazing charity and hope to raise as much money as I can!` },
+      { t: 'q', text: `Is there a young person's story that resonated with you?` },
+      { t: 'p', text: `While I've been fortunate enough to never experience homelessness, I have faced mental health challenges over the past five years. I especially connected with London's story, as for more than a year depression and anxiety completely took over my life. I withdrew from socialising and spent most of my time in bed. Thankfully, I'm in a much better place now. The care and support that Step by Step provides to young people is truly inspirational, and I only wish I had known about them when I was going through such a difficult period.` },
+      { t: 'q', text: `How did you feel when offered your marathon place?` },
+      { t: 'p', text: `A mixture of terrified but very excited! What an amazing opportunity I've been given!` },
+      { t: 'q', text: `How are you hoping to reach your fundraising goal?` },
+      { t: 'p', text: `I'm planning on holding a couple of bake sales in the office and a charity dinner party. I'm also hoping to hold a charity raffle.` },
+      { t: 'q', text: `What does running the London Marathon mean for you?` },
+      { t: 'p', text: `I used to love running before depression and anxiety took over my life. I went from running and going to the gym five times a week to not exercising at all. Gradually, I found my way back to running, and it became my saviour. Whenever I feel myself slipping into a dark place, I go for a run, and it really helps. Running this marathon will be incredibly emotional for me, as it represents how far I've come over the past five years. Being able to do it in support of a charity that helps young people facing mental health challenges and homelessness makes the experience even more meaningful.` },
+      { t: 'q', text: `Do you have a message for our supporters?` },
+      { t: 'p', text: `I'm incredibly passionate about this cause, having seen first-hand the incredible work Step by Step does and the truly life-changing impact of their support. Any donation, no matter how small, will help provide young people with the care, guidance, and opportunities they deserve. Many of us have grown up in safe, supportive homes, and we have the chance to be the heroes for those who haven't.` }
+    ]
+  }
+];
+
+function renderStoryBlocks(blocks) {
+  return blocks.map(b => {
+    if (b.t === 'pull')  return `<div class="sp-pull">${b.text}</div>`;
+    if (b.t === 'q')     return `<div class="sp-q">${b.text}</div>`;
+    if (b.t === 'p')     return `<p class="sp-p">${b.text}</p>`;
+    if (b.t === 'disc')  return `<p class="sp-disclaimer">${b.text}</p>`;
+    if (b.t === 'stats') return `<div class="sp-stats">${b.items.map(it => `<div class="sp-stat"><b>${it.n}</b><span>${it.l}</span></div>`).join('')}</div>`;
+    return '';
+  }).join('');
+}
+function renderStoryExit(s) {
+  if (s.exit.type === 'choice') {
+    let h = s.exit.label ? `<div class="sc-label">${s.exit.label}</div>` : '';
+    h += s.exit.options.map(o => o.style === 'ghost'
+      ? `<button class="btn-ghost" onclick="openDetail('${o.view}')">${o.text}</button>`
+      : `<button class="btn-pill" onclick="openDetail('${o.view}')">${o.text} ${SVG_ARROW}</button>`).join('');
+    return h;
+  }
+  return `<button class="btn-pill" onclick="openDetail('${s.exit.view}')">${s.exit.text} ${SVG_ARROW}</button>`;
+}
+function initStories() {
+  const view = document.getElementById('dv-stories');
+  if (!view) return;
+  const posAttr = s => s.imgPos ? ` style="object-position:${s.imgPos}"` : '';
+  let grid = '<div class="view-menu stories-grid"><div class="sg-grid">';
+  STORIES.forEach((s, i) => {
+    grid += `<div class="story-tile2" onclick="showSection('stories',${i})">
+      <div class="st2-photo"><img src="project/assets/${s.photo}" alt="${s.name}"${posAttr(s)}></div>
+      <div class="st2-cap"><div class="st2-name">${s.name}${s.pseudonym ? '*' : ''}</div><div class="st2-role">${s.role}</div><div class="st2-hook">${s.hook}</div></div>
+    </div>`;
+  });
+  grid += '</div>';
+  if (STORIES.some(s => s.pseudonym)) grid += '<div class="stories-disclaimer">Some names have been changed to protect the people we support.</div>';
+  grid += '</div>';
+  const panels = STORIES.map(s => `
+    <div class="subpanel story-panel">
+      <div class="sp-top"><img class="sp-photo" src="project/assets/${s.photo}" alt="${s.name}"${posAttr(s)}><div class="sp-name">${s.name}${s.pseudonym ? '*' : ''}</div></div>
+      <div class="sp-body">${renderStoryBlocks(s.story)}</div>
+      <div class="story-continue">${renderStoryExit(s)}</div>
+    </div>`).join('');
+  view.innerHTML = grid + panels;
+}
+
 /* ═══════════════ INIT ═══════════════ */
 initQuizzes();
+initStories();
 updateStaffBadge();
 if (loadQueue().length) drainQueue();
 </script>
