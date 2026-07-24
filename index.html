@@ -797,7 +797,7 @@
         <img class="tile-img" src="project/assets/charlie-room.jpg" alt="Getting a room ready" style="object-position:center 45%;">
         <div class="tile-ph"><div class="tile-title">Could you offer a room?</div></div>
       </div>
-      <div class="tile ask has-photo">
+      <div class="tile ask has-photo" onclick="openDetail('dv-volunteer')">
         <img class="tile-img" src="project/assets/fern-2yp.jpg" alt="Support from Step by Step" style="object-position:center 22%;">
         <div class="tile-ph"><div class="tile-title">Could you spare a few hours?</div></div>
       </div>
@@ -1236,6 +1236,9 @@
         </div>
       </div>
 
+      <!-- VIEW: Volunteering (Tile 2) - rendered by initVolunteer() -->
+      <div class="detail-view" id="dv-volunteer"></div>
+
       <!-- VIEW: Take on a challenge (Tile 4) - rendered by initChallenges() -->
       <div class="detail-view" id="dv-challenges"></div>
 
@@ -1610,7 +1613,8 @@ const DETAIL_TITLES = {
   'dv-fostering':  'Fostering',
   'dv-cost':       'What it costs',
   'dv-stories':    'Real Stories',
-  'dv-challenges': 'Take on a Challenge'
+  'dv-challenges': 'Take on a Challenge',
+  'dv-volunteer':  'Volunteer with Us'
 };
 function openDetail(viewId) {
   if (!document.getElementById(viewId)) return;   // target not built yet (e.g. Tile 4/5 exits) — do nothing
@@ -1643,7 +1647,7 @@ const VIEW_TABS = {
   fostering: ['Could you?', 'The money', 'Our carers', 'Enquire'],
   sl:        ['About', 'Could you?', 'Enquire']
 };
-const VIEW_MENUS = { fostering: true, sl: true, stories: true, challenges: true };   // these views open on a card menu
+const VIEW_MENUS = { fostering: true, sl: true, stories: true, challenges: true, volunteer: true };   // these views open on a card menu
 const ENQUIRY_TAB = { fostering: 3, sl: 2 };        // which subpage holds the enquiry form
 
 /* Show the card menu for a view (no subpage selected, tab bar hidden). */
@@ -1697,6 +1701,7 @@ function resetContentState() {
   if (typeof resetCalc === 'function') resetCalc();
   resetCost();
   if (typeof resetChallenges === 'function') resetChallenges();
+  if (typeof resetVolunteer === 'function') resetVolunteer();
 }
 
 /* Generic expand/collapse for tap-to-expand panels (cost page). */
@@ -2455,10 +2460,166 @@ function resetChallenges() {
   });
 }
 
+/* ═══════════════ TILE 2: COULD YOU SPARE A FEW HOURS? (data-driven) ═══════════════
+   Volunteering. Six standardised routes in — deliberately NOT service-specific
+   (brief §Tile 2). Same 2x3 photo-card grid as Tile 4, and every role ends in the
+   SAME shared queue (section 17), tagged Volunteering + role via interestType.
+   TeamKinetic is explicitly deferred — enquiries sit in ActiveCampaign for now. */
+const VOLUNTEER_ROLES = [
+  { name: 'New Forest Committee', photo: 'New_Forest_Committee.jpeg',
+    location: 'New Forest',
+    line: 'Help run events right across the New Forest.',
+    blurb: `Our New Forest volunteer committee plans and runs community events, fairs and stalls right across the Forest — fundraising locally, spreading the word so young people who need help know where to turn, and helping bring in more volunteers, hosts and carers. There are four of us now, and genuinely room for more.`,
+    facts: [
+      'You know the New Forest and its communities',
+      "You've worked with young people or families — in any setting",
+      "You've run a community group, charity or small business",
+      "You're happy chatting to people at a stall or event",
+      'No professional background needed — a friendly, no-strings chat first'
+    ] },
+  { name: 'Fundraising & Event Support', photo: 'volunteer-young-festival-original.jpg',
+    line: 'Be our friendly face at shows and festivals.',
+    blurb: `Talking to the public at shows and festivals, helping on a stand, holding a collection bucket — the friendly face of Step by Step out in the community. Give as much or as little time as suits you, with full support from our team.`,
+    facts: [
+      'Shows, festivals and community events',
+      'Bucket collections and stall support',
+      'Full support and training from our team',
+      'No experience needed'
+    ] },
+  { name: 'Admin & Reception', photo: 'reception-candidate-original.jpg',
+    location: 'Aldershot foyer',
+    line: 'The first friendly face visitors meet.',
+    blurb: `Be the first friendly face visitors meet at our Aldershot foyer — a regular, valued role at the heart of the building, and a real help to the young people and staff there every day.`,
+    facts: [
+      'Minimum 4 hours a week, Mon–Fri, 8am–6pm',
+      'First point of contact for visitors',
+      'Enhanced DBS check — full training given',
+      'No experience needed'
+    ] },
+  { name: 'Practical Help', photo: 'Garden_cleanup_basingstoke.jpg',
+    line: 'Hands-on help — gardening, decorating, driving.',
+    blurb: `Gardening, decorating, driving — hands-on help that keeps our foyers running and our young people supported. Great for individuals, and a brilliant team day for groups too.`,
+    facts: [
+      'Gardening, decorating, driving and more',
+      'One-off days or ongoing help',
+      'Perfect for teams and groups'
+    ] },
+  { name: 'One-off & Occasional', photo: 'volunteer-hero-original.jpg',
+    line: 'Help when it suits you — no rota, no pressure.',
+    blurb: `Not everyone can commit to a rota — and that's completely fine. This is the help-when-it-suits-you option: put up a few posters and leaflets around your community, lend a hand at a local event, or step in when we're busy. Help once, help twice, or help whenever you can — every hour makes a difference to a young person facing homelessness.`,
+    facts: [
+      'Put up posters and leaflets in your community',
+      'Lend a hand at a local event',
+      'Help once, or as often as you like — no rota',
+      'Fits around your life'
+    ] },
+  { name: 'Aldershot Open Day', photo: 'aldershot-exterior-original.jpg', book: true,
+    date: '16 September 2026', time: '10:30 – 12:30',
+    location: '36 Crimea Road, Aldershot',
+    line: 'Not sure yet? Come and see us first.',
+    blurb: `Not sure yet? Come and see us first. Meet the team, look around, and find out what volunteering with Step by Step is really like — with no commitment at all. Open to anyone; just book a place.`,
+    facts: [
+      '16 September 2026, 10:30 – 12:30',
+      '36 Crimea Road, Aldershot',
+      'Open to anyone — just book a place',
+      'No commitment — come and have a look'
+    ] }
+];
+
+function initVolunteer() {
+  const view = document.getElementById('dv-volunteer');
+  if (!view) return;
+  let menu = '<div class="view-menu"><div class="sg-grid">';
+  VOLUNTEER_ROLES.forEach((r, i) => {
+    const img = r.photo
+      ? `<img src="project/assets/${r.photo}" alt="${r.name}" onerror="this.closest('.challenge-tile').classList.add('noimg'); this.remove();">`
+      : '';
+    const tag = r.date || r.location;
+    menu += `<div class="challenge-tile${r.photo ? '' : ' noimg'}" onclick="showSection('volunteer',${i})">
+      ${img}
+      <div class="ct-cap">
+        ${tag ? `<div class="ct-date">${tag}</div>` : ''}
+        <div class="ct-name">${r.name}</div>
+        <div class="ct-line">${r.line}</div>
+        <div class="ct-more">Find out more &amp; get involved <span class="ct-arrow">&#8594;</span></div>
+      </div>
+    </div>`;
+  });
+  menu += '</div></div>';
+  const panels = VOLUNTEER_ROLES.map((r, i) => `
+    <div class="subpanel">
+      <h2 class="d-h2">${r.name}</h2>
+      ${(r.date || r.location) ? `<div class="cd-meta">
+        ${r.date ? `<span class="cd-when">${r.date}${r.time ? ', ' + r.time : ''}</span>` : ''}
+        ${r.location ? `<span class="cd-where">${r.location}</span>` : ''}
+      </div>` : ''}
+      <p class="d-p">${r.blurb}</p>
+      ${r.facts && r.facts.length ? `<ul class="sp-facts">${r.facts.map(f => `<li>${f}</li>`).join('')}</ul>` : ''}
+      <div class="enquiry" id="vol-${i}">
+        <div id="vol-${i}-form">
+          <h3>${r.book ? 'Book your place' : 'Register your interest'}</h3>
+          <div class="eq-line">Leave your details and we'll be in touch about ${r.book ? 'the open day' : 'how you can help'}. No commitment.</div>
+          <div class="eq-field"><label for="vol-${i}-name">Full name</label><input type="text" id="vol-${i}-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+          <div class="eq-field"><label for="vol-${i}-email">Email address</label><input type="email" id="vol-${i}-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+          <div class="optin-row checked" id="vol-${i}-optin" onclick="toggleOptin(this)">
+            <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+          </div>
+          <button class="btn-pill" style="width:100%" onclick="submitVolunteer(${i})">${r.book ? 'Book my place' : 'Register my interest'} ${SVG_ARROW}</button>
+        </div>
+        <div class="eq-confirm" id="vol-${i}-confirm">
+          <div class="ec-splash">${SVG_CHECK}</div>
+          <h3>Thank you!</h3>
+          <p>We've got your details and someone from the Step by Step team will be in touch soon about getting you involved.</p>
+        </div>
+      </div>
+    </div>`).join('');
+  view.innerHTML = menu + panels;
+}
+
+function submitVolunteer(i) {
+  const r = VOLUNTEER_ROLES[i];
+  const name  = document.getElementById('vol-' + i + '-name').value.trim();
+  const email = document.getElementById('vol-' + i + '-email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  let valid = true;
+  if (!name)    { fieldError('vol-' + i + '-name',  'Please enter your name');   valid = false; }
+  if (!emailOk) { fieldError('vol-' + i + '-email', 'Please enter a valid email'); valid = false; }
+  if (!valid) { resetIdleTimer(); return; }
+  const optin = document.getElementById('vol-' + i + '-optin').classList.contains('checked');
+  const stored = queueEntry({
+    fullname: name, email, optin,
+    source: 'Volunteering — ' + r.name + ' — ' + CONFIG.event.name,
+    interestType: 'Volunteering: ' + r.name
+  });
+  if (!stored) {
+    document.querySelector('#vol-' + i + '-form .eq-line').textContent =
+      "Sorry — we couldn't save that just now. Please let a member of the team know.";
+    return;
+  }
+  document.getElementById('vol-' + i + '-form').style.display = 'none';
+  document.getElementById('vol-' + i + '-confirm').classList.add('show');
+  resetIdleTimer();
+}
+
+function resetVolunteer() {
+  VOLUNTEER_ROLES.forEach((r, i) => {
+    const form = document.getElementById('vol-' + i + '-form');
+    if (!form) return;
+    form.style.display = '';
+    const n = document.getElementById('vol-' + i + '-name'), e = document.getElementById('vol-' + i + '-email');
+    if (n) { n.value = ''; n.style.borderColor = ''; }
+    if (e) { e.value = ''; e.style.borderColor = ''; }
+    const o = document.getElementById('vol-' + i + '-optin'); if (o) o.classList.add('checked');
+    const cf = document.getElementById('vol-' + i + '-confirm'); if (cf) cf.classList.remove('show');
+  });
+}
+
 /* ═══════════════ INIT ═══════════════ */
 initQuizzes();
 initStories();
 initChallenges();
+initVolunteer();
 updateStaffBadge();
 if (loadQueue().length) drainQueue();
 </script>
