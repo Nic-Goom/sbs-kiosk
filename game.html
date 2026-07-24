@@ -723,8 +723,11 @@ function playAgain(forceWeeks) {
 }
 function exitToKiosk() { window.location.href = 'index.html'; }
 
-/* ═══════════════ IDLE (20s → kiosk) ═══════════════ */
-const IDLE_MS = 20000, IDLE_WARN_MS = 6000;
+/* ═══════════════ IDLE (→ kiosk) ═══════════════
+   The game is all reading and thinking, and shows no personal data, so it
+   uses a much longer idle than the entry form. "Still there?" appears at
+   ~2 min of no touches, with 20s more before it returns to the kiosk. */
+const IDLE_MS = 140000, IDLE_WARN_MS = 20000;
 let idleTimer = null, warnTimer = null;
 function resetIdle() {
   clearTimeout(idleTimer); clearTimeout(warnTimer);
