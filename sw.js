@@ -6,7 +6,7 @@
    Bump CACHE_VERSION whenever the precache list or any cached file
    changes, so devices pick up the new copy on next load.
    ───────────────────────────────────────────────────────────── */
-const CACHE_VERSION = 'sbs-kiosk-v20';
+const CACHE_VERSION = 'sbs-kiosk-v24';
 
 /* Everything the kiosk needs to run fully offline.
    The video is cached here (never base64'd into the HTML). */
@@ -30,6 +30,14 @@ const PRECACHE = [
   './project/assets/fern-2yp.jpg',
   './project/assets/opportunities-riv.jpg',
   './project/assets/Abseil-_26.jpg',
+
+  // Tile 4 event photos
+  './project/assets/event-marathon.jpg',
+  './project/assets/event-tough-mudder.jpg',
+  './project/assets/event-great-south-run.jpg',
+  './project/assets/event-fire-walk.jpg',
+  './project/assets/event-skydive.jpg',
+  './project/assets/event-go-the-distance.jpg',
   './project/assets/jess-portrait-small.jpg',
   './project/assets/lorraine-portrait-small.jpg',
   './project/assets/anne-portrait-small.jpg',

@@ -544,6 +544,48 @@
   .story-panel .sp-stat { flex: 1; background: rgba(161,205,61,0.14); border-radius: 16px; padding: 20px 18px; text-align: center; }
   .story-panel .sp-stat b { display: block; font-family: var(--veneer); font-size: 46px; color: var(--purple); line-height: 1; }
   .story-panel .sp-stat span { font-family: var(--body); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b8f00; margin-top: 6px; display: block; }
+
+  /* ── Tile 4: Take on a challenge (event list, data-driven) ── */
+  .challenge-card { background: #fff; border-radius: 18px; box-shadow: 0 4px 18px rgba(65,39,116,0.1); padding: 24px 30px; display: flex; align-items: center; gap: 24px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; border-left: 10px solid var(--pink); }
+  .challenge-card:active { transform: scale(0.99); }
+  .challenge-card .cc-when { flex-shrink: 0; width: 168px; }
+  .challenge-card .cc-when .cw-date { font-family: var(--veneer); font-size: 27px; color: var(--purple); text-transform: uppercase; line-height: 1.02; }
+  .challenge-card .cc-when .cw-tbc { font-family: var(--body); font-size: 12px; color: var(--pink); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 5px; line-height: 1.25; }
+  .challenge-card .cc-body { flex: 1; }
+  .challenge-card .cc-name { font-family: var(--veneer); font-size: 34px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 6px; }
+  .challenge-card .cc-line { font-family: var(--body); font-size: 17px; color: #666; line-height: 1.4; }
+  .challenge-card .cc-arrow { width: 56px; height: 56px; border-radius: 50%; background: var(--gradient-h); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .challenge-card .cc-arrow svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 3; fill: none; }
+  .cd-when { display: inline-block; font-family: var(--veneer); font-size: 24px; color: #3a5800; background: rgba(161,205,61,0.22); padding: 8px 22px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 20px; }
+  .cd-when.tbc { background: rgba(237,40,141,0.12); color: var(--pink); }
+
+  /* Event tiles — photo-led grid (like Real Stories), placeholder card where no photo yet */
+  .challenge-tile { position: relative; overflow: hidden; border-radius: 20px; box-shadow: 0 6px 24px rgba(65,39,116,0.12); display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; min-height: 0; }
+  .challenge-tile:active { transform: scale(0.985); }
+  .challenge-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; z-index: 0; }
+  .challenge-tile.noimg { background: linear-gradient(150deg, var(--purple) 0%, #5a2f95 55%, var(--pink) 130%); }
+  .challenge-tile.noimg::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.5) 40%, transparent 40%); background-size: 22px 22px; opacity: 0.08; z-index: 0; }
+  .challenge-tile::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(26,10,46,0.92) 0%, rgba(26,10,46,0.5) 34%, rgba(26,10,46,0) 64%); }
+  .challenge-tile.noimg::after { display: none; }
+  .challenge-tile .ct-cap { position: relative; z-index: 2; padding: 24px 28px; }
+  .challenge-tile .ct-date { font-family: var(--body); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow); margin-bottom: 8px; }
+  .challenge-tile .ct-date .ct-tbc { display: block; color: rgba(255,255,255,0.75); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 13px; margin-top: 2px; }
+  .challenge-tile .ct-name { font-family: var(--veneer); font-size: 34px; color: #fff; text-transform: uppercase; line-height: 1.02; text-shadow: 0 2px 12px rgba(0,0,0,0.5); margin-bottom: 6px; }
+  .challenge-tile .ct-line { font-family: var(--body); font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.35; }
+  .challenge-tile .ct-badge { position: absolute; top: 0; left: 0; right: 0; z-index: 3; background: var(--yellow); color: var(--purple); font-family: var(--veneer); font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; text-align: center; padding: 11px 14px 9px; box-shadow: 0 3px 12px rgba(0,0,0,0.28); }
+  .challenge-tile:has(.ct-badge) { outline: 3px solid var(--yellow); outline-offset: -3px; }
+  .challenge-tile .ct-more { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; font-family: var(--veneer); font-size: 19px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--purple); background: var(--yellow); padding: 10px 20px; border-radius: 9999px; align-self: flex-start; box-shadow: 0 3px 12px rgba(0,0,0,0.22); }
+  .challenge-tile .ct-arrow { display: inline-block; font-size: 22px; line-height: 1; transition: transform 0.9s ease; animation: ctNudge 1.6s ease-in-out infinite; }
+  @keyframes ctNudge { 0%,60%,100% { transform: translateX(0); } 78% { transform: translateX(5px); } }
+  .challenge-tile:active .ct-more { transform: scale(0.97); }
+  /* Event detail: meta row + key facts */
+  .cd-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .cd-meta .cd-when { margin-bottom: 0; }
+  .cd-where { display: inline-flex; align-items: center; gap: 8px; font-family: var(--veneer); font-size: 24px; color: var(--purple); background: rgba(65,39,116,0.08); padding: 8px 22px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.02em; }
+  .cd-where::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--pink); flex-shrink: 0; }
+  .sp-facts { list-style: none; margin: 4px 0 26px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .sp-facts li { position: relative; padding-left: 42px; font-family: var(--body); font-size: 20px; line-height: 1.4; color: var(--charcoal); }
+  .sp-facts li::before { content: ''; position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%; background: rgba(161,205,61,0.22) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233a5800' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/15px no-repeat; }
   .story-continue { display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
   .story-continue .sc-label { font-family: var(--body); font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink); text-align: center; margin-bottom: 2px; }
   .story-continue .btn-pill, .story-continue .btn-ghost { width: 100%; }
@@ -759,8 +801,8 @@
         <img class="tile-img" src="project/assets/fern-2yp.jpg" alt="Support from Step by Step" style="object-position:center 22%;">
         <div class="tile-ph"><div class="tile-title">Could you spare a few hours?</div></div>
       </div>
-      <div class="tile ask has-photo">
-        <img class="tile-img" src="project/assets/Abseil-_26.jpg" alt="Abseil challenge for Step by Step" style="object-position:center 35%;">
+      <div class="tile ask has-photo" onclick="openDetail('dv-challenges')">
+        <img class="tile-img" src="project/assets/Abseil-_26.jpg" alt="Take on a challenge for Step by Step" style="object-position:center 35%;">
         <div class="tile-ph"><div class="tile-title">Take on a challenge?</div></div>
       </div>
       <div class="tile num pink" onclick="openDetail('dv-cost')">
@@ -1084,7 +1126,7 @@
               <div class="st-photo"><img src="project/assets/carer-laura.jpg" alt="Laura, foster carer" style="object-position:center 30%;"></div>
               <div class="st-bar"></div>
               <div class="st-inner">
-                <div class="st-name">Laura, foster carer</div>
+                <div class="st-name">Laura*, foster carer</div>
                 <div class="st-quote">Fostering gives me the opportunity to be the person I needed as a child. You can't be perfect, and you shouldn't try to be. What matters is providing a safe, stable, normal home.</div>
               </div>
             </div>
@@ -1113,6 +1155,7 @@
               </div>
             </div>
           </div>
+          <p style="font-family:var(--body); font-size:16px; font-style:italic; color:#888; margin-top:20px; text-align:center;">Some names have been changed to protect the people we support.</p>
         </div>
         </div><!-- /Our carers panel -->
 
@@ -1192,6 +1235,9 @@
           <button class="btn-pill" onclick="openDraw()">Enter the draw <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
         </div>
       </div>
+
+      <!-- VIEW: Take on a challenge (Tile 4) - rendered by initChallenges() -->
+      <div class="detail-view" id="dv-challenges"></div>
 
       <!-- VIEW: Real stories (Tile 6) - rendered by initStories() -->
       <div class="detail-view" id="dv-stories"></div>
@@ -1452,7 +1498,8 @@ const CONFIG = {
   ac: {
     endpoint: 'https://stepbystep50319.activehosted.com/proc.php',
     meta: { u: '6A5FB60795E7D', f: '3', s: '', c: '0', m: '0', act: 'sub', v: '2', or: 'a8d7d6ed-e512-4bb5-9864-b4bf2987e835' },
-    fields: { source: 'field[30]', date: 'field[31]', time: 'field[32]', optin: 'field[33]' }
+    fields: { source: 'field[30]', date: 'field[31]', time: 'field[32]', optin: 'field[33]', interestType: '' }
+    // interestType: create a "Kiosk Interest Type" custom field in AC, then put its id here (e.g. 'field[34]')
   }
 };
 
@@ -1562,7 +1609,8 @@ const DETAIL_TITLES = {
   'dv-sl':         'Supported Lodgings',
   'dv-fostering':  'Fostering',
   'dv-cost':       'What it costs',
-  'dv-stories':    'Real Stories'
+  'dv-stories':    'Real Stories',
+  'dv-challenges': 'Take on a Challenge'
 };
 function openDetail(viewId) {
   if (!document.getElementById(viewId)) return;   // target not built yet (e.g. Tile 4/5 exits) — do nothing
@@ -1595,7 +1643,7 @@ const VIEW_TABS = {
   fostering: ['Could you?', 'The money', 'Our carers', 'Enquire'],
   sl:        ['About', 'Could you?', 'Enquire']
 };
-const VIEW_MENUS = { fostering: true, sl: true, stories: true };   // these views open on a card menu
+const VIEW_MENUS = { fostering: true, sl: true, stories: true, challenges: true };   // these views open on a card menu
 const ENQUIRY_TAB = { fostering: 3, sl: 2 };        // which subpage holds the enquiry form
 
 /* Show the card menu for a view (no subpage selected, tab bar hidden). */
@@ -1648,6 +1696,7 @@ function resetContentState() {
   ['sl', 'fostering', 'donate'].forEach(resetEnquiry);
   if (typeof resetCalc === 'function') resetCalc();
   resetCost();
+  if (typeof resetChallenges === 'function') resetChallenges();
 }
 
 /* Generic expand/collapse for tap-to-expand panels (cost page). */
@@ -1768,6 +1817,7 @@ function queueEntry(fields) {
     date: now.toLocaleDateString('en-GB'),
     time: fields.time || now.toLocaleTimeString('en-GB'),
     optin: fields.optin ? 'Yes' : 'No',
+    interestType: fields.interestType || '',   // Prize Draw | Volunteering | Event (section 17)
     queuedAt: now.toISOString()
   };
   try {
@@ -1796,6 +1846,11 @@ function acBody(entry) {
   p.append(CONFIG.ac.fields.date,   entry.date);
   p.append(CONFIG.ac.fields.time,   entry.time);
   p.append(CONFIG.ac.fields.optin,  entry.optin);
+  // Kiosk Interest Type — only sent once its AC field id is set in CONFIG.
+  // Until then the value still travels in the source tag (e.g. "Challenge — …").
+  if (CONFIG.ac.fields.interestType && entry.interestType) {
+    p.append(CONFIG.ac.fields.interestType, entry.interestType);
+  }
   return p;
 }
 
@@ -2106,7 +2161,7 @@ if ('serviceWorker' in navigator) {
 const STORIES = [
   {
     name: 'Jess', role: 'Young Person', photo: 'jess-portrait-small.jpg', pseudonym: false,
-    hook: 'Left home at 16 — and found her feet.',
+    hook: 'Left home at 16, found her feet.',
     exit: { type: 'choice', label: 'Want to know more?', options: [
       { text: 'See what that support costs', view: 'dv-cost', style: 'pill' },
       { text: 'Think you know youth homelessness?', view: 'dv-homelessness', style: 'ghost' }
@@ -2249,9 +2304,161 @@ function initStories() {
   view.innerHTML = grid + panels;
 }
 
+/* ═══════════════ TILE 4: TAKE ON A CHALLENGE (data-driven) ═══════════════
+   Six events. Each opens a "register your interest" form that goes through the
+   SAME shared queue as everything else (section 17), tagged by event.
+   Add/remove an event by editing this list. */
+const CHALLENGES = [
+  { name: 'New Forest Marathon', date: '13 September 2026', photo: 'event-marathon.jpg', badge: 'Official Charity Partner',
+    location: 'New Forest National Park',
+    line: 'Our anchor event, right on the doorstep.',
+    blurb: `Our official charity partner event, run through the stunning New Forest National Park — beautiful scenery and a race like no other. Whatever distance you choose, you'll be raising essential funds for young people facing homelessness as you go.`,
+    facts: [
+      'Full Marathon, Half Marathon, 10K, 5K and junior races',
+      '15% off entry fees for Step by Step runners',
+      'Family-friendly and open to all abilities',
+      "We're the official charity partner"
+    ] },
+  { name: 'Tough Mudder', date: '19–20 September 2026', photo: 'event-tough-mudder.jpg',
+    location: 'Holmbush Estate, Horsham',
+    line: 'Mud, obstacles and a proper sense of achievement.',
+    blurb: `The obstacle course people can't believe you'd actually sign up for. Tough Mudders are renowned for their tough challenge, unique features and sense of camaraderie — less a competitive race, more a team getting each other through. Every step raises money for Step by Step.`,
+    facts: [
+      'Choose the 5K or the 15K obstacle course',
+      'A team event — camaraderie over competition',
+      'Set up a JustGiving page and get sponsored'
+    ] },
+  { name: 'The Great South Run', date: '18 October 2026', photo: 'event-great-south-run.jpg',
+    location: 'Portsmouth',
+    line: 'A flat, friendly 10 miles — a great first challenge.',
+    blurb: `The UK's best-loved 10-mile race, along the beautiful South coast. A flat, friendly course with stunning sea views, a supportive crowd and music and cheering every step of the way — a brilliant first challenge if a marathon or an obstacle course feels like a lot.`,
+    facts: [
+      '10 miles along the South coast',
+      'Flat, friendly course with sea views',
+      'Crowds, music and cheering all the way'
+    ] },
+  { name: 'Step by Step Fire Walk', date: 'October 2026', tbc: 'exact date to be confirmed', photo: 'event-fire-walk.jpg',
+    location: 'Venue to be confirmed',
+    line: 'Walk barefoot across hot coals. Genuinely different.',
+    blurb: `Test your courage and determination by walking barefoot across hot coals for Step by Step. Genuinely distinctive — and a story you'll be telling for years. Register your interest and we'll confirm the full details as soon as they're set.`,
+    facts: [
+      'Walk barefoot across hot coals',
+      'Face your fears for young people',
+      'Date and venue confirmed soon'
+    ] },
+  { name: 'Step by Step Skydive', date: 'April 2027', tbc: 'full details coming soon', photo: 'event-skydive.jpg',
+    location: 'Location to be confirmed',
+    line: 'Take the leap for young people.',
+    blurb: `Take the leap and skydive for Step by Step. Every second you freefall is a second closer to changing a young person's life. Full details are coming soon — register your interest now and we'll send everything the moment it's confirmed.`,
+    facts: [
+      'Organised group jump day',
+      'No experience needed',
+      'Full details confirmed closer to the time'
+    ] },
+  { name: 'Go the Distance', date: 'Any time', photo: 'event-go-the-distance.jpg',
+    location: 'Anywhere you like',
+    line: 'Your challenge, your way — start today.',
+    blurb: `Cover the distance between our accommodation foyers — anywhere from 19 to 50 miles — by running, walking, cycling or swimming. Any combination, spread across a week, a month or even the whole year. There's no entry fee, so you can focus on your challenge and raising vital funds. No date to wait for — start today.`,
+    facts: [
+      'Aldershot to Basingstoke — 19 miles',
+      'Basingstoke to Havant — 38 miles',
+      'Havant to Totton — 32 miles',
+      'Totton to Aldershot — 50 miles',
+      'Run, walk, cycle or swim — any mix. No entry fee.'
+    ] }
+];
+
+function initChallenges() {
+  const view = document.getElementById('dv-challenges');
+  if (!view) return;
+  let menu = '<div class="view-menu"><div class="sg-grid">';
+  CHALLENGES.forEach((c, i) => {
+    const img = c.photo ? `<img src="project/assets/${c.photo}" alt="${c.name}">` : '';
+    menu += `<div class="challenge-tile${c.photo ? '' : ' noimg'}" onclick="showSection('challenges',${i})">
+      ${img}
+      ${c.badge ? `<div class="ct-badge">${c.badge}</div>` : ''}
+      <div class="ct-cap">
+        <div class="ct-date">${c.date}${c.tbc ? `<span class="ct-tbc">${c.tbc}</span>` : ''}</div>
+        <div class="ct-name">${c.name}</div>
+        <div class="ct-line">${c.line}</div>
+        <div class="ct-more">Find out more &amp; take part <span class="ct-arrow">&#8594;</span></div>
+      </div>
+    </div>`;
+  });
+  menu += '</div></div>';
+  const panels = CHALLENGES.map((c, i) => `
+    <div class="subpanel">
+      <h2 class="d-h2">${c.name}</h2>
+      <div class="cd-meta">
+        <span class="cd-when${c.tbc ? ' tbc' : ''}">${c.date}${c.tbc ? ' — ' + c.tbc : ''}</span>
+        ${c.location ? `<span class="cd-where">${c.location}</span>` : ''}
+      </div>
+      <p class="d-p">${c.blurb}</p>
+      ${c.facts && c.facts.length ? `<ul class="sp-facts">${c.facts.map(f => `<li>${f}</li>`).join('')}</ul>` : ''}
+      <div class="enquiry" id="chal-${i}">
+        <div id="chal-${i}-form">
+          <h3>Register your interest</h3>
+          <div class="eq-line">Leave your details and we'll send you everything you need to take part. No commitment.</div>
+          <div class="eq-field"><label for="chal-${i}-name">Full name</label><input type="text" id="chal-${i}-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+          <div class="eq-field"><label for="chal-${i}-email">Email address</label><input type="email" id="chal-${i}-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+          <div class="optin-row checked" id="chal-${i}-optin" onclick="toggleOptin(this)">
+            <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+          </div>
+          <button class="btn-pill" style="width:100%" onclick="submitChallenge(${i})">Register my interest ${SVG_ARROW}</button>
+        </div>
+        <div class="eq-confirm" id="chal-${i}-confirm">
+          <div class="ec-splash">${SVG_CHECK}</div>
+          <h3>You're on the list!</h3>
+          <p>We'll be in touch with everything you need for ${c.name}. Thank you for taking it on.</p>
+        </div>
+      </div>
+    </div>`).join('');
+  view.innerHTML = menu + panels;
+}
+
+function submitChallenge(i) {
+  const c = CHALLENGES[i];
+  const name  = document.getElementById('chal-' + i + '-name').value.trim();
+  const email = document.getElementById('chal-' + i + '-email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  let valid = true;
+  if (!name)    { fieldError('chal-' + i + '-name',  'Please enter your name');   valid = false; }
+  if (!emailOk) { fieldError('chal-' + i + '-email', 'Please enter a valid email'); valid = false; }
+  if (!valid) { resetIdleTimer(); return; }
+  const optin = document.getElementById('chal-' + i + '-optin').classList.contains('checked');
+  const stored = queueEntry({
+    fullname: name, email, optin,
+    source: 'Challenge — ' + c.name + ' — ' + CONFIG.event.name,
+    interestType: 'Event: ' + c.name
+  });
+  if (!stored) {
+    document.querySelector('#chal-' + i + '-form .eq-line').textContent =
+      "Sorry — we couldn't save that just now. Please let a member of the team know.";
+    return;
+  }
+  document.getElementById('chal-' + i + '-form').style.display = 'none';
+  document.getElementById('chal-' + i + '-confirm').classList.add('show');
+  resetIdleTimer();
+}
+
+function resetChallenges() {
+  CHALLENGES.forEach((c, i) => {
+    const form = document.getElementById('chal-' + i + '-form');
+    if (!form) return;
+    form.style.display = '';
+    const n = document.getElementById('chal-' + i + '-name'), e = document.getElementById('chal-' + i + '-email');
+    if (n) { n.value = ''; n.style.borderColor = ''; }
+    if (e) { e.value = ''; e.style.borderColor = ''; }
+    const o = document.getElementById('chal-' + i + '-optin'); if (o) o.classList.add('checked');
+    const cf = document.getElementById('chal-' + i + '-confirm'); if (cf) cf.classList.remove('show');
+  });
+}
+
 /* ═══════════════ INIT ═══════════════ */
 initQuizzes();
 initStories();
+initChallenges();
 updateStaffBadge();
 if (loadQueue().length) drainQueue();
 </script>
