@@ -41,6 +41,7 @@
   .eyebrow { font-family:var(--body); font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:0.14em; color:var(--pink); text-align:center; }
   .big-h { font-family:var(--veneer); text-transform:uppercase; color:var(--purple); line-height:0.98; text-align:center; }
   .lede { font-family:var(--body); font-size:25px; line-height:1.5; color:var(--charcoal); text-align:center; }
+  .lede b { color:var(--purple); }
   .cta { display:inline-flex; align-items:center; justify-content:center; gap:16px; min-height:94px; padding:0 50px; border:none; border-radius:9999px; background:var(--pink); color:#fff; font-family:var(--veneer); font-size:34px; letter-spacing:0.03em; text-transform:uppercase; cursor:pointer; box-shadow:0 8px 26px rgba(237,40,141,0.34); }
   .cta:active { transform:scale(0.97); }
   .cta:disabled { opacity:0.4; box-shadow:none; cursor:default; }
@@ -56,6 +57,16 @@
   .whoami .wa-sub { font-family:var(--body); font-size:26px; color:var(--charcoal); line-height:1.45; margin-top:8px; }
   .money-strap { background:#fff; border-radius:18px; box-shadow:0 6px 20px rgba(65,39,116,0.1); padding:18px 30px; margin:18px 0 8px; max-width:840px; font-family:var(--body); font-size:23px; line-height:1.5; color:var(--charcoal); }
   .money-strap b { color:var(--purple); font-family:var(--veneer); font-size:30px; letter-spacing:0.01em; }
+  .whoami .wa-sub { min-height:118px; }
+  .whoami .wa-sub.typing::after { content:'▍'; color:var(--pink); animation:caret 0.7s step-end infinite; }
+  @keyframes caret { 50% { opacity:0; } }
+  /* Staged reveal — hidden until the intro sequence turns each on */
+  .stage { opacity:0; transform:translateY(14px); transition:opacity 0.55s ease, transform 0.55s ease; pointer-events:none; }
+  .stage.on { opacity:1; transform:none; pointer-events:auto; }
+  .money-lines { margin:20px 0 10px; max-width:840px; display:flex; flex-direction:column; gap:14px; }
+  .money-line { font-family:var(--body); font-size:27px; line-height:1.4; color:var(--charcoal); }
+  .money-line b { color:var(--purple); font-family:var(--veneer); font-size:34px; letter-spacing:0.01em; }
+  .money-line.big-line { font-family:var(--veneer); font-size:46px; color:var(--pink); text-transform:uppercase; letter-spacing:0.02em; }
   .wheel-wrap { position:relative; width:560px; height:600px; display:flex; align-items:center; justify-content:center; margin:6px 0; }
   .wheel-pointer { position:absolute; top:6px; left:50%; transform:translateX(-50%); width:0; height:0; border-left:26px solid transparent; border-right:26px solid transparent; border-top:44px solid var(--purple); z-index:6; filter:drop-shadow(0 3px 3px rgba(0,0,0,0.25)); }
   .wheel-svg { width:560px; height:560px; transform:rotate(0deg); }
@@ -77,9 +88,8 @@
   .notify-body .nb-weekly { font-family:var(--veneer); font-size:98px; color:var(--purple); line-height:1; margin-top:4px; }
   .notify-body .nb-cap { font-family:var(--body); font-size:20px; color:#888; margin-top:4px; }
 
-  /* ── Screen 3: aisles ── */
-  #s-shop { padding:12px 44px 24px; }
-  .purse { background:#fff; border-radius:18px; box-shadow:0 6px 20px rgba(65,39,116,0.1); padding:16px 26px; display:flex; align-items:center; gap:22px; margin-bottom:14px; }
+  /* ── Shared purse ── */
+  .purse { background:#fff; border-radius:18px; box-shadow:0 6px 20px rgba(65,39,116,0.1); padding:16px 26px; display:flex; align-items:center; gap:22px; margin-bottom:14px; flex-shrink:0; }
   .purse-ico { width:70px; height:70px; border-radius:16px; background:rgba(65,39,116,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.3s ease; }
   .purse-ico svg { width:44px; height:44px; }
   .purse.over .purse-ico { background:rgba(237,40,141,0.14); }
@@ -90,29 +100,71 @@
   .bar-fill { height:100%; width:100%; border-radius:9999px; background:var(--lime); transition:width 0.4s cubic-bezier(.4,1.2,.5,1), background 0.35s ease; }
   .bar-fill.mid { background:var(--yellow); }
   .bar-fill.low { background:#f39c12; }
-  .purse-amt { font-family:var(--veneer); font-size:60px; color:var(--purple); line-height:0.85; text-align:right; min-width:230px; }
+  .purse-amt { font-family:var(--veneer); font-size:58px; color:var(--purple); line-height:0.85; text-align:right; min-width:230px; }
   .purse-amt small { display:block; font-family:var(--body); font-size:15px; letter-spacing:0.05em; color:#e23; text-transform:uppercase; margin-top:2px; }
   .purse.over .purse-amt { color:var(--pink); }
 
-  .aisle-head { display:flex; align-items:center; gap:16px; margin-bottom:12px; }
+  /* ── Screen 3: HERO hub ── */
+  #s-hub { padding:16px 60px 40px; }
+  .hub-intro { text-align:center; margin:14px 0 26px; }
+  .hub-intro .eyebrow { margin-bottom:10px; }
+  .hub-intro .big-h { font-size:46px; margin:0 0 10px; }
+  .hub-intro .lede { max-width:760px; margin:0 auto; }
+  .hero-grid { flex:1; display:grid; grid-template-columns:1fr 1fr; gap:22px; align-content:start; }
+  .hero-card { border-radius:24px; background:var(--cc); color:#fff; padding:26px 28px; display:flex; flex-direction:column; gap:16px; min-height:250px; cursor:pointer; position:relative; overflow:hidden; box-shadow:0 8px 26px rgba(65,39,116,0.2); transition:transform 0.14s ease; }
+  .hero-card:active { transform:scale(0.98); }
+  .hc-top { display:flex; align-items:center; gap:20px; }
+  .hc-badge { width:104px; height:104px; border-radius:22px; background:#fff; color:var(--cc); font-family:var(--veneer); font-size:76px; line-height:1; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 5px 14px rgba(0,0,0,0.16); }
+  .hc-name { font-family:var(--veneer); font-size:46px; text-transform:uppercase; line-height:1; }
+  .hc-sub { font-family:var(--body); font-size:19px; opacity:0.92; margin-top:6px; line-height:1.35; }
+  .hc-count { margin-top:auto; align-self:flex-start; font-family:var(--body); font-size:16px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; background:rgba(255,255,255,0.22); padding:9px 18px; border-radius:9999px; }
+  .hc-count.has { background:#fff; color:var(--charcoal); }
+  .hub-foot { display:flex; justify-content:center; margin-top:18px; }
+
+  /* ── Screen 3b: an aisle (product cards) ── */
+  #s-shop { padding:12px 44px 24px; }
+  .aisle-head { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
   .aisle-badge { width:64px; height:64px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-family:var(--veneer); font-size:40px; color:#fff; flex-shrink:0; }
   .aisle-t { font-family:var(--veneer); font-size:38px; text-transform:uppercase; color:var(--purple); line-height:1; }
   .aisle-sub { font-family:var(--body); font-size:19px; color:#777; margin-top:2px; }
-  .aisle-count { margin-left:auto; font-family:var(--body); font-size:18px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#aaa; }
+  .aisle-count { margin-left:auto; font-family:var(--body); font-size:18px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:#aaa; }
 
-  .goods { flex:1; overflow-y:auto; display:grid; grid-template-columns:1fr 1fr; gap:14px; align-content:start; padding-right:4px; }
-  .good { display:flex; align-items:center; gap:16px; padding:18px 20px; border-radius:16px; border:3px solid rgba(65,39,116,0.12); background:#fff; cursor:pointer; transition:transform 0.12s ease, border-color 0.2s ease, background 0.2s ease; }
+  .goods { flex:1; overflow-y:auto; display:grid; grid-template-columns:1fr 1fr; gap:16px; align-content:start; padding-right:4px; }
+  .good { background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 5px 16px rgba(65,39,116,0.1); border:3px solid transparent; cursor:pointer; display:flex; flex-direction:column; transition:transform 0.12s ease, border-color 0.2s ease; }
   .good:active { transform:scale(0.98); }
-  .good .g-emoji { font-size:38px; width:50px; text-align:center; flex-shrink:0; }
-  .good .g-name { flex:1; font-family:var(--body); font-size:22px; line-height:1.15; color:var(--charcoal); }
-  .good .g-price { font-family:var(--veneer); font-size:34px; color:var(--purple); }
-  .good .g-add { width:40px; height:40px; border-radius:11px; border:2.5px solid rgba(65,39,116,0.25); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:var(--veneer); font-size:30px; color:var(--purple); }
-  .good .g-add svg { width:24px; height:24px; stroke:#fff; stroke-width:3.4; fill:none; opacity:0; }
-  .good.in { background:rgba(161,205,61,0.16); border-color:var(--lime); }
-  .good.in .g-add { background:var(--lime); border-color:var(--lime); }
-  .good.in .g-add svg { opacity:1; }
+  .good-top { position:relative; height:118px; display:flex; align-items:center; justify-content:center; background:rgba(65,39,116,0.06); }
+  .good.cat-H .good-top { background:rgba(65,39,116,0.09); }
+  .good.cat-E .good-top { background:rgba(237,40,141,0.09); }
+  .good.cat-R .good-top { background:rgba(106,154,31,0.12); }
+  .good.cat-O .good-top { background:rgba(185,143,0,0.13); }
+  .good-emoji { font-size:60px; }
+  .good-price { position:absolute; top:12px; right:12px; background:var(--purple); color:#fff; font-family:var(--veneer); font-size:26px; padding:5px 15px; border-radius:9999px; box-shadow:0 3px 8px rgba(0,0,0,0.18); }
+  .good-body { padding:14px 18px 16px; display:flex; flex-direction:column; gap:4px; flex:1; }
+  .good-name { font-family:var(--body); font-weight:700; font-size:21px; color:var(--charcoal); line-height:1.15; }
+  .good-desc { font-family:var(--body); font-size:16px; color:#888; line-height:1.35; flex:1; }
+  .good-add { margin-top:10px; text-align:center; padding:12px; border-radius:12px; border:2.5px solid rgba(65,39,116,0.2); font-family:var(--veneer); font-size:20px; text-transform:uppercase; letter-spacing:0.02em; color:var(--purple); }
+  .good .ga-on { display:none; }
+  .good.in { border-color:var(--lime); }
+  .good.in .good-add { background:var(--lime); border-color:var(--lime); color:#2d2d2d; }
+  .good.in .ga-on { display:inline; }
+  .good.in .ga-off { display:none; }
+  .good.in .good-top::after { content:'✓'; position:absolute; top:10px; left:12px; width:36px; height:36px; background:var(--lime); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 3px 8px rgba(0,0,0,0.18); }
+  .aisle-nav { display:flex; flex-direction:column; margin-top:12px; }
+  .nav-main { width:100%; }
+  .nav-sep { display:flex; align-items:center; gap:16px; margin:12px 0; color:#b0a9c0; font-family:var(--body); font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; }
+  .nav-sep::before, .nav-sep::after { content:''; flex:1; height:2px; background:rgba(65,39,116,0.12); }
+  .nav-till { width:100%; min-height:76px; font-size:26px; }
 
-  .aisle-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:14px; }
+  /* Running basket bar — what you've picked up, tap × to put back */
+  .basket-bar { background:#fff; border-radius:16px; box-shadow:0 4px 14px rgba(65,39,116,0.09); padding:12px 18px 14px; margin-top:12px; flex-shrink:0; }
+  .bb-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
+  .bb-label { font-family:var(--body); font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--purple); }
+  .bb-total { font-family:var(--veneer); font-size:24px; color:var(--purple); }
+  .bb-items { display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center; min-height:44px; }
+  .bb-chip { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; background:rgba(161,205,61,0.16); border:2px solid var(--lime); border-radius:9999px; padding:6px 6px 6px 16px; font-family:var(--body); font-size:18px; color:var(--charcoal); flex-shrink:0; }
+  .bb-chip button { width:36px; height:36px; border-radius:50%; border:none; background:var(--pink); color:#fff; font-size:24px; font-family:var(--veneer); line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+  .bb-chip button:active { transform:scale(0.9); }
+  .bb-empty { font-family:var(--body); font-size:17px; color:#aaa; }
 
   /* ── Screen 4: chaos ── */
   #s-chaos { align-items:center; justify-content:center; text-align:center; }
@@ -167,6 +219,12 @@
   .result-list { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .result-list .rl { display:flex; justify-content:space-between; gap:10px; padding:11px 14px; border-radius:10px; background:rgba(65,39,116,0.04); font-family:var(--body); font-size:20px; }
   .result-list .rl .rl-p { font-family:var(--veneer); color:var(--purple); }
+  .result-list .rl2 { display:flex; flex-direction:column; gap:5px; padding:11px 14px; border-radius:10px; background:rgba(65,39,116,0.04); }
+  .result-list .rl2.crit { background:rgba(237,40,141,0.09); border-left:4px solid var(--pink); }
+  .rl2-top { display:flex; justify-content:space-between; gap:10px; font-family:var(--body); font-size:20px; }
+  .rl2-top .rl-p { font-family:var(--veneer); color:var(--purple); }
+  .rl-gone { font-family:var(--body); font-size:16px; line-height:1.35; color:#8a7fa0; }
+  .rl2.crit .rl-gone { color:var(--pink); font-weight:700; }
   .result-line { font-family:var(--body); font-size:26px; line-height:1.5; text-align:center; color:var(--charcoal); }
   .result-line b { color:var(--purple); }
 
@@ -197,6 +255,12 @@
   .chip.picked { background:var(--purple); color:#fff; border-color:var(--purple); }
   .reflect-response { min-height:84px; max-width:820px; font-family:var(--body); font-size:26px; line-height:1.5; color:var(--charcoal); opacity:0; transition:opacity 0.4s ease; }
   .reflect-response.show { opacity:1; }
+  .mag-callout { display:flex; align-items:center; gap:22px; background:#fff; border:2.5px solid rgba(65,39,116,0.14); border-radius:18px; padding:16px 24px; max-width:760px; margin:8px auto 22px; box-shadow:0 5px 16px rgba(65,39,116,0.08); text-align:left; }
+  .mag-img { width:110px; height:140px; flex-shrink:0; border-radius:10px; border:2.5px dashed rgba(65,39,116,0.3); background:rgba(65,39,116,0.05); display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--veneer); font-size:19px; color:rgba(65,39,116,0.5); text-transform:uppercase; line-height:1.15; overflow:hidden; }
+  .mag-img img { width:100%; height:100%; object-fit:cover; }
+  .mag-h { font-family:var(--veneer); font-size:30px; color:var(--purple); text-transform:uppercase; }
+  .mag-p { font-family:var(--body); font-size:19px; line-height:1.4; color:var(--charcoal); margin-top:6px; }
+  .mag-p b { color:var(--pink); }
   .exit-row { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:10px; }
 
   #idle { position:absolute; inset:0; background:rgba(26,10,46,0.94); z-index:400; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
@@ -219,30 +283,33 @@
     <div class="bar-title">Can You Make It Work?</div>
   </div>
 
-  <!-- ══ SCREEN 1: WHO YOU ARE + WHEEL ══ -->
+  <!-- ══ SCREEN 1: WHO YOU ARE + WHEEL (staged reveal) ══ -->
   <section class="screen" id="s-wheel">
     <div class="spacer"></div>
-    <div class="whoami">
-      <div class="eyebrow">This week, you are…</div>
-      <div class="wa-name">Jamie, 18</div>
-      <div class="wa-sub">You've just left care and you're living on your own for the first time. Your job this week is simple: get yourself through it.</div>
+    <div class="whoami" onclick="introSkip()">
+      <div class="eyebrow stage" id="wa-eyebrow">This week, you are…</div>
+      <div class="wa-name stage" id="wa-name">Jamie, 18</div>
+      <div class="wa-sub" id="wa-sub"></div>
     </div>
-    <div class="money-strap">
-      Each month, Universal Credit gives you <b>£338.58</b> to live on. But some months are longer than others — <b>four</b> weeks or <b>five</b>. Spin to find out how far your money has to stretch this time.
+    <div class="money-lines">
+      <div class="money-line stage" id="ms1">Each month, Universal Credit gives you <b>£338.58</b> to live on.</div>
+      <div class="money-line stage" id="ms2">But some months are longer than others…</div>
+      <div class="money-line big-line stage" id="ms3">Four weeks, or five.</div>
+      <div class="money-line stage" id="ms4">Spin the wheel to see how far your money has to stretch.</div>
     </div>
-    <div class="wheel-wrap">
+    <div class="wheel-wrap stage" id="wheel-block">
       <div class="wheel-pointer"></div>
       <svg class="wheel-svg" id="wheel-svg" viewBox="0 0 560 560"></svg>
       <div class="wheel-hub"><svg viewBox="0 0 24 24" fill="none" stroke="#412774" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div>
     </div>
-    <button class="cta big" id="spin-btn" onclick="spinWheel()">Spin the wheel</button>
+    <button class="cta big stage" id="spin-btn" onclick="spinWheel()">Spin the wheel</button>
     <div class="spacer"></div>
   </section>
 
   <!-- ══ SCREEN 2: PAYMENT NOTIFICATION ══ -->
   <section class="screen" id="s-notify">
     <div class="spacer"></div>
-    <div class="eyebrow">Your money has landed</div>
+    <div class="eyebrow" id="notify-eyebrow">Your money has landed</div>
     <div class="notify-card">
       <div class="notify-top">
         <div class="nt-ico">💷</div>
@@ -263,15 +330,34 @@
     <div class="spacer"></div>
   </section>
 
-  <!-- ══ SCREEN 3: AISLES ══ -->
+  <!-- ══ SCREEN 3: HERO HUB ══ -->
+  <section class="screen" id="s-hub">
+    <div class="purse">
+      <div class="purse-ico"></div>
+      <div class="purse-mid"><div class="purse-label">Money left in your purse</div><div class="bar-track"><div class="bar-fill"></div></div></div>
+      <div class="purse-amt">£0.00</div>
+    </div>
+    <div class="hub-intro">
+      <div class="eyebrow">Your shopping list</div>
+      <h2 class="big-h">What do you need this week?</h2>
+      <p class="lede" style="font-size:21px;">Everyone needs four things to get by. We call them <b>HERO</b>. Pick where to start — you can move between them.</p>
+    </div>
+    <div class="hero-grid" id="hero-grid"></div>
+    <div class="basket-bar">
+      <div class="bb-head"><span class="bb-label">In your trolley</span><span class="bb-total"></span></div>
+      <div class="bb-items"></div>
+    </div>
+    <div class="hub-foot">
+      <button class="cta" onclick="goToTill()">Go to the till <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+    </div>
+  </section>
+
+  <!-- ══ SCREEN 3b: AN AISLE ══ -->
   <section class="screen" id="s-shop">
-    <div class="purse" id="purse">
-      <div class="purse-ico" id="purse-ico"></div>
-      <div class="purse-mid">
-        <div class="purse-label" id="purse-label">Money left in your purse</div>
-        <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
-      </div>
-      <div class="purse-amt" id="purse-amt">£0.00</div>
+    <div class="purse">
+      <div class="purse-ico"></div>
+      <div class="purse-mid"><div class="purse-label">Money left in your purse</div><div class="bar-track"><div class="bar-fill"></div></div></div>
+      <div class="purse-amt">£0.00</div>
     </div>
     <div class="aisle-head">
       <div class="aisle-badge" id="aisle-badge">H</div>
@@ -279,12 +365,17 @@
         <div class="aisle-t" id="aisle-t">Home</div>
         <div class="aisle-sub" id="aisle-sub"></div>
       </div>
-      <div class="aisle-count" id="aisle-count">Aisle 1 of 4</div>
+      <div class="aisle-count" id="aisle-count"></div>
     </div>
     <div class="goods" id="goods"></div>
+    <div class="basket-bar">
+      <div class="bb-head"><span class="bb-label">In your trolley</span><span class="bb-total"></span></div>
+      <div class="bb-items"></div>
+    </div>
     <div class="aisle-nav">
-      <button class="cta ghost" id="aisle-back" onclick="prevAisle()">Back</button>
-      <button class="cta" id="aisle-next" onclick="nextAisle()">Next aisle <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+      <button class="cta nav-main" onclick="backToHub()">Pick another aisle <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+      <div class="nav-sep"><span>finished shopping?</span></div>
+      <button class="cta ghost nav-till" onclick="goToTill()">Go to the till <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
     </div>
   </section>
 
@@ -295,7 +386,7 @@
     <h2 class="big-h" style="font-size:54px; margin:12px 0 6px;">Your week takes a turn</h2>
     <p class="lede" id="chaos-lede" style="max-width:720px;">Tap each card to turn it over.</p>
     <div class="chaos-deck" id="chaos-deck"></div>
-    <button class="cta big" id="chaos-next" onclick="afterChaos()" style="visibility:hidden;">Keep shopping <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+    <button class="cta big" id="chaos-next" onclick="afterChaos()" style="visibility:hidden;">Carry on <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
     <div class="spacer"></div>
   </section>
 
@@ -309,7 +400,7 @@
       <div class="till-tot" id="till-tot"><span>Your basket comes to</span> <b id="till-total">£0</b></div>
       <div class="till-msg" id="till-msg"></div>
       <div class="till-actions">
-        <button class="cta ghost" onclick="backToAisles()">Keep shopping</button>
+        <button class="cta ghost" onclick="backToHub()">Keep shopping</button>
         <button class="cta" id="pay-btn" onclick="payTill()">Pay <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
       </div>
     </div>
@@ -325,8 +416,21 @@
     </div>
     <p class="result-line" id="result-line"></p>
     <div class="center-actions" style="margin-top:20px;">
-      <button class="cta big" onclick="showReveal()">Here's the thing… <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+      <button class="cta big" onclick="showWeek()">And that was just one week… <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
     </div>
+  </section>
+
+  <!-- ══ SCREEN 6b: ONE WEEK — the narrative beat ══ -->
+  <section class="screen" id="s-week">
+    <div class="spacer"></div>
+    <div class="eyebrow">That was one week</div>
+    <h2 class="big-h" style="font-size:54px; margin:12px 0 24px;">You made it through</h2>
+    <p class="reveal-body" id="week-narrative" style="max-width:880px; margin-bottom:20px;"></p>
+    <p class="reveal-body" style="max-width:880px;">And this isn't a one-off. Next week the money lands again, and you do it all over — the same sums, the same going without. <b>Week in, week out.</b></p>
+    <div class="center-actions" style="margin-top:30px;">
+      <button class="cta big" onclick="showReveal()">And here's the thing… <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+    </div>
+    <div class="spacer"></div>
   </section>
 
   <!-- ══ SCREEN 7: REVEAL ══ -->
@@ -352,6 +456,13 @@
     <h2 class="big-h" style="font-size:58px; margin:12px 0 6px;">What was hardest to leave out?</h2>
     <div class="reflect-chips" id="reflect-chips"></div>
     <p class="reflect-response" id="reflect-response"></p>
+    <div class="mag-callout">
+      <div class="mag-img"><img src="project/assets/stand-up-magazine.jpg" alt="Stand Up! magazine"></div>
+      <div class="mag-text">
+        <div class="mag-h">Try it on paper</div>
+        <div class="mag-p">Pick up the <b>Stand&nbsp;Up!</b> magazine from our stand and find the “Can You Make It Work?” page — the exercise this game is built on.</div>
+      </div>
+    </div>
     <div class="exit-row" id="exit-row"></div>
     <div class="spacer"></div>
   </section>
@@ -368,23 +479,23 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 const MONTHS_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
 const ITEMS = [
-  { id:'rent',       cat:'H', name:'Rent top-up',            price:5,  emoji:'🔑' },
-  { id:'heat',       cat:'H', name:'Heating & utilities',    price:15, emoji:'🔥' },
-  { id:'insurance',  cat:'H', name:'Contents insurance',     price:3,  emoji:'🛡️' },
-  { id:'broken',     cat:'H', name:'Replace a broken item',  price:10, emoji:'🔧' },
-  { id:'food',       cat:'E', name:'Food for the week',      price:30, emoji:'🛒' },
-  { id:'toiletries', cat:'E', name:'Toiletries',             price:5,  emoji:'🧼' },
-  { id:'clothes',    cat:'E', name:'Clothes (set aside)',    price:10, emoji:'👕' },
-  { id:'treats',     cat:'E', name:'Sweets & treats',        price:3,  emoji:'🍫' },
-  { id:'takeaway',   cat:'E', name:'Takeaway',               price:8,  emoji:'🍔' },
-  { id:'travelsee',  cat:'R', name:'Travel to see someone',  price:8,  emoji:'🚌' },
-  { id:'phone',      cat:'R', name:'Phone',                  price:2,  emoji:'📱' },
-  { id:'activity',   cat:'R', name:'Activity with a friend', price:5,  emoji:'🎳' },
-  { id:'netflix',    cat:'R', name:'Netflix',                price:5,  emoji:'📺' },
-  { id:'travelwork', cat:'O', name:'Travel to work/school',  price:10, emoji:'🚆' },
-  { id:'workclothes',cat:'O', name:'Work/interview clothes', price:8,  emoji:'👔' },
-  { id:'school',     cat:'O', name:'School supplies',        price:3,  emoji:'📚' },
-  { id:'trainers',   cat:'O', name:'New trainers',           price:15, emoji:'👟' }
+  { id:'rent',       cat:'H', name:'Rent top-up',            price:5,  emoji:'🔑', desc:'Your share of the rent',          crit:true, gone:'Fall behind on rent and you risk losing your home.', miss:'you fell behind on the rent' },
+  { id:'heat',       cat:'H', name:'Heating & utilities',    price:15, emoji:'🔥', desc:'Keep the heating and lights on',   crit:true, gone:'A cold week — the kind of cold that makes you ill.', miss:'you were cold all week' },
+  { id:'insurance',  cat:'H', name:'Contents insurance',     price:3,  emoji:'🛡️', desc:'In case something gets damaged',   gone:'If something is damaged or stolen, there’s nothing to fall back on.', miss:'you had nothing to fall back on' },
+  { id:'broken',     cat:'H', name:'Replace a broken item',  price:10, emoji:'🔧', desc:'When something you rely on breaks' },
+  { id:'food',       cat:'E', name:'Food for the week',      price:30, emoji:'🛒', desc:'Proper meals for the week',        crit:true, gone:'The money runs out and you go hungry before the week is done.', miss:'there were days you went hungry' },
+  { id:'toiletries', cat:'E', name:'Toiletries',             price:5,  emoji:'🧼', desc:'Soap, shampoo, the basics',       gone:'Getting through the week without the basics.', miss:'you went without the basics' },
+  { id:'clothes',    cat:'E', name:'Clothes (set aside)',    price:10, emoji:'👕', desc:'Putting a bit aside for clothes',  gone:'No way to replace clothes as they wear out.', miss:'you couldn’t replace clothes as they wore out' },
+  { id:'treats',     cat:'E', name:'Sweets & treats',        price:3,  emoji:'🍫', desc:'A little something for yourself' },
+  { id:'takeaway',   cat:'E', name:'Takeaway',               price:8,  emoji:'🍔', desc:'A night off cooking' },
+  { id:'travelsee',  cat:'R', name:'Travel to see someone',  price:8,  emoji:'🚌', desc:'Bus fare to see someone you love', gone:'A whole week without seeing anyone you care about.', miss:'you didn’t get to see anyone you love' },
+  { id:'phone',      cat:'R', name:'Phone',                  price:2,  emoji:'📱', desc:'How you stay reachable',          gone:'Miss a call about a job, or lose touch with people who help.', miss:'you were cut off from people' },
+  { id:'activity',   cat:'R', name:'Activity with a friend', price:5,  emoji:'🎳', desc:'Doing something with a mate',      miss:'you didn’t do a single thing for fun' },
+  { id:'netflix',    cat:'R', name:'Netflix',                price:5,  emoji:'📺', desc:'Something to watch at home' },
+  { id:'travelwork', cat:'O', name:'Travel to work/school',  price:10, emoji:'🚆', desc:'Getting to work or college',      crit:true, gone:'No way to get to work or college — the thing that gets you out of this.', miss:'you couldn’t get to work or college' },
+  { id:'workclothes',cat:'O', name:'Work/interview clothes', price:8,  emoji:'👔', desc:'Looking right for an interview',   gone:'Turning up to an interview in the wrong thing.', miss:'you missed your shot at an interview' },
+  { id:'school',     cat:'O', name:'School supplies',        price:3,  emoji:'📚', desc:'Pens, paper, the basics',         gone:'Going without the basics to learn with.', miss:'you went without what you needed to learn' },
+  { id:'trainers',   cat:'O', name:'New trainers',           price:15, emoji:'👟', desc:'Shoes that will actually last' }
 ];
 const CATS = {
   H:{ name:'Home',          letter:'H', sub:'A roof over your head',   color:'#412774' },
@@ -399,7 +510,7 @@ const CHAOS = [
   { k:'bad', d:-2, t:'Your bus fare has gone up.' },
   { k:'bad', d:-5, t:'You cracked your phone screen.' },
   { k:'bad', d:-8, t:'Your shoes have worn through.' },
-  { k:'bad', d:-3, t:'You need a prescription.' },
+  { k:'bad', d:-3, t:'Your phone charger packed in.' },
   { k:'bad', d:-5, t:'You lost your keys and need them cut.' },
   { k:'bad', d:-4, t:'Your bike has a puncture.' },
   { k:'bad', d:-3, t:'Food prices are up this week.' },
@@ -432,7 +543,7 @@ const WEEKLY = { 4: 84.64, 5: 67.72 };   // exact, never rounded
 /* ═══════════════ STATE ═══════════════ */
 let state = {};
 function freshState(forceWeeks) {
-  state = { month:null, weeks:null, budget:0, basket:new Set(), aisle:0, chaosFired:false, chaosDelta:0, pendingAisle:null, forceWeeks: forceWeeks||null, _flipped:0 };
+  state = { month:null, weeks:null, budget:0, basket:new Set(), aisle:0, chaosFired:false, chaosDelta:0, afterChaosGo:null, forceWeeks: forceWeeks||null, _flipped:0 };
 }
 
 function fiveWeekMonths(year) {
@@ -475,6 +586,63 @@ function buildWheel() {
   svg.style.transition='none';
   svg.style.transform='rotate(0deg)';
 }
+
+/* Staged intro reveal: name → typewritten leaving-care line → pause →
+   Universal Credit → the wheel. Tap the intro text to skip ahead. */
+const LEAVING_TEXT = "You've just left care and you're living on your own for the first time. Your job this week is simple: get yourself through it.";
+let introRun = 0;
+function typewriter(el, text, speed, gen, done) {
+  let i = 0;
+  (function tick() {
+    if (gen !== introRun) return;
+    if (i <= text.length) { el.textContent = text.slice(0, i); i++; setTimeout(tick, speed); }
+    else if (done) done();
+  })();
+}
+function revealSequence(ids, interval, gen, done) {
+  let k = 0;
+  (function step() {
+    if (gen !== introRun) return;
+    if (k < ids.length) { document.getElementById(ids[k]).classList.add('on'); k++; setTimeout(step, interval); }
+    else if (done) done();
+  })();
+}
+const INTRO_STAGES = ['wa-eyebrow','wa-name','ms1','ms2','ms3','ms4','wheel-block','spin-btn'];
+function introSequence() {
+  const gen = ++introRun;
+  INTRO_STAGES.forEach(id => document.getElementById(id).classList.remove('on'));
+  document.getElementById('spin-btn').style.visibility = '';
+  const sub = document.getElementById('wa-sub');
+  sub.textContent = ''; sub.classList.remove('typing');
+  setTimeout(() => { if (gen!==introRun) return; document.getElementById('wa-eyebrow').classList.add('on'); }, 250);
+  setTimeout(() => { if (gen!==introRun) return; document.getElementById('wa-name').classList.add('on'); }, 750);
+  setTimeout(() => {
+    if (gen!==introRun) return;
+    sub.classList.add('typing');
+    typewriter(sub, LEAVING_TEXT, 30, gen, () => {
+      sub.classList.remove('typing');
+      setTimeout(() => {
+        if (gen!==introRun) return;
+        // reveal the money sentences one at a time
+        revealSequence(['ms1','ms2','ms3','ms4'], 1050, gen, () => {
+          setTimeout(() => {   // hold the wheel back — time to read the last line
+            if (gen!==introRun) return;
+            document.getElementById('wheel-block').classList.add('on');
+            document.getElementById('spin-btn').classList.add('on');
+          }, 1700);
+        });
+      }, 800);
+    });
+  }, 1600);
+}
+function introSkip() {
+  introRun++;   // cancel any running sequence
+  INTRO_STAGES.forEach(id => document.getElementById(id).classList.add('on'));
+  document.getElementById('spin-btn').style.visibility = '';
+  const sub = document.getElementById('wa-sub');
+  sub.textContent = LEAVING_TEXT; sub.classList.remove('typing');
+}
+
 function spinWheel() {
   document.getElementById('spin-btn').style.visibility='hidden';
   let month;
@@ -482,7 +650,7 @@ function spinWheel() {
   else if (state.forceWeeks===4) { const f=MONTHS.map((_,i)=>i).filter(i=>!FIVES.includes(i)); month=f[Math.floor(Math.random()*f.length)]; }
   else                           month = Math.floor(Math.random()*12);
   const svg = document.getElementById('wheel-svg');
-  const finalDeg = 360*5 - (month*30 + 15);   // bring segment mid to the top pointer
+  const finalDeg = 360*5 - (month*30 + 15);
   requestAnimationFrame(() => {
     svg.style.transition = 'transform 4.2s cubic-bezier(.13,.7,.16,1)';
     svg.style.transform = 'rotate(' + finalDeg + 'deg)';
@@ -491,13 +659,16 @@ function spinWheel() {
     state.month = month;
     state.weeks = FIVES.includes(month) ? 5 : 4;
     state.budget = WEEKLY[state.weeks];
-    goNotify();
+    goNotify(false);
   }, 4500);
 }
 
 /* ═══════════════ SCREEN 2: NOTIFICATION ═══════════════ */
-function goNotify() {
+function goNotify(deliberate) {
   const wk = WEEKLY[state.weeks].toFixed(2);
+  document.getElementById('notify-eyebrow').textContent = deliberate
+    ? ('This time — a ' + (state.weeks===5 ? 'five' : 'four') + '-week month')
+    : 'Your money has landed';
   document.getElementById('nb-month').textContent = MONTHS[state.month];
   document.getElementById('nb-weeks').textContent = state.weeks===5 ? 'Five weeks to stretch across' : 'Four weeks to stretch across';
   document.getElementById('nb-sum').textContent = '£338.58 ÷ ' + state.weeks + ' weeks';
@@ -505,66 +676,107 @@ function goNotify() {
   show('s-notify');
 }
 
-/* ═══════════════ SCREEN 3: AISLES ═══════════════ */
-function startShop() { state.aisle=0; renderAisle(); updatePurse(); show('s-shop'); }
+/* ═══════════════ SCREEN 3: HERO HUB ═══════════════ */
+function startShop() { renderHub(); show('s-hub'); }
+function renderHub() {
+  updatePurse();
+  document.getElementById('hero-grid').innerHTML = AISLES.map(cat => {
+    const c = CATS[cat];
+    const items = ITEMS.filter(i => i.cat === cat);
+    const picked = items.filter(i => state.basket.has(i.id)).length;
+    return `<div class="hero-card" style="--cc:${c.color}" onclick="openAisle('${cat}')">
+      <div class="hc-top">
+        <div class="hc-badge">${c.letter}</div>
+        <div><div class="hc-name">${c.name}</div><div class="hc-sub">${c.sub}</div></div>
+      </div>
+      <div class="hc-count ${picked?'has':''}">${picked ? (picked + ' in your trolley') : (items.length + ' things')}</div>
+    </div>`;
+  }).join('');
+  renderBasketBars();
+}
+function openAisle(cat) { state.aisle = AISLES.indexOf(cat); renderAisle(); show('s-shop'); }
 function renderAisle() {
   const cat = AISLES[state.aisle], c = CATS[cat];
   document.getElementById('aisle-badge').textContent = c.letter;
   document.getElementById('aisle-badge').style.background = c.color;
   document.getElementById('aisle-t').textContent = c.name;
   document.getElementById('aisle-sub').textContent = c.sub;
-  document.getElementById('aisle-count').textContent = 'Aisle ' + (state.aisle+1) + ' of 4';
   const items = ITEMS.filter(i => i.cat === cat);
+  const picked = items.filter(i => state.basket.has(i.id)).length;
+  document.getElementById('aisle-count').textContent = picked + ' of ' + items.length + ' picked';
   document.getElementById('goods').innerHTML = items.map(i => `
-    <div class="good ${state.basket.has(i.id)?'in':''}" id="g-${i.id}" onclick="toggleItem('${i.id}')">
-      <div class="g-emoji">${i.emoji}</div>
-      <div class="g-name">${i.name}</div>
-      <div class="g-price">£${i.price}</div>
-      <div class="g-add"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+    <div class="good cat-${cat} ${state.basket.has(i.id)?'in':''}" id="g-${i.id}" onclick="toggleItem('${i.id}')">
+      <div class="good-top"><div class="good-emoji">${i.emoji}</div><div class="good-price">£${i.price}</div></div>
+      <div class="good-body">
+        <div class="good-name">${i.name}</div>
+        <div class="good-desc">${i.desc}</div>
+        <div class="good-add"><span class="ga-off">Add to trolley</span><span class="ga-on">✓ In your trolley</span></div>
+      </div>
     </div>`).join('');
-  document.getElementById('aisle-back').style.visibility = state.aisle===0 ? 'hidden' : 'visible';
-  const nextBtn = document.getElementById('aisle-next');
-  nextBtn.innerHTML = state.aisle===3
-    ? 'Go to the till <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>'
-    : 'Next aisle <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>';
   document.getElementById('goods').scrollTop = 0;
+  updatePurse();
+  renderBasketBars();
 }
 function toggleItem(id) {
   if (state.basket.has(id)) state.basket.delete(id); else state.basket.add(id);   // no safety net — you can overspend
   document.getElementById('g-'+id).classList.toggle('in', state.basket.has(id));
-  updatePurse();
+  afterBasketChange();
   resetIdle();
 }
+/* Put something back straight from the trolley bar. */
+function removeFromBasket(id) {
+  state.basket.delete(id);
+  const card = document.getElementById('g-'+id);
+  if (card) card.classList.remove('in');
+  afterBasketChange();
+  if (document.getElementById('s-hub').classList.contains('active')) renderHub();
+  resetIdle();
+}
+function afterBasketChange() { updateAisleCount(); updatePurse(); renderBasketBars(); }
+function updateAisleCount() {
+  const el = document.getElementById('aisle-count');
+  if (!el || state.aisle==null) return;
+  const items = ITEMS.filter(i => i.cat === AISLES[state.aisle]);
+  const picked = items.filter(i => state.basket.has(i.id)).length;
+  el.textContent = picked + ' of ' + items.length + ' picked';
+}
+/* Fill every trolley bar on the page with the current basket. */
+function renderBasketBars() {
+  const got = ITEMS.filter(i => state.basket.has(i.id));
+  const chips = got.length
+    ? got.map(i => `<span class="bb-chip">${i.emoji} ${i.name}<button onclick="removeFromBasket('${i.id}')" aria-label="Put ${i.name} back">×</button></span>`).join('')
+    : `<span class="bb-empty">Nothing in your trolley yet — tap things to add them.</span>`;
+  document.querySelectorAll('.bb-items').forEach(el => el.innerHTML = chips);
+  document.querySelectorAll('.bb-total').forEach(el => el.textContent = got.length ? ('£' + spent()) : '');
+}
 function updatePurse() {
-  const rem = remaining(), have = moneyHave();
-  const purse = document.getElementById('purse');
-  const amt = document.getElementById('purse-amt');
-  const over = rem < 0;
-  purse.classList.toggle('over', over);
-  document.getElementById('purse-label').textContent = over ? 'You are overdrawn' : 'Money left in your purse';
-  amt.innerHTML = over ? ('-£' + Math.abs(rem).toFixed(2) + '<small>overdrawn</small>') : ('£' + rem.toFixed(2));
+  const rem = remaining(), have = moneyHave(), over = rem < 0;
   const pct = Math.max(0, Math.min(100, (rem/have)*100));
-  const fill = document.getElementById('bar-fill');
-  fill.style.width = (over?0:pct) + '%';
-  fill.classList.toggle('mid', pct<=45 && pct>20 && !over);
-  fill.classList.toggle('low', pct<=20 || over);
-  document.getElementById('purse-ico').innerHTML = purseIcon(over, pct);
+  document.querySelectorAll('.purse').forEach(purse => {
+    purse.classList.toggle('over', over);
+    purse.querySelector('.purse-label').textContent = over ? 'You are overdrawn' : 'Money left in your purse';
+    purse.querySelector('.purse-amt').innerHTML = over ? ('-£' + Math.abs(rem).toFixed(2) + '<small>overdrawn</small>') : ('£' + rem.toFixed(2));
+    const fill = purse.querySelector('.bar-fill');
+    fill.style.width = (over?0:pct) + '%';
+    fill.classList.toggle('mid', pct<=45 && pct>20 && !over);
+    fill.classList.toggle('low', pct<=20 || over);
+    purse.querySelector('.purse-ico').innerHTML = purseIcon(over, pct);
+  });
 }
 function purseIcon(over, pct) {
   const col = over ? '#ED288D' : (pct<=20 ? '#f39c12' : '#412774');
   return `<svg viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3 8.5C3 7 4 6 5.5 6H18a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/>
     <path d="M3 9h13a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H3"/>
-    <circle cx="16.5" cy="13" r="1.3" fill="${col}" stroke="none"/>
-  </svg>`;
+    <circle cx="16.5" cy="13" r="1.3" fill="${col}" stroke="none"/></svg>`;
 }
-function nextAisle() {
-  const target = state.aisle + 1;   // 4 = till
-  if (!state.chaosFired && spent() >= 0.6 * state.budget) { state.chaosFired = true; state.pendingAisle = target; return fireChaos(); }
-  proceed(target);
+/* Return to the HERO hub — the moment "life happens" if we've crossed 60%. */
+function backToHub() { maybeChaosThen(() => { renderHub(); show('s-hub'); }); }
+function goToTill() { maybeChaosThen(() => { renderTill(); show('s-till'); }); }
+function maybeChaosThen(go) {
+  if (!state.chaosFired && spent() >= 0.6 * state.budget) { state.chaosFired = true; state.afterChaosGo = go; fireChaos(); }
+  else go();
 }
-function prevAisle() { if (state.aisle>0) { state.aisle--; renderAisle(); } }
-function proceed(target) { if (target>=4) goTill(); else { state.aisle=target; renderAisle(); show('s-shop'); } }
 
 /* ═══════════════ SCREEN 4: CHAOS ═══════════════ */
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
@@ -574,11 +786,18 @@ function eligibleChaos() {
 let chaosPicks = [];
 function fireChaos() {
   const pool = shuffle(eligibleChaos());
-  const teach = pool.filter(c => c.k==='help' || c.k==='zero');
+  const costs = pool.filter(c => c.d < 0);
+  const consequences = pool.filter(c => c.k==='zero' && c.d===0);
+  const relief = pool.filter(c => c.k==='good' || c.k==='help');
   chaosPicks = [];
-  if (teach.length) chaosPicks.push(teach[0]);
-  for (const c of pool) { if (chaosPicks.length>=2) break; if (!chaosPicks.includes(c)) chaosPicks.push(c); }
-  chaosPicks = chaosPicks.slice(0,2);
+  const negs = costs.length ? costs : (consequences.length ? consequences : pool);
+  chaosPicks.push(negs[0]);                                   // card 1: always a real setback
+  const wantRelief = Math.random() < 0.30 && relief.length > 0;   // only ~30% of games get a break
+  const secondPool = wantRelief ? relief : shuffle([...costs, ...consequences]).filter(c => !chaosPicks.includes(c));
+  const fallback = pool.filter(c => !chaosPicks.includes(c));
+  const second = (secondPool.length ? secondPool : fallback)[0];
+  if (second) chaosPicks.push(second);
+  chaosPicks = chaosPicks.slice(0, 2);
   renderChaos(); show('s-chaos');
 }
 function faceClass(c){ return c.k==='good'?'good':c.k==='help'?'help':c.k==='zero'?'zero':'bad'; }
@@ -607,11 +826,9 @@ function flipChaos(idx) {
   resetIdle();
   if (state._flipped >= chaosPicks.length) setTimeout(()=>{ document.getElementById('chaos-next').style.visibility='visible'; }, 500);
 }
-function afterChaos() { const t = state.pendingAisle!=null ? state.pendingAisle : state.aisle; state.pendingAisle=null; proceed(t); }
+function afterChaos() { const go = state.afterChaosGo; state.afterChaosGo = null; (go || (()=>{ renderHub(); show('s-hub'); }))(); }
 
 /* ═══════════════ SCREEN 5: TILL ═══════════════ */
-function goTill() { renderTill(); show('s-till'); }
-function backToAisles() { state.aisle = 3; renderAisle(); updatePurse(); show('s-shop'); }
 function renderTill() {
   const got = ITEMS.filter(i => state.basket.has(i.id));
   const have = moneyHave(), tot = spent(), over = tot > have;
@@ -619,11 +836,9 @@ function renderTill() {
   document.getElementById('till-list').innerHTML = got.length
     ? got.map(i => `<div class="till-row"><div class="tr-emoji">${i.emoji}</div><div class="tr-name">${i.name}</div><div class="tr-price">£${i.price}</div><button class="tr-rm" onclick="removeAtTill('${i.id}')">−</button></div>`).join('')
     : `<div class="till-row"><div class="tr-name">Your basket is empty.</div></div>`;
-  const totEl = document.getElementById('till-tot');
   document.getElementById('till-total').textContent = '£' + tot;
-  totEl.classList.toggle('over', over);
-  const msg = document.getElementById('till-msg');
-  const pay = document.getElementById('pay-btn');
+  document.getElementById('till-tot').classList.toggle('over', over);
+  const msg = document.getElementById('till-msg'), pay = document.getElementById('pay-btn');
   if (over) {
     msg.className = 'till-msg over';
     msg.textContent = "Declined — that's £" + (tot-have).toFixed(2) + " more than you have. Put something back until it fits.";
@@ -640,12 +855,13 @@ function payTill() { if (spent() > moneyHave()) return; finishWeek(); }
 /* ═══════════════ SCREEN 6: RESULT ═══════════════ */
 function finishWeek() {
   const got = ITEMS.filter(i => state.basket.has(i.id));
-  const left = ITEMS.filter(i => !state.basket.has(i.id));
+  const left = ITEMS.filter(i => !state.basket.has(i.id))
+    .sort((a,b) => ((b.crit?2:b.gone?1:0) - (a.crit?2:a.gone?1:0)) || (b.price - a.price));   // consequences first
   document.getElementById('got-list').innerHTML = got.length
     ? got.map(i => `<div class="rl"><span>${i.emoji} ${i.name}</span><span class="rl-p">£${i.price}</span></div>`).join('')
     : `<div class="rl"><span>Nothing</span></div>`;
   document.getElementById('left-list').innerHTML = left.length
-    ? left.map(i => `<div class="rl"><span>${i.emoji} ${i.name}</span><span class="rl-p">£${i.price}</span></div>`).join('')
+    ? left.map(i => `<div class="rl2 ${i.crit?'crit':''}"><div class="rl2-top"><span>${i.emoji} ${i.name}</span><span class="rl-p">£${i.price}</span></div>${i.gone ? `<div class="rl-gone">${i.gone}</div>` : ''}</div>`).join('')
     : `<div class="rl"><span>You reached everything you could</span></div>`;
   const wk = WEEKLY[state.weeks].toFixed(2);
   document.getElementById('result-line').innerHTML =
@@ -653,6 +869,18 @@ function finishWeek() {
   show('s-result');
 }
 
+/* Narrative beat — weave in the human cost of what THIS player left out. */
+function showWeek() {
+  const missed = ITEMS.filter(i => !state.basket.has(i.id) && i.miss)
+    .sort((a,b) => ((b.crit?1:0) - (a.crit?1:0)) || (b.price - a.price));
+  const top = missed.slice(0,2).map(i => i.miss);
+  let narr;
+  if (top.length === 0) narr = "You just about reached everything this week — but the money was gone by the end, with nothing left over and no room for anything to go wrong.";
+  else if (top.length === 1) narr = "You got through it — but " + top[0] + ".";
+  else narr = "You got through it — but " + top[0] + ", and " + top[1] + ".";
+  document.getElementById('week-narrative').innerHTML = narr;
+  show('s-week');
+}
 function showReveal() { show('s-reveal'); }
 
 /* ═══════════════ SCREEN 8: REFLECT ═══════════════ */
@@ -687,7 +915,20 @@ function buildExits() {
 }
 
 /* ═══════════════ RESTART / EXIT ═══════════════ */
-function playAgain(forceWeeks) { freshState(forceWeeks); buildWheel(); document.getElementById('spin-btn').style.visibility='visible'; show('s-wheel'); }
+function playAgain(forceWeeks) {
+  freshState(forceWeeks);
+  if (forceWeeks) {
+    const months = forceWeeks===5 ? FIVES : MONTHS.map((_,i)=>i).filter(i=>!FIVES.includes(i));
+    state.month = months[Math.floor(Math.random()*months.length)];
+    state.weeks = forceWeeks;
+    state.budget = WEEKLY[forceWeeks];
+    goNotify(true);
+  } else {
+    buildWheel();
+    show('s-wheel');
+    introSequence();
+  }
+}
 function exitToKiosk() { window.location.href = 'index.html'; }
 
 /* ═══════════════ IDLE (→ kiosk) — long, it's all reading & thinking ═══════════════ */
@@ -715,7 +956,7 @@ window.addEventListener('resize', scaleRoot);
 
 /* ═══════════════ BOOT ═══════════════ */
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
-freshState(); buildWheel(); show('s-wheel'); resetIdle();
+freshState(); buildWheel(); show('s-wheel'); introSequence(); resetIdle();
 </script>
 </body>
 </html>
