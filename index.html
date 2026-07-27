@@ -378,6 +378,14 @@
   #staff-badge.visible { display: flex; }
   #staff-badge.synced { background: rgba(74,107,0,0.5); }
   #staff-badge svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  /* Invisible corner hotspot: 5 quick taps force the staff panel open even
+     when the badge pill is hidden (e.g. after a fresh restart with nothing
+     yet queued). Sits BELOW the badge/panel so it never blocks them. */
+  #staff-hotspot {
+    position: absolute; bottom: 0; right: 0; width: 64px; height: 64px;
+    z-index: 349; background: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
   #staff-detail {
     position: absolute; bottom: 46px; right: 10px; z-index: 351;
     background: white; border-radius: 14px; padding: 18px 22px;
@@ -1569,6 +1577,9 @@
     <button onclick="drainQueue(true); event.stopPropagation();">Try to send now</button>
     <button onclick="exportCsv(); event.stopPropagation();">Export all entries (CSV)</button>
   </div>
+  <!-- Guaranteed way in: 5 quick taps in the corner open the staff panel
+       even when the badge pill is hidden. -->
+  <div id="staff-hotspot" onclick="cornerTap()"></div>
 
   <!-- IDLE OVERLAY -->
   <div id="idle-overlay" onclick="dismissIdle()">
@@ -1623,7 +1634,7 @@ const CONFIG = {
     // out more" captures nothing and points people to the team on the stand.
     // Flip to true only once SL is configured in ActiveCampaign.
     fosteringEnquiryEnabled: true,
-    slEnquiryEnabled: false,
+    slEnquiryEnabled: true,
 
     // Donate route on the £29.78 tile. The QR is our own (Give a Little) image,
     // so no web address is shown — just the caption below it.
@@ -2158,6 +2169,21 @@ function toggleStaffDetail(ev) {
   updateStaffBadge();
 }
 function hideStaffDetail() { document.getElementById('staff-detail').classList.remove('visible'); }
+
+/* Force the staff panel open regardless of badge state — the 5-tap escape
+   hatch for when the badge pill is hidden (fresh restart, nothing queued). */
+function forceStaffDetail() {
+  updateStaffBadge();                                     // refresh counts first
+  document.getElementById('staff-badge').classList.add('visible');   // reveal the pill too
+  document.getElementById('staff-detail').classList.add('visible');
+}
+let cornerTaps = 0, cornerTapTimer = null;
+function cornerTap() {
+  cornerTaps++;
+  clearTimeout(cornerTapTimer);
+  cornerTapTimer = setTimeout(() => { cornerTaps = 0; }, 1500);  // must be quick taps
+  if (cornerTaps >= 5) { cornerTaps = 0; clearTimeout(cornerTapTimer); forceStaffDetail(); }
+}
 function flashStaffDetail() {
   const d = document.getElementById('staff-detail');
   d.classList.add('visible');
@@ -2357,8 +2383,13 @@ function answerKnow(i, guess) {
 function resetKnowCards() { initKnowCards(); }
 
 /* ═══════════════ ENQUIRY FORMS (fostering + SL — one form, same queue) ═══════════════ */
-const ENQUIRY_LABELS = { sl: 'Supported Lodgings enquiry', fostering: 'Fostering enquiry', donate: 'Donation enquiry' };
+// NB: fostering/SL sources must be EXACTLY "Fostering Guide" / "SL Guide" —
+// the trigger conditions on the existing F&L automations in ActiveCampaign.
+const ENQUIRY_LABELS = { sl: 'SL Guide', fostering: 'Fostering Guide', donate: 'Donation enquiry' };
 function enquirySource(key) {
+  // Fostering and SL must be EXACTLY "Fostering Guide" / "SL Guide" — the
+  // values their F&L automations match on (no event suffix).
+  if (key === 'fostering' || key === 'sl') return ENQUIRY_LABELS[key];
   return (ENQUIRY_LABELS[key] || 'Enquiry') + ' — ' + CONFIG.event.name;
 }
 function submitEnquiry(key) {
