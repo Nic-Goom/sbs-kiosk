@@ -526,6 +526,16 @@
   .terms-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px; border-radius: 26px 26px 0 0; background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 30%, var(--lime) 62%, var(--yellow) 100%); }
   .terms-close { position: absolute; top: 22px; right: 22px; width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(65,39,116,0.2); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; z-index: 2; }
   .terms-close svg { width: 26px; height: 26px; stroke: var(--purple); stroke-width: 3; fill: none; }
+  /* Shared fundraise/donate pop-out */
+  #donate-modal { position: absolute; inset: 0; z-index: 470; background: rgba(26,10,46,0.6); display: none; align-items: center; justify-content: center; padding: 60px; }
+  #donate-modal.visible { display: flex; animation: fadeIn 0.25s ease; }
+  .donate-card { width: 100%; max-width: 720px; background: #fff; border-radius: 26px; padding: 48px 52px 44px; position: relative; box-shadow: 0 20px 70px rgba(0,0,0,0.4); }
+  .donate-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px; border-radius: 26px 26px 0 0; background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 30%, var(--lime) 62%, var(--yellow) 100%); }
+  .dm-title { font-family: var(--veneer); font-size: 46px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 8px; padding-right: 60px; }
+  .dm-lead { font-family: var(--body); font-size: 20px; color: #555; line-height: 1.5; margin-bottom: 22px; }
+  .t5-support { margin-top: 20px; }
+  .t5-support > .d-h2 { text-align: center; margin-bottom: 12px; }
+  #dv-tile5 .donate-opt { padding: 20px 24px; }
   .terms-card h2 { font-family: var(--veneer); font-size: 50px; color: var(--purple); text-transform: uppercase; line-height: 1; margin-bottom: 4px; padding-right: 60px; }
   .terms-card .tc-lead { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 8px; }
   .terms-card h3 { font-family: var(--veneer); font-size: 28px; color: var(--purple); text-transform: uppercase; letter-spacing: 0.02em; margin: 26px 0 10px; }
@@ -695,41 +705,40 @@
   .quiz-tf button.wrong { opacity: 0.4; }
   .quiz-tf button svg { width: 30px; height: 30px; stroke: currentColor; stroke-width: 3; fill: none; }
 
-  /* ── Tile 5: think you know youth homelessness? ── */
-  .t5-lead { font-family: var(--veneer); font-size: 40px; color: var(--purple); text-transform: uppercase; line-height: 1.05; margin-bottom: 26px; }
-  .t5-steps { display: flex; flex-direction: column; }
-  .t5-step { background: #fff; border-radius: 20px; box-shadow: 0 6px 20px rgba(65,39,116,0.1); padding: 26px 32px; }
-  .t5-step.big { border: 3px solid var(--pink); box-shadow: 0 12px 34px rgba(237,40,141,0.2); }
-  .t5-fig { font-family: var(--veneer); font-size: 90px; line-height: 0.9; color: var(--purple); }
-  .t5-fig.pink { color: var(--pink); font-size: 122px; }
-  .t5-cap { font-family: var(--body); font-size: 22px; line-height: 1.5; color: var(--charcoal); margin-top: 10px; }
-  .t5-cap b { color: var(--purple); }
-  .t5-step.big .t5-cap b { color: var(--pink); }
-  .t5-src { font-family: var(--body); font-size: 15px; color: #9a93a8; margin-top: 12px; font-style: italic; }
-  .t5-bridge { font-family: var(--body); font-size: 21px; color: #666; line-height: 1.5; text-align: center; padding: 18px 30px; }
-  .t5-here { font-family: var(--veneer); font-size: 34px; color: var(--purple); text-transform: uppercase; text-align: center; background: rgba(161,205,61,0.2); border-radius: 16px; padding: 20px; margin: 20px 0 6px; }
-  .t5-photo { width: 100%; height: 300px; object-fit: cover; object-position: center 22%; border-radius: 20px; margin-bottom: 30px; display: block; }
-  .t5-mythhead { margin: 40px 0 16px; }
-  .know-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
-  .kc { background: #fff; border-radius: 20px; box-shadow: 0 6px 20px rgba(65,39,116,0.1); border: 2.5px solid rgba(65,39,116,0.12); padding: 24px 26px; }
-  .kc-tag { font-family: var(--body); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); }
-  .kc-s { font-family: var(--body); font-size: 24px; font-weight: 700; line-height: 1.3; color: var(--charcoal); margin: 12px 0 18px; }
-  .kc-tf { display: flex; gap: 14px; }
-  .kc-tf button { flex: 1; min-height: 78px; border-radius: 14px; border: 3px solid transparent; font-family: var(--veneer); font-size: 32px; letter-spacing: 0.03em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform 0.15s ease; }
-  .kc-tf button:active { transform: scale(0.97); }
+  /* ── Tile 5: compact reveal + single-line true/false (fits fully answered) ── */
+  .t5-photo { width: 100%; height: 380px; object-fit: cover; object-position: center 15%; border-radius: 18px; margin-top: 26px; display: block; }
+  .t5-reveal { background: #fff; border-radius: 16px; box-shadow: 0 5px 16px rgba(65,39,116,0.09); border: 2.5px solid rgba(237,40,141,0.18); padding: 14px 26px; }
+  .rv-pair { display: flex; align-items: center; justify-content: center; gap: 26px; }
+  .rv-fig { text-align: center; }
+  .rv-num { font-family: var(--veneer); font-size: 52px; line-height: 0.95; color: var(--purple); }
+  .rv-fig.hero .rv-num { color: var(--pink); font-size: 72px; }
+  .rv-lbl { font-family: var(--body); font-size: 14px; color: #777; margin-top: 2px; }
+  .rv-arrow { width: 44px; height: 44px; stroke: rgba(65,39,116,0.35); stroke-width: 2.5; fill: none; flex-shrink: 0; }
+  .rv-context { font-family: var(--body); font-size: 16px; line-height: 1.4; color: var(--charcoal); text-align: center; margin: 10px auto 0; max-width: 920px; }
+  .rv-context b { color: var(--purple); }
+  .rv-src { font-family: var(--body); font-size: 12px; color: #9a93a8; font-style: italic; text-align: center; margin-top: 7px; }
+  .t5-mythhead { margin: 16px 0 9px; }
+  .t5-mythhead .d-p { font-size: 17px; }
+  .know-cards { display: flex; flex-direction: column; gap: 9px; }
+  .kc { background: #fff; border-radius: 14px; box-shadow: 0 3px 11px rgba(65,39,116,0.07); border: 2px solid rgba(65,39,116,0.1); padding: 11px 20px; }
+  .kc-row { display: flex; align-items: center; gap: 20px; }
+  .kc-s { flex: 1; font-family: var(--body); font-size: 20px; font-weight: 700; line-height: 1.22; color: var(--charcoal); }
+  .kc-tf { display: flex; gap: 11px; flex-shrink: 0; }
+  .kc-tf button { min-width: 122px; min-height: 54px; padding: 0 16px; border-radius: 11px; border: 3px solid transparent; font-family: var(--veneer); font-size: 23px; letter-spacing: 0.03em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.15s ease; }
+  .kc-tf button:active { transform: scale(0.96); }
   .kc-tf .tf-true { background: rgba(161,205,61,0.14); border-color: var(--lime); color: #4a6b00; }
   .kc-tf .tf-false { background: rgba(237,40,141,0.08); border-color: var(--pink); color: var(--pink); }
-  .kc-tf button svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 3.5; fill: none; }
-  .kc-tf button.correct { background: var(--lime); border-color: var(--lime); color: #223300; box-shadow: 0 4px 18px rgba(161,205,61,0.5); }
+  .kc-tf button svg { width: 19px; height: 19px; stroke: currentColor; stroke-width: 3.5; fill: none; }
+  .kc-tf button.correct { background: var(--lime); border-color: var(--lime); color: #223300; box-shadow: 0 3px 12px rgba(161,205,61,0.5); }
   .kc-tf button.correct svg { stroke: #223300; }
-  .kc-tf button.wrong { opacity: 0.4; }
-  .kc-reveal { display: none; margin-top: 18px; }
+  .kc-tf button.wrong { opacity: 0.35; }
+  .kc-reveal { display: none; margin-top: 9px; padding-top: 8px; border-top: 2px solid rgba(65,39,116,0.08); }
   .kc-reveal.show { display: block; animation: fadeIn 0.25s ease; }
-  .kc-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--veneer); font-size: 22px; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 8px; }
-  .kc-badge svg { width: 20px; height: 20px; stroke-width: 3.5; fill: none; }
+  .kc-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--veneer); font-size: 17px; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 8px; }
+  .kc-badge svg { width: 15px; height: 15px; stroke-width: 3.5; fill: none; }
   .kc-badge.ok { color: #4a6b00; } .kc-badge.ok svg { stroke: #4a6b00; }
   .kc-badge.no { color: var(--pink); } .kc-badge.no svg { stroke: var(--pink); }
-  .kc-answer { font-family: var(--body); font-size: 21px; line-height: 1.5; color: var(--charcoal); }
+  .kc-answer { font-family: var(--body); font-size: 17px; line-height: 1.4; color: var(--charcoal); }
   .kc-answer b { color: var(--purple); }
   .quiz-reveal { display: none; background: linear-gradient(135deg, rgba(65,39,116,0.05), rgba(237,40,141,0.05)); border-left: 6px solid var(--pink); border-radius: 0 14px 14px 0; padding: 22px 26px; margin-bottom: 26px; }
   .quiz-reveal.show { display: block; animation: fadeIn 0.3s ease; }
@@ -1312,25 +1321,39 @@
 
       <!-- VIEW: Youth Homelessness is Real and Measurable (Tile 5) -->
       <div class="detail-view" id="dv-tile5">
-        <img class="t5-photo" src="project/assets/georgie-cooking.jpg" alt="A young person supported by Step by Step">
-        <div class="t5-steps">
-          <div class="t5-step">
-            <div class="t5-fig">1 in 84</div>
-            <div class="t5-cap">Just under <b>8,000</b> young people aged 16–24 turned to their council as homeless or at risk in our region in a single year. On the official figures, that's about <b>1 in 84</b>.</div>
-            <div class="t5-src">Centrepoint Youth Homelessness Databank, 2023–24</div>
+        <div class="t5-reveal">
+          <div class="rv-pair">
+            <div class="rv-fig"><div class="rv-num">1 in 84</div><div class="rv-lbl">on the official figures</div></div>
+            <svg class="rv-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13,5 20,12 13,19"/></svg>
+            <div class="rv-fig hero"><div class="rv-num">1 in 40</div><div class="rv-lbl">once you count the hidden</div></div>
           </div>
-          <div class="t5-bridge">…but many never show up in those figures at all — sofa-surfing, hidden, getting by out of sight.</div>
-          <div class="t5-step big">
-            <div class="t5-fig pink">1 in 40</div>
-            <div class="t5-cap">Count those hidden young people too, and it's closer to <b>1 in 40</b> across the region with no safe, stable place to live.</div>
-            <div class="t5-src">Step by Step's own analysis, layering ONS and academic evidence on top of the Databank figure</div>
-          </div>
+          <p class="rv-context">Just under <b>8,000</b> young people aged 16–24 turned to their council as homeless or at risk in our region in a single year — and many more never show up in those figures at all, sofa-surfing or hidden. Step by Step's own analysis puts the real figure closer to <b>1 in 40</b> with no safe, stable place to live.</p>
+          <div class="rv-src">Centrepoint Youth Homelessness Databank 2023–24, layered with ONS &amp; academic hidden-homelessness evidence.</div>
         </div>
         <div class="t5-mythhead">
           <h2 class="d-h2">The Difference We Make</h2>
           <p class="d-p">True or false? Tap each one to find out.</p>
         </div>
         <div class="know-cards" id="know-cards"></div>
+
+        <div class="t5-support">
+          <h2 class="d-h2">Be part of the difference</h2>
+          <div class="cost-donate">
+            <div class="donate-opt give">
+              <div class="qr-box js-donate-qr"><span class="qr-ph">Donation<br>QR<br>(to add)</span></div>
+              <div>
+                <div class="do-title">Donate now</div>
+                <div class="do-sub">Scan to donate</div>
+              </div>
+            </div>
+            <div class="donate-opt leave">
+              <div class="do-title">Fundraise for Step by Step</div>
+              <div class="do-sub">Complete our short form and someone from our fundraising team will be in touch.</div>
+              <button class="btn-pill" onclick="openDonateForm()">Fundraise with us</button>
+            </div>
+          </div>
+        </div>
+        <img class="t5-photo" src="project/assets/georgie-cooking.jpg" alt="A young person supported by Step by Step">
       </div>
 
       <!-- VIEW: What £29.78 costs (Tile 3) -->
@@ -1384,7 +1407,7 @@
 
         <div class="cost-donate">
           <div class="donate-opt give">
-            <div class="qr-box" id="donate-qr"><span class="qr-ph">Donation<br>QR<br>(to add)</span></div>
+            <div class="qr-box js-donate-qr" id="donate-qr"><span class="qr-ph">Donation<br>QR<br>(to add)</span></div>
             <div>
               <div class="do-title">Donate now</div>
               <div class="do-sub" id="donate-sub">Scan to donate</div>
@@ -1396,30 +1419,38 @@
             <button class="btn-pill" onclick="openDonateForm()">Fundraise with us</button>
           </div>
         </div>
-
-        <div class="donate-form" id="donate-form">
-          <div id="enq-donate-form">
-            <div class="df-row">
-              <div class="eq-field"><label for="enq-donate-name">Full name</label><input type="text" id="enq-donate-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
-              <div class="eq-field"><label for="enq-donate-email">Email address</label><input type="email" id="enq-donate-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
-            </div>
-            <div class="optin-row checked" id="enq-donate-optin" onclick="toggleOptin(this)">
-              <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-              <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
-            </div>
-            <button class="btn-pill" style="width:100%" onclick="submitEnquiry('donate')">
-              Send my details
-              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
-            </button>
-          </div>
-          <div class="donate-confirm" id="enq-donate-confirm">
-            <div class="dc-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
-            <h3>Thank you!</h3>
-            <p>We'll be in touch about how you can help. Thanks for supporting Step by Step.</p>
-          </div>
-        </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- FUNDRAISE / DONATE ENQUIRY POP-OUT (shared by the £29.78 tile and Tile 5) -->
+  <div id="donate-modal" onclick="if(event.target===this)closeDonateForm()">
+    <div class="donate-card">
+      <button class="terms-close" onclick="closeDonateForm()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="enq-donate-form">
+        <h2 class="dm-title">Fundraise for Step by Step</h2>
+        <p class="dm-lead">Complete this short form and someone from our fundraising team will be in touch. It only takes a moment.</p>
+        <div class="df-row">
+          <div class="eq-field"><label for="enq-donate-name">Full name</label><input type="text" id="enq-donate-name" placeholder="Your full name" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+          <div class="eq-field"><label for="enq-donate-email">Email address</label><input type="email" id="enq-donate-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+        </div>
+        <div class="optin-row checked" id="enq-donate-optin" onclick="toggleOptin(this)">
+          <div class="optin-box"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+          <span class="optin-text">Step by Step would love to keep you posted on our work and how you can help. Leave this ticked to hear from us, or untick if you'd rather not.</span>
+        </div>
+        <button class="btn-pill" style="width:100%" onclick="submitEnquiry('donate')">
+          Send my details
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+        </button>
+      </div>
+      <div class="donate-confirm" id="enq-donate-confirm">
+        <div class="dc-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+        <h3>Thank you!</h3>
+        <p>We'll be in touch about how you can help. Thanks for supporting Step by Step.</p>
+      </div>
     </div>
   </div>
 
@@ -1670,8 +1701,9 @@ const LOG_KEY   = 'sbs_kiosk_log_v1';   // permanent record of EVERY entry taken
     if (ds) ds.textContent = e.donateCaption;
   }
   if (e.donateQr) {
-    const q = document.getElementById('donate-qr');
-    if (q) q.innerHTML = '<img src="' + e.donateQr + '" alt="Donate QR">';
+    document.querySelectorAll('.js-donate-qr').forEach(q => {
+      q.innerHTML = '<img src="' + e.donateQr + '" alt="Donate QR">';
+    });
   }
 })();
 
@@ -1862,13 +1894,18 @@ function closeTerms() {
 /* ── Tile 3: cost page interactions ── */
 function toggleCostMore() { toggleExpand('cost-expand'); }
 function openDonateForm() {
-  const df = document.getElementById('donate-form');
-  if (df) { df.classList.add('show'); df.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  resetEnquiry('donate');                          // fresh form every open
+  document.getElementById('donate-modal').classList.add('visible');
+  resetIdleTimer();
+}
+function closeDonateForm() {
+  document.getElementById('donate-modal').classList.remove('visible');
+  resetEnquiry('donate');
   resetIdleTimer();
 }
 function resetCost() {
   const ce = document.getElementById('cost-expand'); if (ce) ce.classList.remove('open');
-  const df = document.getElementById('donate-form'); if (df) df.classList.remove('show');
+  const dm = document.getElementById('donate-modal'); if (dm) dm.classList.remove('visible');
   resetDonCalc();
 }
 
@@ -2279,7 +2316,8 @@ const KNOW_CARDS = [
   { s: "Step by Step only provides accommodation.", a: false, r: "Last year we also delivered over 3,000 counselling sessions and over 1,000 advice sessions." },
   { s: "Step by Step is an emergency service where young people don't get the chance to progress.", a: false, r: "Last year, 78% of the young people in our accommodation progressed towards their goals." },
   { s: "Our counselling waiting times are far shorter than average.", a: true,  r: "An average wait of just 26 days — down from 55 the year before, and well below comparable services." },
-  { s: "Step by Step only operates in Hampshire.", a: false, r: "We operate right across six counties in the South of England." }
+  { s: "Step by Step only operates in Hampshire.", a: false, r: "We operate right across six counties in the South of England." },
+  { s: "Step by Step has to fundraise around £1 million a year to support the young people it helps.", a: true, r: "Contracts cover part of the cost — the rest, around £1 million every year, Step by Step has to raise itself to be there for young people facing homelessness." }
 ];
 const knowState = {};
 function initKnowCards() {
@@ -2288,15 +2326,16 @@ function initKnowCards() {
   for (const k in knowState) delete knowState[k];
   wrap.innerHTML = KNOW_CARDS.map((c, i) => `
     <div class="kc" id="kc-${i}">
-      <div class="kc-tag">True or false?</div>
-      <div class="kc-s">${c.s}</div>
-      <div class="kc-tf">
-        <button class="tf-true"  onclick="answerKnow(${i},true)">${SVG_CHECK} True</button>
-        <button class="tf-false" onclick="answerKnow(${i},false)">${SVG_CROSS} False</button>
+      <div class="kc-row">
+        <div class="kc-s">${c.s}</div>
+        <div class="kc-tf">
+          <button class="tf-true"  onclick="answerKnow(${i},true)">${SVG_CHECK} True</button>
+          <button class="tf-false" onclick="answerKnow(${i},false)">${SVG_CROSS} False</button>
+        </div>
       </div>
       <div class="kc-reveal">
-        <div class="kc-badge"></div>
-        <div class="kc-answer"><b>${c.a ? 'True.' : 'False.'}</b> ${c.r}</div>
+        <span class="kc-badge"></span>
+        <span class="kc-answer"><b>${c.a ? 'True.' : 'False.'}</b> ${c.r}</span>
       </div>
     </div>`).join('');
 }
