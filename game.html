@@ -600,12 +600,8 @@ function typewriter(el, text, speed, gen, done) {
   })();
 }
 function revealSequence(ids, interval, gen, done) {
-  let k = 0;
-  (function step() {
-    if (gen !== introRun) return;
-    if (k < ids.length) { document.getElementById(ids[k]).classList.add('on'); k++; setTimeout(step, interval); }
-    else if (done) done();
-  })();
+  ids.forEach((id, k) => setTimeout(() => { if (gen === introRun) document.getElementById(id).classList.add('on'); }, k * interval));
+  if (done) setTimeout(() => { if (gen === introRun) done(); }, (ids.length - 1) * interval + 60);
 }
 const INTRO_STAGES = ['wa-eyebrow','wa-name','ms1','ms2','ms3','ms4','wheel-block','spin-btn'];
 function introSequence() {
@@ -625,11 +621,11 @@ function introSequence() {
         if (gen!==introRun) return;
         // reveal the money sentences one at a time
         revealSequence(['ms1','ms2','ms3','ms4'], 1050, gen, () => {
-          setTimeout(() => {   // hold the wheel back — time to read the last line
+          setTimeout(() => {   // brief hold, then the wheel
             if (gen!==introRun) return;
             document.getElementById('wheel-block').classList.add('on');
             document.getElementById('spin-btn').classList.add('on');
-          }, 1700);
+          }, 700);
         });
       }, 800);
     });
