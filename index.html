@@ -2248,6 +2248,11 @@ function dismissIdle() {
 }
 // Any interaction while engaged resets the idle countdown.
 document.getElementById('root').addEventListener('pointerdown', () => { if (isEngaged()) resetIdleTimer(); });
+// Typing on the on-screen keyboard fires input/keydown on the focused field
+// (not a pointerdown on #root), so those — and focusing a field — count as
+// activity too. Otherwise people get timed out while entering their email.
+['input', 'keydown', 'focusin'].forEach(ev =>
+  document.addEventListener(ev, () => { if (isEngaged()) resetIdleTimer(); }, { passive: true }));
 
 /* ═══════════════ QUIZ ENGINE (reusable) ═══════════════ */
 const QUIZ_DATA = {
