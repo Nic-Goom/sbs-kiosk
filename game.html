@@ -928,7 +928,7 @@ function playAgain(forceWeeks) {
 function exitToKiosk() { window.location.href = 'index.html'; }
 
 /* ═══════════════ IDLE (→ kiosk) — long, it's all reading & thinking ═══════════════ */
-const IDLE_MS = 140000, IDLE_WARN_MS = 20000;
+const IDLE_MS = 240000, IDLE_WARN_MS = 30000;
 let idleTimer=null, warnTimer=null;
 function resetIdle() {
   clearTimeout(idleTimer); clearTimeout(warnTimer);
