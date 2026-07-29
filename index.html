@@ -284,6 +284,72 @@
   .game-sub { font-family: var(--body); font-size: 13.5px; color: #666; line-height: 1.4; max-width: 92%; }
   .game-soon { font-family: var(--body); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-top: 2px; }
 
+  /* ── GAME-FIRST HOME (attract; toggled from staff panel) ──
+     Same frame as #home: the game is the hero, prize draw + "Explore more"
+     sit in the bottom band. */
+  #home-game {
+    position: absolute; top: 112px; left: 0; right: 0; bottom: 0;
+    display: none; flex-direction: column;
+  }
+  .gh-hero {
+    flex: 1; position: relative; overflow: hidden; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    background: radial-gradient(120% 90% at 50% 0%, #efe7ff 0%, var(--off-white) 60%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 30px; padding: 40px 48px 24px;
+  }
+  .gh-hero:active { transform: scale(0.995); }
+  .gh-wheelwrap { position: relative; width: 560px; height: 560px; flex-shrink: 0; }
+  /* Fixed pointer at the top, biting into the wheel */
+  .gh-wheelwrap::after {
+    content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 26px solid transparent; border-right: 26px solid transparent;
+    border-top: 40px solid var(--purple); z-index: 3;
+    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.25));
+  }
+  .gh-wheel {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 12px solid #fff;
+    box-shadow: 0 18px 50px rgba(65,39,116,0.34), inset 0 0 0 3px rgba(65,39,116,0.15);
+    background:
+      repeating-conic-gradient(from 0deg,
+        var(--purple) 0deg 45deg, var(--pink) 45deg 90deg,
+        var(--yellow) 90deg 135deg, var(--lime) 135deg 180deg);
+    animation: ghspin 16s linear infinite;
+  }
+  @keyframes ghspin { to { transform: rotate(360deg); } }
+  /* White spokes + centre hub, not rotating */
+  .gh-hub {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 132px; height: 132px; border-radius: 50%;
+    background: #fff; z-index: 2;
+    box-shadow: 0 6px 18px rgba(65,39,116,0.3), inset 0 0 0 4px var(--yellow);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--veneer); font-size: 42px; color: var(--purple);
+    text-transform: uppercase; letter-spacing: 0.04em; line-height: 0.9; text-align: center;
+  }
+  .gh-copy { text-align: center; max-width: 900px; }
+  .gh-eyebrow {
+    display: inline-block; font-family: var(--veneer); font-size: 26px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple);
+    background: var(--yellow); padding: 5px 20px; border-radius: var(--r-btn); margin-bottom: 18px;
+  }
+  .gh-head { font-family: var(--veneer); font-size: 82px; line-height: 0.94; text-transform: uppercase; color: var(--purple); letter-spacing: 0.005em; }
+  .gh-sub { font-family: var(--body); font-size: 26px; color: #4a4a4a; line-height: 1.35; margin-top: 16px; }
+  .gh-cta {
+    margin-top: 28px; display: inline-flex; align-items: center; gap: 16px;
+    background: var(--pink); color: #fff; border: none;
+    border-radius: var(--r-btn); font-family: var(--veneer); font-size: 40px;
+    letter-spacing: 0.04em; text-transform: uppercase; padding: 24px 52px; cursor: pointer;
+    box-shadow: 0 8px 26px rgba(237,40,141,0.4); -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
+  }
+  .gh-hero:active .gh-cta { transform: scale(0.97); }
+  .gh-cta svg { width: 40px; height: 40px; stroke: #fff; stroke-width: 3; fill: none; }
+  /* Explore-more card reuses the game-band frame */
+  .gh-explore .game-title { font-size: 30px; }
+  .gh-explore .gh-ex-icon { width: 74px; height: 74px; flex-shrink: 0; }
+
   /* ── DRAW ENTRY OVERLAY ── */
   #draw-overlay {
     position: absolute; inset: 0; z-index: 460;   /* above the detail view (420) so the form sits on top */
@@ -941,6 +1007,54 @@
 
   </div><!-- /home -->
 
+  <!-- GAME-FIRST HOME (attract; shown when staff toggle = Game-first) -->
+  <div id="home-game">
+    <div class="gh-hero" onclick="gameTap()">
+      <div class="gh-wheelwrap">
+        <div class="gh-wheel"></div>
+        <div class="gh-hub">Spin<br>&amp; win</div>
+      </div>
+      <div class="gh-copy">
+        <span class="gh-eyebrow" id="gh-eyebrow">The Step by Step Challenge</span>
+        <h1 class="gh-head" id="gh-head">Could you make it work?</h1>
+        <p class="gh-sub" id="gh-sub">One week. A young care leaver's real budget. Spin the wheel and see if you'd survive.</p>
+        <button class="gh-cta">
+          Tap to play
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="bottom-band">
+      <div class="draw-band">
+        <div class="dot-blob" style="color:var(--yellow); width:220px; height:220px; bottom:-60px; left:120px; opacity:0.16;"></div>
+        <div class="draw-prize" id="ghd-prize">
+          <div class="prize-ph">Prize<br>photo</div>
+        </div>
+        <div class="draw-text">
+          <span class="draw-free" id="ghd-free">Free to enter</span>
+          <div class="draw-head" id="ghd-head">Win a Stay in the New Forest</div>
+          <div class="draw-sub" id="ghd-sub">Enter in under a minute. No purchase, no catch.</div>
+        </div>
+        <button class="draw-enter" onclick="openDetail('dv-draw'); event.stopPropagation();">
+          Enter draw
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </button>
+      </div>
+      <div class="game-band gh-explore" onclick="showExploreHome()">
+        <div class="game-card">
+          <svg class="gh-ex-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="16" y="16" width="30" height="30" rx="6" fill="#412774"/>
+            <rect x="54" y="16" width="30" height="30" rx="6" fill="#ED288D"/>
+            <rect x="16" y="54" width="30" height="30" rx="6" fill="#A1CD3D"/>
+            <rect x="54" y="54" width="30" height="30" rx="6" fill="#F0E904" stroke="#412774" stroke-width="2"/>
+          </svg>
+          <div class="game-title">Explore<br>Step by Step</div>
+          <div class="game-sub">Fostering, volunteering, real stories &amp; more.</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /home-game -->
+
   <!-- DRAW ENTRY OVERLAY -->
   <div id="draw-overlay">
     <div class="draw-card">
@@ -1576,6 +1690,7 @@
     <div class="sd-line" id="sd-last"></div>
     <button onclick="drainQueue(true); event.stopPropagation();">Try to send now</button>
     <button onclick="exportCsv(); event.stopPropagation();">Export all entries (CSV)</button>
+    <button id="home-toggle-btn" onclick="toggleHomeMode(); event.stopPropagation();">Home: Explore-first</button>
   </div>
   <!-- Guaranteed way in: 5 quick taps in the corner open the staff panel
        even when the badge pill is hidden. -->
@@ -1644,6 +1759,7 @@ const CONFIG = {
     // Budget game (phase 5) — standalone page game.html, forked from these tokens
     gameEnabled:  true,
     gameUrl:      'game.html',
+    homeMode:     'explore',                 // default landing: 'explore' (tiles) or 'game' (wheel hero). Staff can flip on-device.
 
     idleSeconds:        20,                  // idle-to-home while the prize-draw form is open (privacy)
     idleSecondsContent: 75                   // idle-to-home while reading content pages (fostering, quizzes, SL)
@@ -1776,6 +1892,44 @@ function goHome() {
   resetContentState();
   clearIdleTimer();
   hideStaffDetail();
+  applyHomeMode();   // restore the active landing (resets any transient "Explore more")
+}
+
+/* ═══════════════ HOME MODE — Explore-first ⇄ Game-first ═══════════════
+   Which landing the kiosk shows. Persisted on the device so staff can flip
+   it at the show (staff panel) without a redeploy; falls back to CONFIG. */
+const HOMEMODE_KEY = 'sbs_kiosk_homemode_v1';
+function currentHomeMode() {
+  try { const v = localStorage.getItem(HOMEMODE_KEY); if (v === 'game' || v === 'explore') return v; } catch (e) {}
+  return CONFIG.event.homeMode || 'explore';
+}
+function applyHomeMode() {
+  const gameFirst = currentHomeMode() === 'game' && CONFIG.event.gameEnabled;
+  document.getElementById('home').style.display = gameFirst ? 'none' : 'flex';
+  document.getElementById('home-game').style.display = gameFirst ? 'flex' : 'none';
+  const btn = document.getElementById('home-toggle-btn');
+  if (btn) btn.textContent = 'Home: ' + (gameFirst ? 'Game-first' : 'Explore-first');
+}
+function toggleHomeMode() {
+  const next = currentHomeMode() === 'game' ? 'explore' : 'game';
+  try { localStorage.setItem(HOMEMODE_KEY, next); } catch (e) {}
+  applyHomeMode();
+}
+/* "Explore more" from the game-first home: reveal the tile home transiently
+   (does NOT change the saved mode — idle/home returns to the game hero). */
+function showExploreHome() {
+  document.getElementById('home-game').style.display = 'none';
+  document.getElementById('home').style.display = 'flex';
+}
+/* Mirror the prize-draw band (populated by applyConfig on #home) into the
+   game-first home, so both stay in sync from one source. */
+function syncGameHome() {
+  [['draw-free','ghd-free'], ['draw-head','ghd-head'], ['draw-sub','ghd-sub']].forEach(([s, d]) => {
+    const src = document.getElementById(s), dst = document.getElementById(d);
+    if (src && dst) dst.textContent = src.textContent;
+  });
+  const sp = document.getElementById('draw-prize'), dp = document.getElementById('ghd-prize');
+  if (sp && dp) dp.innerHTML = sp.innerHTML;
 }
 
 /* ── Tile detail navigation (a simple view stack) ── */
@@ -2959,6 +3113,8 @@ initChallenges();
 initVolunteer();
 initKnowCards();
 updateStaffBadge();
+syncGameHome();      // mirror prize-draw band into the game-first home
+applyHomeMode();     // show the correct landing (Explore-first by default)
 if (loadQueue().length) drainQueue();
 </script>
 </body>
