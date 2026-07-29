@@ -299,7 +299,7 @@
     gap: 30px; padding: 40px 48px 24px;
   }
   .gh-hero:active { transform: scale(0.995); }
-  .gh-wheelwrap { position: relative; width: 560px; height: 560px; flex-shrink: 0; }
+  .gh-wheelwrap { position: relative; width: 720px; height: 720px; flex-shrink: 0; }
   /* Fixed pointer at the top, biting into the wheel */
   .gh-wheelwrap::after {
     content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
@@ -321,11 +321,11 @@
   /* White spokes + centre hub, not rotating */
   .gh-hub {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 132px; height: 132px; border-radius: 50%;
+    width: 168px; height: 168px; border-radius: 50%;
     background: #fff; z-index: 2;
-    box-shadow: 0 6px 18px rgba(65,39,116,0.3), inset 0 0 0 4px var(--yellow);
+    box-shadow: 0 6px 18px rgba(65,39,116,0.3), inset 0 0 0 5px var(--yellow);
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--veneer); font-size: 42px; color: var(--purple);
+    font-family: var(--veneer); font-size: 50px; color: var(--purple);
     text-transform: uppercase; letter-spacing: 0.04em; line-height: 0.9; text-align: center;
   }
   .gh-copy { text-align: center; max-width: 900px; }
@@ -1010,13 +1010,15 @@
   <!-- GAME-FIRST HOME (attract; shown when staff toggle = Game-first) -->
   <div id="home-game">
     <div class="gh-hero" onclick="gameTap()">
+      <div class="gh-copy">
+        <span class="gh-eyebrow" id="gh-eyebrow">The Step by Step Challenge</span>
+        <h1 class="gh-head" id="gh-head">Could you make it work?</h1>
+      </div>
       <div class="gh-wheelwrap">
         <div class="gh-wheel"></div>
         <div class="gh-hub">Spin<br>&amp; win</div>
       </div>
       <div class="gh-copy">
-        <span class="gh-eyebrow" id="gh-eyebrow">The Step by Step Challenge</span>
-        <h1 class="gh-head" id="gh-head">Could you make it work?</h1>
         <p class="gh-sub" id="gh-sub">One week. A young care leaver's real budget. Spin the wheel and see if you'd survive.</p>
         <button class="gh-cta">
           Tap to play
