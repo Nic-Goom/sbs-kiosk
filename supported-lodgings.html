@@ -1093,7 +1093,9 @@
   #root.narrow .sl-hero-h1 { font-size: 60px; margin-bottom: 12px; }
   #root.narrow .sl-eyebrow { margin-bottom: 12px; }
   #root.narrow .sl-hero-p { margin-bottom: 20px; }
-  #root.narrow .tiles.sl4 { grid-template-rows: repeat(2, minmax(160px, 1fr)); }
+  #root.narrow .tiles.sl4 { grid-template-rows: repeat(2, minmax(140px, 1fr)); }
+  #root.narrow .tiles.sl4 .tile.num .num-sub { font-size: 15px; margin-top: 8px; }
+  #root.narrow .tiles.sl4 .tile.num .num-hero { font-size: 76px; }
   /* Landscape: photo on the left, the four tiles on the right */
   #root.wide #home { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr auto; }
   #root.wide .sl-hero { grid-column: 1; grid-row: 1 / span 2; }
@@ -1681,6 +1683,7 @@ function goHome() {
   document.getElementById('detail').classList.remove('visible');
   document.getElementById('give-modal').classList.remove('visible');
   closeRecords();                     // idle or logo tap locks the records screen
+  if (window.__sbsReloadPending) { location.reload(); return; }   // pick up a new version between visitors
   detailStack = [];
   resetContentState();
   clearIdleTimer();
@@ -1996,7 +1999,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 71 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 72 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
@@ -2414,9 +2417,17 @@ function resetEnquiry(key) {
 /* ═══════════════ SERVICE WORKER ═══════════════ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
+    const hadController = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.register('sw.js').then(reg => {
       console.log('[kiosk] service worker registered', reg.scope);
+      reg.update().catch(() => {});
+      setInterval(() => reg.update().catch(() => {}), 15 * 60 * 1000);   // check for a new version every 15 min
     }).catch(err => console.warn('[kiosk] SW registration failed', err));
+    // A new version took over: reload to show it, but never while someone is using the page.
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController) return;                    // first-ever visit, nothing to refresh
+      if (!isEngaged()) location.reload(); else window.__sbsReloadPending = true;
+    });
   });
 }
 
@@ -2445,6 +2456,21 @@ const STORIES = [
     ]
   },
   {
+    name: 'Ella & Richard', role: 'Supported Lodgings hosts', photo: 'sl-ella-richard.jpg', pseudonym: false, imgPos: 'center 30%',
+    hook: `"You're not only sharing part of your house. You will share your life."`,
+    exit: { type: 'single', text: 'Could you offer a room?', view: 'dv-sl' },
+    story: [
+      { t: 'pull', text: `You're not only sharing part of your house with this young person. You will share your life and your experience.` },
+      { t: 'p', text: `For Ella and Richard, the decision to host came from a shared desire to do something useful with the space in their home, and to make a tangible difference in the lives of young people who needed safety and support. Ella explains, "We were living in a large house, so we decided as we had two rooms and a bathroom upstairs that nobody was using, Supported Lodgings was a good idea."` },
+      { t: 'p', text: `For Richard, one of the biggest surprises has been just how personal and rewarding the experience has become.` },
+      { t: 'p', text: `"The highlight for me has actually been the relationships that we have been able to have with these young people. I thought it wouldn't be very personal. We still know several of them. We still talk to them now and again."` },
+      { t: 'p', text: `Ella recalls the very first young person who came to stay with them, "We got along just fine. He is a very sweet human being, very respectful. We were there when he had sad and difficult moments, and there were quite a few, but we were there to celebrate when he was able to achieve something."` },
+      { t: 'p', text: `When asked what they would say to others who are thinking about becoming hosts, both Ella and Richard encourage taking the leap.` },
+      { t: 'p', text: `"I would say, do it. I don't think it's possible to advise on an individual basis. I think if you feel the urge and you see the need, just do it," Richard says simply.` },
+      { t: 'p', text: `"Yes, you're not only sharing part of your house with this young person. You will share your life and your experience," Ella agrees. "One thing that we have seen, regardless of moments of misunderstanding, is that they are grateful."` }
+    ]
+  },
+  {
     name: 'Jess', role: 'Lived with Supported Lodgings hosts', photo: 'jess-portrait-small.jpg', pseudonym: false,
     hook: 'Her best friend\'s parents became her hosts.',
     exit: { type: 'single', text: 'Could you offer a room?', view: 'dv-sl' },
@@ -2461,6 +2487,21 @@ const STORIES = [
       { t: 'p', text: `I am currently studying to be a primary school teacher at university as well as work as a private tutor. Without Step by Step, I wouldn't be where I am today. I couldn't keep living at home within the circumstances so I'm not sure what I have done if this charity wasn't an option for me. I am healthy, happy and supported after being with Step by Step.` },
       { t: 'q', text: `Do you have a message for our supporters?` },
       { t: 'p', text: `Step by Step's work is the reason I am not homeless. It's the reason I am able to go to university and have grown to find myself over the years. They can help in more ways than you realise, and that's why I want to give back by doing their Spinnaker Tower abseil. There are so many reasons why a young person can lose their home, and that's why Step by Step is so important.` }
+    ]
+  },
+  {
+    name: 'Lydia', role: 'Lived with a Supported Lodgings host', photo: 'sl-lydia.jpg', pseudonym: false, imgPos: 'center 30%',
+    hook: `"I like that things are consistent and normal. This feels like home."`,
+    exit: { type: 'single', text: 'Could you offer a room?', view: 'dv-sl' },
+    story: [
+      { t: 'pull', text: `I'm building a little life for myself, one that wouldn't have been possible without Step by Step.` },
+      { t: 'p', text: `Lydia came to Step by Step after both her parents passed away. Devastated and alone, Lydia needed a stable place to live as well as a great deal of compassion and support.` },
+      { t: 'p', text: `Lydia was referred to our Supported Lodgings service and carefully matched with a host. At first, she was very nervous about living with her host, but after a few meetings to discuss her concerns, she felt ready to move in.` },
+      { t: 'p', text: `Lydia and her host went on to develop a fantastic relationship, characterised by honesty and openness. The trauma of losing her parents had left Lydia with mental health issues; her host would recognise when she was struggling, not sleeping or eating very much and offer her support.` },
+      { t: 'p', text: `When asked what she thought about living with her host, Lydia told us: "I like that things are consistent and normal. This feels like home."` },
+      { t: 'p', text: `With such a safe, caring environment to live in, Lydia soon began to thrive. She achieved excellent results at college and was able to find herself a job. She is now living in her own lovely flat, with her adorable cat Spoon.` },
+      { t: 'p', text: `Despite suffering significant bereavement at a very young age, Lydia has displayed incredible resilience and maintains a positive outlook on life. She still keeps in touch with her host and is involved in Step by Step's Speak Out group, where young people feed back changes and improvements that they feel would benefit their peers.` },
+      { t: 'p', text: `When asked how she's doing now, Lydia answered "I'm building a little life for myself, one that wouldn't have been possible without Step by Step."` }
     ]
   }
 ];
