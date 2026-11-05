@@ -895,7 +895,7 @@
     opacity: 0; pointer-events: none; transition: opacity 0.4s ease; gap: 30px;
   }
   #idle-overlay.visible { opacity: 1; pointer-events: all; }
-  #idle-overlay .idle-logo { height: 90px; }
+  #idle-overlay .idle-logo { width: 80%; max-width: 620px; height: auto; }
   .idle-msg { font-family: var(--veneer); font-size: 58px; color: white; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
   .idle-sub { font-family: var(--body); font-size: 20px; color: rgba(255,255,255,0.6); text-align: center; }
   .idle-ring { width: 130px; height: 130px; position: relative; }
@@ -1032,6 +1032,22 @@
   #root.narrow .rr-status { grid-column: 2; grid-row: 1; }
   #root.narrow .rr-email { grid-column: 1 / span 2; }
   #root.narrow .rr-type { grid-column: 1 / span 2; }
+  .sl-steps { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .sl-steps li { display: flex; gap: 18px; align-items: flex-start; background: #fff; border-radius: 16px; padding: 16px 20px; box-shadow: 0 3px 14px rgba(65,39,116,0.08); }
+  .sl-steps .st-num { flex: 0 0 52px; height: 52px; border-radius: 50%; background: var(--lime); color: var(--purple); font-family: var(--veneer); font-size: 32px; display: flex; align-items: center; justify-content: center; }
+  .sl-steps .st-t { font-family: var(--veneer); font-size: 26px; color: var(--purple); text-transform: uppercase; line-height: 1.05; margin-bottom: 4px; }
+  .sl-steps .st-d { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.5; }
+  .sl-cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  #root.narrow .subtab { font-size: 15px; min-height: 60px; padding: 0 4px; }
+  /* Compact quiz on phones and smaller tablets, so question + answer + Next fit */
+  #root.narrow .quiz-card { padding: 26px 20px; }
+  #root.narrow .quiz-statement { font-size: 36px; margin-bottom: 20px; }
+  #root.narrow .quiz-tf { gap: 12px; margin-bottom: 16px; }
+  #root.narrow .quiz-tf button { height: 84px; font-size: 34px; }
+  #root.narrow .quiz-reveal { padding: 16px 18px; margin-bottom: 16px; }
+  #root.narrow .quiz-reveal p { font-size: 17px; }
+  #root.narrow .quiz-next-row { justify-content: stretch; }
+  #root.narrow .quiz-next-row .btn-pill.show { width: 100%; justify-content: center; }
   .rec-ver { font-family: var(--body); font-size: 13px; color: #999; text-align: center; margin-top: 16px; }
   .rec-conn { font-family: var(--body); font-size: 14px; color: #666; margin-bottom: 12px; }
   #staff-detail .sd-records { border-color: var(--pink); color: var(--pink); }
@@ -1059,7 +1075,9 @@
   .sl-hero { flex: 1 1 auto; min-height: auto; overflow: visible; }   /* visible so it never shrinks below its own words */
   #root .tiles.sl4 { flex: 1.4 1 0; min-height: auto; grid-template-rows: repeat(2, minmax(170px, 1fr)); }
   #root.narrow .sl-hero { flex: 1 1 auto; }
-  #root.narrow .sl-hero-h1 { font-size: 66px; }
+  #root.narrow .sl-hero-h1 { font-size: 60px; margin-bottom: 12px; }
+  #root.narrow .sl-eyebrow { margin-bottom: 12px; }
+  #root.narrow .sl-hero-p { margin-bottom: 20px; }
   #root.narrow .tiles.sl4 { grid-template-rows: repeat(2, minmax(160px, 1fr)); }
   /* Landscape: photo on the left, the four tiles on the right */
   #root.wide #home { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr auto; }
@@ -1106,11 +1124,11 @@
         <img class="tile-img" src="project/assets/sl-young-person.jpg" alt="A young person" style="object-position:center 30%;">
         <div class="tile-ph"><div class="tile-title">What's involved?</div></div>
       </div>
-      <div class="tile num pink" onclick="openSL(0, 'sl-money')">
+      <div class="tile num pink" onclick="openSL(1)">
         <div class="num-hero">&pound;174</div>
         <div class="num-sub">a week. That's over &pound;9,000 a year</div>
       </div>
-      <div class="tile ask has-photo" onclick="openSL(1)">
+      <div class="tile ask has-photo" onclick="openSL(2)">
         <img class="tile-img" src="project/assets/sl-sofa-chat.jpg" alt="A host and a young person chatting over a cup of tea" style="object-position:center 30%;">
         <div class="tile-ph"><div class="tile-title">Could someone like me do this?</div></div>
       </div>
@@ -1144,31 +1162,59 @@
       <!-- VIEW: Supported Lodgings -->
       <div class="detail-view" id="dv-sl">
 
-        <!-- Subpage: About -->
+        <!-- Subpage: What's involved (from "Your guide to becoming a Supported Lodgings host", 2025) -->
         <div class="subpanel active">
-        <p class="d-intro">A spare room, a little of your time, and a young person gets a steady base to find their feet.</p>
+        <p class="d-intro">Supported Lodgings gives a young person at risk of homelessness a safe, stable and caring place to live, in the home of a trusted adult. It's more than a room. It's the chance to rebuild their life.</p>
 
         <div class="d-section">
-          <h2 class="d-h2">What it is</h2>
-          <p class="d-p">You open a spare room to a young person, usually 16 to 21, who mostly needs somewhere steady while they learn to stand on their own feet. You offer a room and a bit of your time — we provide the training, the support and the team behind you.</p>
+          <h2 class="d-h2">What a host does</h2>
+          <p class="d-p">You offer a spare, furnished room and much more than a roof: emotional support, encouragement, and everyday life skills like budgeting, cooking and looking after yourself. The goal is to help the young person move towards an independent, fulfilling future. Some placements last a few months, others longer.</p>
         </div>
 
         <div class="d-section">
-          <h2 class="d-h2">What you'd be signing up to</h2>
+          <h2 class="d-h2">Who the young people are</h2>
+          <p class="d-p">Young people aged 16 to 21 (and sometimes a little older), from all kinds of backgrounds. Many have faced:</p>
           <ul class="d-list">
-            <li>A spare room, and some of your time — around an hour a day at the start, and less as they settle.</li>
-            <li>Training before you begin, and a dedicated worker with you the whole way through.</li>
-            <li>You're never on your own with it. There's always someone on the end of the phone.</li>
+            <li>Family breakdown or neglect</li>
+            <li>Time in care, or leaving care</li>
+            <li>Arriving in the UK alone as an asylum-seeking child</li>
+            <li>Mental health struggles or trauma</li>
+            <li>Poverty, or being shut out of education or work</li>
+          </ul>
+          <p class="d-p">Despite all that, they're resilient, resourceful and ready to move forward. What they need is someone to offer stability and belief: a safe home and a second chance.</p>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">Who can host</h2>
+          <p class="d-p">You don't need qualifications or experience. You can host if you:</p>
+          <ul class="d-list">
+            <li>Are over 21</li>
+            <li>Have a spare, furnished room</li>
+            <li>Can offer a stable, caring home</li>
+            <li>Are willing to listen, guide and encourage a young person</li>
+            <li>Are happy to have safeguarding checks and training</li>
+          </ul>
+          <p class="d-p">Single, a couple or a family. Working full time, part time, self-employed or retired. Homeowner or renting (with your landlord's permission). From any background, faith or identity.</p>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">You're never on your own</h2>
+          <ul class="d-list">
+            <li>A dedicated Placement Coordinator matches you and stays involved throughout</li>
+            <li>A Support Worker works alongside you and the young person</li>
+            <li>Induction training before you start, and training every year after</li>
+            <li>Support 24 hours a day, 7 days a week</li>
+            <li>A friendly network of other hosts, with regular check-ins and resources</li>
           </ul>
         </div>
 
-        <div class="d-section" id="sl-money">
-          <h2 class="d-h2">The money</h2>
-          <div class="money-callout">
-            <div class="mc-label">You receive around</div>
-            <div class="mc-amount">&pound;174<span>/ week</span></div>
-            <div class="mc-sub">Over &pound;9,000 a year. Two payments each week: rent, usually paid by the local authority, and a support allowance that recognises your time. Your household bills may rise a little; the allowance is designed to cover that.</div>
-          </div>
+        <div class="d-section">
+          <h2 class="d-h2">Finding the right fit</h2>
+          <ul class="d-list">
+            <li>You're never matched without your full involvement</li>
+            <li>We get to know your lifestyle, boundaries and preferences</li>
+            <li>You have time to meet, ask questions and decide together if it feels right</li>
+          </ul>
         </div>
 
         <div class="d-section">
@@ -1179,7 +1225,46 @@
           </div>
           <button class="btn-ghost" style="margin-top:16px" onclick="openDetail('dv-stories')">Read more host stories</button>
         </div>
-        </div><!-- /About panel -->
+
+        <div class="d-section">
+          <h2 class="d-h2">Your journey to becoming a host</h2>
+          <ol class="sl-steps">
+            <li><span class="st-num">1</span><div><div class="st-t">Initial enquiry</div><div class="st-d">We arrange a phone call to talk through what being a host involves and answer your questions.</div></div></li>
+            <li><span class="st-num">2</span><div><div class="st-t">Home visit</div><div class="st-d">We come round for a tour of your home, check your spare room is suitable and talk about Supported Lodgings in more detail.</div></div></li>
+            <li><span class="st-num">3</span><div><div class="st-t">Initial paperwork</div><div class="st-d">A form about you, your family, your lifestyle, your experiences and why you'd like to host, plus a short e-learning course.</div></div></li>
+            <li><span class="st-num">4</span><div><div class="st-t">References and DBS</div><div class="st-d">Personal and professional references for you (and your partner, if relevant), and DBS checks for anyone over 18 living in your home.</div></div></li>
+            <li><span class="st-num">5</span><div><div class="st-t">Host assessment</div><div class="st-d">We check your understanding of a few specific things and give you extra training if you need it.</div></div></li>
+            <li><span class="st-num">6</span><div><div class="st-t">Panel</div><div class="st-d">A panel looks at everything gathered so far and signs you off as ready to host.</div></div></li>
+            <li><span class="st-num">7</span><div><div class="st-t">Matching</div><div class="st-d">We match the right young person to you. You meet first to agree expectations and house rules together.</div></div></li>
+            <li><span class="st-num">8</span><div><div class="st-t">Ongoing support and training</div><div class="st-d">A Support Worker works alongside you and the young person, and you get training every year.</div></div></li>
+          </ol>
+        </div>
+
+        <div class="sl-cta-row">
+          <button class="btn-pill" onclick="openSignup()">Sign up to host <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+          <button class="btn-ghost" onclick="openEnquiry()">Get the free guide</button>
+        </div>
+        </div><!-- /What's involved panel -->
+
+        <!-- Subpage: The money -->
+        <div class="subpanel">
+        <div class="d-section" id="sl-money">
+          <h2 class="d-h2">The money</h2>
+          <div class="money-callout">
+            <div class="mc-label">You receive around</div>
+            <div class="mc-amount">&pound;174<span>/ week</span></div>
+            <div class="mc-sub">Over &pound;9,000 a year. Two payments each week: rent, usually paid by the local authority, and a support allowance that recognises your time. Your household bills may rise a little; the allowance is designed to cover that.</div>
+          </div>
+          <ul class="d-list" style="margin-top:22px">
+            <li>The allowance is non-taxable</li>
+            <li>It doesn't usually affect benefits</li>
+          </ul>
+        </div>
+        <div class="sl-cta-row">
+          <button class="btn-pill" onclick="openSignup()">Sign up to host <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+          <button class="btn-ghost" onclick="openEnquiry()">Get the free guide</button>
+        </div>
+        </div><!-- /The money panel -->
 
         <!-- Subpage: Could you? -->
         <div class="subpanel">
@@ -1204,7 +1289,7 @@
               Email me the guide
               <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
             </button>
-            <div class="eq-switch">Already know you want to host? <button onclick="showSection('sl',3)">Sign up instead</button></div>
+            <div class="eq-switch">Already know you want to host? <button onclick="showSection('sl',4)">Sign up instead</button></div>
           </div>
           <div class="eq-confirm" id="enq-sl-confirm">
             <div class="ec-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
@@ -1255,7 +1340,7 @@
               <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
             </button>
             <div class="eq-privacy">We'll only use these details to talk to you about becoming a host. Privacy statement at stepbystep.org.uk/legal/privacy-statement</div>
-            <div class="eq-switch">Not quite ready? <button onclick="showSection('sl',2)">Get the free guide instead</button></div>
+            <div class="eq-switch">Not quite ready? <button onclick="showSection('sl',3)">Get the free guide instead</button></div>
           </div>
           <div class="eq-confirm" id="enq-signup-confirm">
             <div class="ec-splash"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
@@ -1482,7 +1567,9 @@ function scaleRoot() {
     const over = home.scrollHeight - home.clientHeight;
     if (over > 1) {
       const needed = fitH / z + over + 4;
-      applyFit(root, fitH / needed, dw, fitH);
+      // Shrink at most 12%; past that, let the home screen scroll instead of
+      // making everything tiny with wide side bands.
+      applyFit(root, Math.max(fitH / needed, z * 0.88), dw, fitH);
     }
   }
   root.style.height = (H / currentZoom) + 'px';     // actual height (keyboard may be open)
@@ -1581,7 +1668,7 @@ function showDetailView(viewId) {
   document.getElementById('detail-title').textContent = DETAIL_TITLES[viewId] || '';
   const key = viewId.replace('dv-', '');
   if (key === 'sl') {
-    showSection('sl', 0);              // SL has no menu page: open on "About" with the tabs showing
+    showSection('sl', 0);              // SL has no menu page: open on "What's involved" with the tabs showing
   } else if (VIEW_MENUS[key]) {
     openViewMenu(key);                 // open on the card menu — people choose where to start
     const fb = document.getElementById('detail-draw'); if (fb) fb.style.display = '';
@@ -1594,11 +1681,11 @@ function showDetailView(viewId) {
 
 /* ── Subpages within a detail view (Fostering / Supported Lodgings) ── */
 const VIEW_TABS = {
-  sl: ['About', 'Could you?', 'Get the guide', 'Sign up']
+  sl: ['What\'s involved', 'The money', 'Could you?', 'Get the guide', 'Sign up']
 };
 const VIEW_MENUS = { stories: true };   // stories open on the card grid; SL opens straight on its tabs
-const ENQUIRY_TAB = { sl: 2 };
-const SIGNUP_TAB  = 3;        // which subpage holds the enquiry form
+const ENQUIRY_TAB = { sl: 3 };
+const SIGNUP_TAB  = 4;        // which subpage holds the enquiry form
 
 /* Show the card menu for a view (no subpage selected, tab bar hidden). */
 function openViewMenu(key) {
@@ -1850,7 +1937,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 67 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 69 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
@@ -2102,6 +2189,15 @@ function quizAnswer(id, ans) {
   const next = c.querySelector('.quiz-next-row .btn-pill');
   next.innerHTML = (last ? 'Done ' : 'Next ') + SVG_ARROW;
   next.classList.add('show');
+  // Bring the answer and the Next button into view so nobody has to scroll for it.
+  setTimeout(() => {
+    const sc = document.getElementById('detail-scroll');
+    const card = c.querySelector('.quiz-card');
+    if (sc && card) {
+      const over = next.getBoundingClientRect().bottom - sc.getBoundingClientRect().bottom;
+      if (over > -20) sc.scrollBy({ top: over + 40, behavior: 'smooth' });
+    }
+  }, 60);
   resetIdleTimer();
 }
 function quizNext(id) {
