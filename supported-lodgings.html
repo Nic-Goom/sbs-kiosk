@@ -1174,7 +1174,7 @@
         <div class="d-section">
           <h2 class="d-h2">A host's view</h2>
           <div class="host-quote">
-            <p>You're not there to parent them. You're there to support them as they move towards independence. They're always there when I need them. It never feels like I'm doing it on my own.</p>
+            <p>You're not there to parent them. You're there to support them as they move towards independence. They're [Step by Step] always there when I need them. It never feels like I'm doing it on my own.</p>
             <div class="hq-name">Lorraine, Supported Lodgings host for over five years</div>
           </div>
           <button class="btn-ghost" style="margin-top:16px" onclick="openDetail('dv-stories')">Read more host stories</button>
@@ -1850,7 +1850,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 66 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 67 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
