@@ -1296,17 +1296,17 @@
       <div id="rec-open" style="display:none">
         <h2>Sign-ups &amp; records</h2>
         <div class="rec-sum" id="rec-sum"></div>
-        <div class="rec-note">This is the permanent record for this device. Entries stay here after they're sent, and are only removed if someone enters the staff code and presses Delete.</div>
+        <div class="rec-note">This is the permanent record for this device. Entries stay here after they're sent. Only the admin code can delete them; the staff code can only view and export.</div>
         <div class="rec-actions">
           <button class="btn-pill" onclick="exportCsv()">Export CSV</button>
           <button class="btn-ghost" onclick="drainQueue(true); setTimeout(renderRecords, 1500)">Try to send now</button>
         </div>
         <div class="rec-list" id="rec-list"></div>
         <div class="rec-danger">
-          <button class="rec-del" onclick="startDelete()">Delete all records from this device</button>
+          <button class="rec-del" onclick="startDelete()">Delete all records (admin code needed)</button>
           <div id="rec-del-confirm" style="display:none">
             <p id="rec-del-warn"></p>
-            <input type="password" id="rec-del-code" inputmode="numeric" autocomplete="off" placeholder="Enter the staff code again">
+            <input type="password" id="rec-del-code" inputmode="numeric" autocomplete="off" placeholder="Admin code">
             <div class="rec-msg" id="rec-del-msg"></div>
             <div class="rec-actions">
               <button class="rec-del solid" onclick="confirmDelete()">Delete permanently</button>
@@ -1355,11 +1355,13 @@ const CONFIG = {
     // Full host sign-up. Lands in AC with this Source once its form is connected below.
     signupSource: 'SL Kiosk Sign-up',
 
-    // Staff code for the records screen, stored as a SHA-256 hash of
-    // 'sbs-sl-kiosk:' + code. To change it, ask Claude (or run:
-    //   printf 'sbs-sl-kiosk:NEWCODE' | sha256sum ) and paste the result here.
-    // This keeps visitors at the stand out; it is not bank-grade security.
-    staffCodeHash: '828a0852c0ded98ddd8d8662578bbeda08c0415140e188ce73e573644e4b5c03',
+    // Two codes, stored as SHA-256 hashes of 'sbs-sl-kiosk:' + code.
+    //  - staff: view who's signed up + export the CSV. Nothing else.
+    //  - admin: the ONLY code that can delete records.
+    // To change one, ask Claude (or run: printf 'sbs-sl-kiosk:NEWCODE' | sha256sum)
+    // and paste the result here. Keeps visitors at the stand out; not bank-grade security.
+    staffCodeHash: '3f01a839c3dc24ef2aa9772d48c8d1c0c8f461f90a81cce96bbe1126583ebf44',
+    adminCodeHash: 'b02f2c3ab68623c32bb2d7ca018ebc7e0e7de4dcf036f639b671c01369fd725b',
 
     // Donations: our Give a Little page (the QR image encodes this same link).
     donateUrl: 'https://givealittle.co/c/1SerNxqlMraXAsG8ieGQhm',
@@ -1811,9 +1813,10 @@ async function hashCode(code) {
   const buf = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
-async function codeOk(code) {
+async function codeOk(code, which) {
   if (!code) return false;
-  try { return (await hashCode(code.trim())) === CONFIG.event.staffCodeHash; } catch (e) { return false; }
+  const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
+  try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
 function openRecords() {
   hideStaffDetail();
@@ -1883,8 +1886,11 @@ function startDelete() {
 }
 function cancelDelete() { const c = document.getElementById('rec-del-confirm'); if (c) c.style.display = 'none'; }
 async function confirmDelete() {
-  if (!(await codeOk(document.getElementById('rec-del-code').value))) {
-    document.getElementById('rec-del-msg').textContent = "That code isn't right. Nothing was deleted.";
+  if (Date.now() < recLockedUntil) { document.getElementById('rec-del-msg').textContent = 'Too many tries. Wait a minute.'; return; }
+  if (!(await codeOk(document.getElementById('rec-del-code').value, 'admin'))) {
+    recFails++; if (recFails >= 5) { recLockedUntil = Date.now() + 60000; recFails = 0; }
+    document.getElementById('rec-del-code').value = '';
+    document.getElementById('rec-del-msg').textContent = "That isn't the admin code. Nothing was deleted.";
     return;
   }
   saveLog([]); saveQueue([]);

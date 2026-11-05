@@ -79,7 +79,11 @@ Anything held on a device sends automatically the next time it's online with the
 - tap the bottom-right corner 5 times quickly
 - add `#staff` to the end of the address
 
-The panel shows the queue and has **Try to send now**. To see who has signed up, tap **Sign-ups & records** and enter the staff code.
+The panel shows the queue and has **Try to send now**. To see who has signed up, tap **Sign-ups & records** and enter the **staff code**.
+
+**Two codes:**
+- **Staff code:** view who has signed up and export the CSV. It can't delete anything.
+- **Admin code (Nic only):** the only code that can delete records.
 
 **The records screen** lists every guide request and host sign-up taken on that device, with name, email, phone, postcode, spare room and best time to call. Each entry has a status:
 - **Sent (check it arrived in ActiveCampaign).** The page can only tell that the entry went out, not that ActiveCampaign accepted it, so spot-check after each event.
@@ -88,7 +92,7 @@ The panel shows the queue and has **Try to send now**. To see who has signed up,
 
 From the records screen you can **Export CSV**.
 
-**The record is permanent.** Sending an entry never removes it. The only way to clear it is **Delete all records from this device**, which needs the staff code entered again. If anything hasn't reached ActiveCampaign, the page warns you before deleting.
+**The record is permanent.** Sending an entry never removes it. The only way to clear it is **Delete all records from this device**, which needs the **admin code**. If anything hasn't reached ActiveCampaign, the page warns you before deleting.
 
 The records screen locks itself when the kiosk goes idle or someone taps the logo.
 
@@ -97,7 +101,7 @@ The records screen locks itself when the kiosk goes idle or someone taps the log
 - using a private or incognito window
 - iPhone and iPad Safari can clear a site's data after 7 days without a visit, unless the page is added to the home screen
 
-**Changing the staff code:** the code is stored as a fingerprint (`staffCodeHash` in CONFIG), not as the code itself. To change it, ask Claude, or run `printf 'sbs-sl-kiosk:NEWCODE' | sha256sum` and paste the result in. It keeps visitors at the stand out of the list; it is not bank-grade security.
+**Changing a code:** both codes are stored as fingerprints (`staffCodeHash` and `adminCodeHash` in CONFIG), not as the codes themselves. To change one, ask Claude, or run `printf 'sbs-sl-kiosk:NEWCODE' | sha256sum` and paste the result in. They keep visitors at the stand out of the list; they are not bank-grade security.
 
 ## Donations
 
