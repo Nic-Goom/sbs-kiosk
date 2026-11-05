@@ -1048,6 +1048,21 @@
   #root.narrow .quiz-reveal p { font-size: 17px; }
   #root.narrow .quiz-next-row { justify-content: stretch; }
   #root.narrow .quiz-next-row .btn-pill.show { width: 100%; justify-content: center; }
+  .pay-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+  .pay-part { background: #fff; border-radius: 18px; padding: 22px 24px; box-shadow: 0 3px 14px rgba(65,39,116,0.08); border-top: 6px solid var(--lime); }
+  .pay-part + .pay-part { border-top-color: var(--pink); }
+  .pp-k { font-family: var(--body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #888; }
+  .pp-t { font-family: var(--veneer); font-size: 30px; color: var(--purple); text-transform: uppercase; line-height: 1.05; margin: 6px 0 8px; }
+  .pp-d { font-family: var(--body); font-size: 17px; color: #555; line-height: 1.5; }
+  .pay-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 14px rgba(65,39,116,0.08); font-family: var(--body); }
+  .pay-table th { background: var(--purple); color: #fff; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 12px 16px; }
+  .pay-table td { font-size: 18px; color: #333; padding: 12px 16px; border-top: 1px solid rgba(65,39,116,0.08); }
+  .pay-table td:last-child { font-weight: 700; color: var(--purple); }
+  .pay-table tr:nth-child(even) td { background: rgba(65,39,116,0.03); }
+  .pay-note { font-family: var(--body); font-size: 15px; color: #777; line-height: 1.5; margin-top: 12px; }
+  #root.narrow .pay-parts { grid-template-columns: 1fr; }
+  #root.narrow .pay-table th, #root.narrow .pay-table td { padding: 10px 10px; font-size: 15px; }
+  #root.narrow .money-callout .mc-amount { font-size: 72px; }
   .rec-ver { font-family: var(--body); font-size: 13px; color: #999; text-align: center; margin-top: 16px; }
   .rec-conn { font-family: var(--body); font-size: 14px; color: #666; margin-bottom: 12px; }
   #staff-detail .sd-records { border-color: var(--pink); color: var(--pink); }
@@ -1110,7 +1125,7 @@
       <div class="sl-hero-copy">
         <span class="sl-eyebrow">Supported Lodgings</span>
         <h1 class="sl-hero-h1">Could you offer a spare room?</h1>
-        <p class="sl-hero-p">Give a young person aged 16 to 21 a safe, steady place to find their feet. You get training, a team behind you and around &pound;174 a week.</p>
+        <p class="sl-hero-p">Give a young person aged 16 to 21 a safe, steady place to find their feet. You get training, a team behind you and a weekly allowance.</p>
         <div class="sl-hero-btns">
           <button class="sl-btn primary" onclick="openSignup()">Sign up to host <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
           <button class="sl-btn ghost" onclick="openEnquiry()">Get the free guide</button>
@@ -1126,7 +1141,7 @@
       </div>
       <div class="tile num pink" onclick="openSL(1)">
         <div class="num-hero">&pound;174</div>
-        <div class="num-sub">a week. That's over &pound;9,000 a year</div>
+        <div class="num-sub">a week for a host in Basingstoke. Over &pound;9,000 a year</div>
       </div>
       <div class="tile ask has-photo" onclick="openSL(2)">
         <img class="tile-img" src="project/assets/sl-sofa-chat.jpg" alt="A host and a young person chatting over a cup of tea" style="object-position:center 30%;">
@@ -1251,13 +1266,57 @@
         <div class="d-section" id="sl-money">
           <h2 class="d-h2">The money</h2>
           <div class="money-callout">
-            <div class="mc-label">You receive around</div>
+            <div class="mc-label">Example: a host in Basingstoke receives</div>
             <div class="mc-amount">&pound;174<span>/ week</span></div>
-            <div class="mc-sub">Over &pound;9,000 a year. Two payments each week: rent, usually paid by the local authority, and a support allowance that recognises your time. Your household bills may rise a little; the allowance is designed to cover that.</div>
+            <div class="mc-sub">The LHA single-room rate (around &pound;93.51 a week) plus a Step by Step allowance of &pound;80. That's over &pound;9,000 a year per young person, while giving someone the stability they need to build a future. Worked out weekly and paid monthly, for as long as the young person lives with you.</div>
           </div>
-          <ul class="d-list" style="margin-top:22px">
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">How the allowance works</h2>
+          <p class="d-p">It's a weekly amount made up of two parts:</p>
+          <div class="pay-parts">
+            <div class="pay-part">
+              <div class="pp-k">Part 1</div>
+              <div class="pp-t">Rent</div>
+              <div class="pp-d">Usually paid by the local authority, in line with Local Housing Allowance (LHA) rates. These can differ slightly between local authorities. It covers the young person's accommodation costs.</div>
+            </div>
+            <div class="pay-part">
+              <div class="pp-k">Part 2</div>
+              <div class="pp-t">Support allowance: &pound;70+ a week</div>
+              <div class="pp-d">Depending on your area, and set by the local authority. It recognises your time, guidance and ongoing support.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">Typical rent rates</h2>
+          <p class="d-p">Current examples of typical LHA single-room rates (2025). Your support allowance of &pound;70+ a week is paid on top.</p>
+          <table class="pay-table">
+            <thead><tr><th>Area</th><th>Approximate weekly LHA (single room)</th></tr></thead>
+            <tbody>
+              <tr><td>Basingstoke</td><td>&pound;93.51</td></tr>
+              <tr><td>Aldershot (Blackwater Valley)</td><td>&pound;110.00</td></tr>
+              <tr><td>Swindon</td><td>&pound;103.87</td></tr>
+              <tr><td>Reading</td><td>&pound;90.10</td></tr>
+              <tr><td>Southampton (and Eastleigh)</td><td>&pound;97.81</td></tr>
+              <tr><td>Weymouth (Mid and West Dorset)</td><td>&pound;98.11</td></tr>
+            </tbody>
+          </table>
+          <p class="pay-note">These figures are reviewed every year by the government and may vary slightly depending on your postcode. Check your local rate on GOV.UK by searching &ldquo;Local Housing Allowance rates&rdquo;.</p>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">What does it cost to host?</h2>
+          <p class="d-p">You may see a slight increase in household costs, such as utilities, but the allowance is designed to cover these. Most hosts find the payments comfortably cover any extra costs.</p>
+        </div>
+
+        <div class="d-section">
+          <h2 class="d-h2">Good to know</h2>
+          <ul class="d-list">
             <li>The allowance is non-taxable</li>
             <li>It doesn't usually affect benefits</li>
+            <li>You can host more than one young person if your home and circumstances allow</li>
           </ul>
         </div>
         <div class="sl-cta-row">
@@ -1937,7 +1996,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 69 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 71 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
@@ -2130,7 +2189,7 @@ const QUIZ_DATA = {
     { s: "You get a say in which young person moves in.", a: true, r: "You have full control over who lives with you. We match carefully — on your preferences, your household and how you live — and nothing is arranged without talking it through. A placement only goes ahead once you're happy with it." },
     { s: "Hosting means being around most of the day.", a: false, r: "At the start it's about an hour a day, and it drops away as they find their feet — often around an hour a week by the time they're ready to move on. Lorraine hosts, works full time and still gets away in her caravan at weekends." },
     { s: "A host's role is to support, not to parent.", a: true, r: "You're there to support, not to parent — helping them make decisions that keep them safe. Cooking together, a hand with a budget, a nudge about college, someone to talk to. You agree the ground rules together, and you keep your own evenings, hobbies and space." },
-    { s: "Hosting will leave you out of pocket.", a: false, r: "You receive two payments each week: rent, usually paid by the local authority, and a support allowance of £70 or more that recognises your time. A host in Basingstoke receives around £174 a week — over £9,000 a year. Your bills may rise a little; the allowance is designed to cover that." }
+    { s: "Hosting will leave you out of pocket.", a: false, r: "You receive a weekly allowance, paid monthly, in two parts: rent, usually paid by the local authority in line with Local Housing Allowance rates, and a support allowance of £70 or more a week that recognises your time. A host in Basingstoke, for example, receives around £174 a week: £93.51 rent plus an £80 Step by Step allowance. That's over £9,000 a year." },
   ]
 };
 const QUIZ_END = {
