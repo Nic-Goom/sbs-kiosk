@@ -1013,6 +1013,25 @@
   .rec-del.solid { background: #c22; color: #fff; }
   .rec-search { width: 100%; height: 70px; border: 3px solid rgba(65,39,116,0.25); border-radius: 14px; padding: 0 20px; font-family: var(--body); font-size: 20px; margin-bottom: 12px; -webkit-appearance: none; }
   .rec-search:focus { border-color: var(--pink); outline: none; }
+  .rec-h3 { font-family: var(--veneer); font-weight: normal; font-size: 28px; color: var(--purple); text-transform: uppercase; margin: 8px 0 10px; }
+  .rec-table { border: 2px solid rgba(65,39,116,0.15); border-radius: 14px; overflow: hidden; margin-bottom: 22px; }
+  .rec-head, .rec-row { display: grid; grid-template-columns: 1.1fr 1.4fr 0.9fr 0.7fr; gap: 12px; padding: 12px 16px; align-items: start; font-family: var(--body); }
+  .rec-head { background: var(--purple); color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .rec-table .rec-list { max-height: 900px; overflow-y: auto; gap: 0; }
+  .rec-table .rec-row { border: none; border-radius: 0; border-top: 1px solid rgba(65,39,116,0.1); }
+  .rec-table .rec-row:nth-child(even) { background: rgba(65,39,116,0.03); }
+  .rec-table .rr-name { font-size: 18px; margin: 0; }
+  .rr-email { font-size: 17px; color: #333; word-break: break-word; }
+  .rr-extra { font-size: 13px; font-weight: 400; color: #777; margin-top: 3px; }
+  .rr-type { font-size: 14px; color: var(--pink); font-weight: 700; }
+  .rr-type .rr-when { font-size: 12px; color: #999; font-weight: 400; margin-top: 3px; text-transform: none; }
+  .rec-table .rr-status { margin: 0; justify-self: start; }
+  #root.narrow .rec-head { display: none; }
+  #root.narrow .rec-head + .rec-list .rec-row, #root.narrow .rec-row { grid-template-columns: 1fr auto; row-gap: 4px; }
+  #root.narrow .rr-name { grid-column: 1; }
+  #root.narrow .rr-status { grid-column: 2; grid-row: 1; }
+  #root.narrow .rr-email { grid-column: 1 / span 2; }
+  #root.narrow .rr-type { grid-column: 1 / span 2; }
   .rec-ver { font-family: var(--body); font-size: 13px; color: #999; text-align: center; margin-top: 16px; }
   .rec-conn { font-family: var(--body); font-size: 14px; color: #666; margin-bottom: 12px; }
   #staff-detail .sd-records { border-color: var(--pink); color: var(--pink); }
@@ -1300,15 +1319,20 @@
       <!-- Unlocked -->
       <div id="rec-open" style="display:none">
         <h2>Sign-ups &amp; records</h2>
+        <h3 class="rec-h3">Who's signed up on this device</h3>
+        <input type="search" id="rec-search" class="rec-search" placeholder="Search a name or email" autocomplete="off" autocorrect="off" spellcheck="false" oninput="renderRecords(); resetIdleTimer();">
+        <div class="rec-table">
+          <div class="rec-head"><span>Name</span><span>Email</span><span>Type</span><span>Status</span></div>
+          <div class="rec-list" id="rec-list"></div>
+        </div>
+        <h3 class="rec-h3">Totals</h3>
         <div class="rec-sum" id="rec-sum"></div>
         <div class="rec-conn" id="rec-conn"></div>
-        <div class="rec-note">This is the permanent record for this device. Entries stay here after they're sent. Only the admin code can delete them; the staff code can only view and export.</div>
+        <div class="rec-note"><b>Sent</b> means it left this device (spot-check ActiveCampaign). <b>Waiting</b> sends when back online. <b>Held</b>: the sign-up form isn't connected to ActiveCampaign yet, so it's kept here safely.<br><br>This is the permanent record for this device. Entries stay here after they're sent. Only the admin code can delete them; the staff code can only view and export.</div>
         <div class="rec-actions">
           <button class="btn-pill" onclick="exportCsv()">Export CSV</button>
           <button class="btn-ghost" onclick="drainQueue(true); setTimeout(renderRecords, 1500)">Try to send now</button>
         </div>
-        <input type="search" id="rec-search" class="rec-search" placeholder="Search a name or email: &quot;Did I put it in?&quot;" autocomplete="off" autocorrect="off" spellcheck="false" oninput="renderRecords(); resetIdleTimer();">
-        <div class="rec-list" id="rec-list"></div>
         <div class="rec-danger">
           <button class="rec-del" onclick="startDelete()">Delete all records (admin code needed)</button>
           <div id="rec-del-confirm" style="display:none">
@@ -1826,7 +1850,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 65 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 66 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
@@ -1863,10 +1887,10 @@ async function unlockRecords() {
   resetIdleTimer();
 }
 function entryStatus(e, unsent) {
-  if (!unsent.has(e.id)) return { cls: 'sent', txt: 'Sent (check it arrived in ActiveCampaign)' };
+  if (!unsent.has(e.id)) return { cls: 'sent', short: 'Sent' };
   const f = CONFIG.ac.forms[e.dest || 'kiosk'];
-  if (!(f && f.ready)) return { cls: 'held', txt: 'Held on this device (form not connected)' };
-  return { cls: 'wait', txt: 'Waiting to send' };
+  if (!(f && f.ready)) return { cls: 'held', short: 'Held on device' };
+  return { cls: 'wait', short: 'Waiting to send' };
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderRecords() {
@@ -1884,10 +1908,14 @@ function renderRecords() {
     const st = entryStatus(e, unsent);
     const type = e.dest === 'slsignup' ? 'Host sign-up' : (e.source === 'SL Guide' ? 'Guide request' : (e.interestType || e.source || 'Entry'));
     const extra = [e.phone, e.postcode, e.room && ('Spare room: ' + e.room), e.calltime && ('Call: ' + e.calltime)].filter(Boolean).map(esc).join(' · ');
-    return `<div class="rec-row"><div class="rr-top"><span class="rr-type">${esc(type)}</span><span class="rr-when">${esc(e.date)} ${esc(e.time)}</span></div>
-      <div class="rr-name">${esc(e.fullname)}</div><div class="rr-line">${esc(e.email)}</div>${extra ? `<div class="rr-line">${extra}</div>` : ''}
-      <div class="rr-status ${st.cls}">${st.txt}</div></div>`;
-  }).join('') : (q ? '<div class="rec-empty">No one matching \u201c' + esc(q) + '\u201d on this device. Check the spelling, or they may have used a different tablet or phone.</div>' : '<div class="rec-empty">No entries on this device yet.</div>');
+    return `<div class="rec-row">
+      <div class="rr-name">${esc(e.fullname)}${extra ? `<div class="rr-extra">${extra}</div>` : ''}</div>
+      <div class="rr-email">${esc(e.email)}</div>
+      <div class="rr-type">${esc(type)}<div class="rr-when">${esc(e.date)} ${esc(e.time)}</div></div>
+      <div class="rr-status ${st.cls}">${st.short}</div>
+    </div>`;
+  }).join('') : (q ? '<div class="rec-empty">No one matching \u201c' + esc(q) + '\u201d on this device. Check the spelling, or they may have used a different tablet or phone.</div>' : '<div class="rec-empty">No one has signed up or asked for the guide on this device yet.<br>New entries appear here straight away.</div>');
+  if (qEl) qEl.style.display = all.length >= 8 ? '' : 'none';   // only needed once the list gets long
 }
 function startDelete() {
   const notSent = loadQueue().length;
