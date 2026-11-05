@@ -997,15 +997,25 @@
   .sl-btn.primary { background: var(--pink); color: #fff; border: none; box-shadow: 0 6px 22px rgba(237,40,141,0.45); }
   .sl-btn.primary svg { width: 28px; height: 28px; stroke: #fff; stroke-width: 3; fill: none; }
   .sl-btn.ghost { background: transparent; color: #fff; border: 3px solid rgba(255,255,255,0.75); }
-  #root .tiles.sl4, #root.short .tiles.sl4 { flex: 1 1 0; grid-template-rows: repeat(2, minmax(240px, 1fr)); }
   .sl-donate { flex: 0 0 auto; border: none; background: var(--off-white); font-family: var(--body); font-size: 17px; color: #777; padding: 4px 20px 22px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .sl-donate span { color: var(--purple); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-  #root.narrow .sl-hero { flex: 0 0 auto; min-height: 640px; }
   #root.narrow .sl-hero-copy { padding: 0 24px 32px; }
-  #root.narrow .sl-hero-h1 { font-size: 70px; }
   #root.narrow .sl-hero-p { font-size: 20px; }
   #root.narrow .sl-btn { font-size: 26px; min-height: 76px; padding: 0 26px; flex: 1 1 auto; justify-content: center; }
-  #root.narrow .tiles.sl4 { flex: 0 0 auto; grid-template-rows: repeat(2, 250px); }
+  /* Fit-to-screen home: hero keeps its words visible, tiles take the rest */
+  .sl-hero { flex: 1 1 auto; min-height: auto; }
+  #root .tiles.sl4 { flex: 1.4 1 0; min-height: auto; grid-template-rows: repeat(2, minmax(170px, 1fr)); }
+  #root.narrow .sl-hero { flex: 1 1 auto; }
+  #root.narrow .sl-hero-h1 { font-size: 66px; }
+  #root.narrow .tiles.sl4 { grid-template-rows: repeat(2, minmax(160px, 1fr)); }
+  /* Landscape: photo on the left, the four tiles on the right */
+  #root.wide #home { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr auto; }
+  #root.wide .sl-hero { grid-column: 1; grid-row: 1 / span 2; }
+  #root.wide .tiles.sl4 { grid-column: 2; grid-row: 1; grid-template-rows: repeat(2, minmax(0, 1fr)); }
+  #root.wide .sl-donate { grid-column: 2; grid-row: 2; }
+  #root.wide .sl-hero-h1 { font-size: 92px; }
+  #root.wide .detail-view { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  #root.wide .detail-subtabs { padding-left: max(26px, calc((100% - 1100px) / 2)); padding-right: max(26px, calc((100% - 1100px) / 2)); }
 </style>
 </head>
 <body>
@@ -1080,31 +1090,6 @@
 
       <!-- VIEW: Supported Lodgings -->
       <div class="detail-view" id="dv-sl">
-
-        <!-- Menu: choose a subpage -->
-        <div class="view-menu">
-          <p class="vm-intro">A spare room, a little of your time, and a young person gets a steady base to find their feet. Where would you like to start?</p>
-          <div class="menu-card" onclick="showSection('sl',0)">
-            <div class="mn-photo"><img src="project/assets/charlie-room.jpg" alt="" style="object-position:center 45%;"></div>
-            <div class="mn-text"><div class="mn-title">What it is</div><div class="mn-sub">The room, the time, the money</div></div>
-            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
-          </div>
-          <div class="menu-card" onclick="showSection('sl',1)">
-            <div class="mn-photo"><img src="project/assets/fern-2yp.jpg" alt="" style="object-position:center 22%;"></div>
-            <div class="mn-text"><div class="mn-title">Could someone like me do this?</div><div class="mn-sub">A quick myth-busting quiz</div></div>
-            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
-          </div>
-          <div class="menu-card" onclick="showSection('sl',2)">
-            <div class="mn-photo"><img src="project/assets/georgie-cooking.jpg" alt="" style="object-position:center 30%;"></div>
-            <div class="mn-text"><div class="mn-title">Get the free guide</div><div class="mn-sub">Just curious? We'll email it to you</div></div>
-            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
-          </div>
-          <div class="menu-card signup" onclick="showSection('sl',3)">
-            <div class="mn-photo"><img src="project/assets/charlie-room.jpg" alt="" style="object-position:center 45%;"></div>
-            <div class="mn-text"><div class="mn-title">Sign up to host</div><div class="mn-sub">Ready to go? Our team will call you</div></div>
-            <div class="mn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
-          </div>
-        </div>
 
         <!-- Subpage: About -->
         <div class="subpanel active">
@@ -1361,19 +1346,26 @@ const LOG_KEY   = 'sbs_sl_kiosk_log_v1';   // permanent record of EVERY entry ta
 })();
 
 /* ═══════════════ VIEWPORT SCALING ═══════════════ */
+let fitW = 0, fitH = 0;
 function scaleRoot() {
   const root = document.getElementById('root');
   const W = window.innerWidth, H = window.innerHeight;
-  const narrow = Math.min(W, H) < 700;                // phones
-  const base = narrow ? 600 : 1080;                   // design width
-  const minH = narrow ? 600 : 1100;                   // never zoom so far that less than this fits vertically
-  // Keep the on-screen keyboard from changing the zoom: only width and a
-  // generous height floor decide it.
-  const z = Math.min(W / base, Math.max(H, 0.6 * Math.max(W, H)) / minH);
-  const dw = Math.min(base, W / z);
+  // Remember the tallest height seen at this width, so the on-screen keyboard
+  // (which shrinks the height) never makes the layout jump while typing.
+  if (W !== fitW) { fitW = W; fitH = H; } else { fitH = Math.max(fitH, H); }
+  const wide = W > fitH * 1.15;                        // landscape tablet / phone
+  let z, dw;
+  if (wide) {
+    z = fitH / (fitH < 500 ? 760 : 1000);              // design height: 1000 (760 on landscape phones)
+    dw = W / z;
+  } else {
+    const base = W < 700 ? 600 : 1080;                 // design width: 600 phones/small tablets, 1080 kiosk/tablet
+    z = W / base; dw = base;
+  }
   const dh = H / z;
-  root.classList.toggle('narrow', narrow);
-  root.classList.toggle('short', dh < (narrow ? 1150 : 1750));   // home scrolls instead of squashing
+  root.classList.toggle('wide', wide);
+  root.classList.toggle('narrow', !wide && W < 700);
+  root.classList.remove('short');
   root.style.width = dw + 'px';
   root.style.height = dh + 'px';
   if ('zoom' in root.style) {
@@ -1382,7 +1374,7 @@ function scaleRoot() {
   } else {                                            // very old browsers
     root.style.transform = 'scale(' + z + ')';
     root.style.position = 'absolute';
-    root.style.left = ((W - dw * z) / 2) + 'px'; root.style.top = '0px';
+    root.style.left = '0px'; root.style.top = '0px';
   }
 }
 scaleRoot();
@@ -1462,7 +1454,9 @@ function showDetailView(viewId) {
   document.querySelectorAll('.detail-view').forEach(v => v.classList.toggle('active', v.id === viewId));
   document.getElementById('detail-title').textContent = DETAIL_TITLES[viewId] || '';
   const key = viewId.replace('dv-', '');
-  if (VIEW_MENUS[key]) {
+  if (key === 'sl') {
+    showSection('sl', 0);              // SL has no menu page: open on "About" with the tabs showing
+  } else if (VIEW_MENUS[key]) {
     openViewMenu(key);                 // open on the card menu — people choose where to start
     const fb = document.getElementById('detail-draw'); if (fb) fb.style.display = '';
   } else {
@@ -1476,7 +1470,7 @@ function showDetailView(viewId) {
 const VIEW_TABS = {
   sl: ['About', 'Could you?', 'Get the guide', 'Sign up']
 };
-const VIEW_MENUS = { sl: true, stories: true };   // these views open on a card menu
+const VIEW_MENUS = { stories: true };   // stories open on the card grid; SL opens straight on its tabs
 const ENQUIRY_TAB = { sl: 2 };
 const SIGNUP_TAB  = 3;        // which subpage holds the enquiry form
 
