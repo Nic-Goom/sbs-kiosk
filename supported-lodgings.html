@@ -1011,6 +1011,10 @@
   .rec-danger p { font-family: var(--body); font-size: 16px; color: #a01060; line-height: 1.5; margin: 12px 0; }
   .rec-del { background: none; border: 2px solid #d33; color: #c22; border-radius: 9999px; padding: 12px 22px; font-family: var(--body); font-size: 15px; font-weight: 700; cursor: pointer; }
   .rec-del.solid { background: #c22; color: #fff; }
+  .rec-search { width: 100%; height: 70px; border: 3px solid rgba(65,39,116,0.25); border-radius: 14px; padding: 0 20px; font-family: var(--body); font-size: 20px; margin-bottom: 12px; -webkit-appearance: none; }
+  .rec-search:focus { border-color: var(--pink); outline: none; }
+  .rec-ver { font-family: var(--body); font-size: 13px; color: #999; text-align: center; margin-top: 16px; }
+  .rec-conn { font-family: var(--body); font-size: 14px; color: #666; margin-bottom: 12px; }
   #staff-detail .sd-records { border-color: var(--pink); color: var(--pink); }
   #root.narrow .rec-card { padding: 46px 18px 26px; }
   /* ═══ ROUND 3: simple home ═══ */
@@ -1291,16 +1295,19 @@
         <input type="password" id="rec-code" inputmode="numeric" autocomplete="off" placeholder="Staff code" onkeydown="if(event.key==='Enter')unlockRecords()">
         <div class="rec-msg" id="rec-lock-msg"></div>
         <button class="btn-pill" style="width:100%" onclick="unlockRecords()">Unlock</button>
+        <div class="rec-ver" id="rec-ver"></div>
       </div>
       <!-- Unlocked -->
       <div id="rec-open" style="display:none">
         <h2>Sign-ups &amp; records</h2>
         <div class="rec-sum" id="rec-sum"></div>
+        <div class="rec-conn" id="rec-conn"></div>
         <div class="rec-note">This is the permanent record for this device. Entries stay here after they're sent. Only the admin code can delete them; the staff code can only view and export.</div>
         <div class="rec-actions">
           <button class="btn-pill" onclick="exportCsv()">Export CSV</button>
           <button class="btn-ghost" onclick="drainQueue(true); setTimeout(renderRecords, 1500)">Try to send now</button>
         </div>
+        <input type="search" id="rec-search" class="rec-search" placeholder="Search a name or email: &quot;Did I put it in?&quot;" autocomplete="off" autocorrect="off" spellcheck="false" oninput="renderRecords(); resetIdleTimer();">
         <div class="rec-list" id="rec-list"></div>
         <div class="rec-danger">
           <button class="rec-del" onclick="startDelete()">Delete all records (admin code needed)</button>
@@ -1792,14 +1799,15 @@ function updateStaffBadge() {
   document.getElementById('sd-status').textContent = navigator.onLine ? 'Online' : 'Offline';
   document.getElementById('sd-last').textContent = lastDrainMsg;
   const totalEl = document.getElementById('sd-total'); if (totalEl) totalEl.textContent = loadLog().length;
+  const rc = document.getElementById('rec-conn');
+  if (rc) rc.textContent = (navigator.onLine ? 'Online' : 'Offline, entries will send when the connection is back') + (lastDrainMsg ? ' · ' + lastDrainMsg : '');
   const heldN = loadQueue().filter(e => { const f = CONFIG.ac.forms[e.dest || 'kiosk']; return !(f && f.ready); }).length;
   const heldEl = document.getElementById('sd-held');
   if (heldEl) heldEl.textContent = heldN ? heldN + ' sign-up' + (heldN === 1 ? '' : 's') + ' held on this device (safe in the records).' : '';
 }
 function toggleStaffDetail(ev) {
   if (ev) ev.stopPropagation();
-  document.getElementById('staff-detail').classList.toggle('visible');
-  updateStaffBadge();
+  openRecords();
 }
 function hideStaffDetail() { document.getElementById('staff-detail').classList.remove('visible'); }
 
@@ -1818,8 +1826,11 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
+const PAGE_VERSION = 'Version 65 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
+  document.getElementById('rec-ver').textContent = PAGE_VERSION;
+  updateStaffBadge();
   document.getElementById('rec-lock').style.display = '';
   document.getElementById('rec-open').style.display = 'none';
   document.getElementById('rec-code').value = '';
@@ -1830,6 +1841,7 @@ function openRecords() {
 }
 function closeRecords() {
   cancelDelete();
+  const qs = document.getElementById('rec-search'); if (qs) qs.value = '';
   document.getElementById('records').classList.remove('visible');
   document.getElementById('rec-list').innerHTML = '';     // don't leave names in the page
   document.getElementById('rec-code').value = '';
@@ -1858,11 +1870,14 @@ function entryStatus(e, unsent) {
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderRecords() {
-  const log = loadLog().slice().reverse();
+  const all = loadLog().slice().reverse();
+  const qEl = document.getElementById('rec-search');
+  const q = (qEl ? qEl.value : '').trim().toLowerCase();
+  const log = q ? all.filter(e => [e.fullname, e.email, e.phone, e.postcode].some(v => String(v || '').toLowerCase().includes(q))) : all;
   const unsent = new Set(loadQueue().map(e => e.id));
-  const signups = log.filter(e => e.dest === 'slsignup').length;
-  const guides = log.filter(e => e.source === 'SL Guide').length;
-  const notSent = log.filter(e => unsent.has(e.id)).length;
+  const signups = all.filter(e => e.dest === 'slsignup').length;
+  const guides = all.filter(e => e.source === 'SL Guide').length;
+  const notSent = all.filter(e => unsent.has(e.id)).length;
   document.getElementById('rec-sum').innerHTML =
     `<div><b>${signups}</b> host sign-up${signups === 1 ? '' : 's'}</div><div><b>${guides}</b> guide request${guides === 1 ? '' : 's'}</div><div class="${notSent ? 'warn' : ''}"><b>${notSent}</b> not yet in ActiveCampaign</div>`;
   document.getElementById('rec-list').innerHTML = log.length ? log.map(e => {
@@ -1872,7 +1887,7 @@ function renderRecords() {
     return `<div class="rec-row"><div class="rr-top"><span class="rr-type">${esc(type)}</span><span class="rr-when">${esc(e.date)} ${esc(e.time)}</span></div>
       <div class="rr-name">${esc(e.fullname)}</div><div class="rr-line">${esc(e.email)}</div>${extra ? `<div class="rr-line">${extra}</div>` : ''}
       <div class="rr-status ${st.cls}">${st.txt}</div></div>`;
-  }).join('') : '<div class="rec-empty">No entries on this device yet.</div>';
+  }).join('') : (q ? '<div class="rec-empty">No one matching \u201c' + esc(q) + '\u201d on this device. Check the spelling, or they may have used a different tablet or phone.</div>' : '<div class="rec-empty">No entries on this device yet.</div>');
 }
 function startDelete() {
   const notSent = loadQueue().length;
@@ -1904,11 +1919,9 @@ if (location.hash === '#staff') setTimeout(forceStaffDetail, 300);
 
 /* Force the staff panel open regardless of badge state — the 5-tap escape
    hatch for when the badge pill is hidden (fresh restart, nothing queued). */
-function forceStaffDetail() {
-  updateStaffBadge();                                     // refresh counts first
-  document.getElementById('staff-badge').classList.add('visible');   // reveal the pill too
-  document.getElementById('staff-detail').classList.add('visible');
-}
+/* Every way into the staff area (logo hold, corner taps, #staff, the queue
+   pill) goes straight to the code screen. Nothing shows without the code. */
+function forceStaffDetail() { openRecords(); }
 /* Press and hold the Step by Step logo for 2 seconds to open the staff panel.
    A short tap still goes home. */
 let logoHoldTimer = null, logoHeld = false;
@@ -1931,9 +1944,8 @@ function cornerTap() {
   if (cornerTaps >= 5) { cornerTaps = 0; clearTimeout(cornerTapTimer); forceStaffDetail(); }
 }
 function flashStaffDetail() {
-  const d = document.getElementById('staff-detail');
-  d.classList.add('visible');
   updateStaffBadge();
+  if (document.getElementById('rec-open').style.display !== 'none') renderRecords();
 }
 
 /* ═══════════════ IDLE TIMER — back to home ═══════════════

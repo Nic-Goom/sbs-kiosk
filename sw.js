@@ -6,7 +6,7 @@
    Bump CACHE_VERSION whenever the precache list or any cached file
    changes, so devices pick up the new copy on next load.
    ───────────────────────────────────────────────────────────── */
-const CACHE_VERSION = 'sbs-kiosk-v64';
+const CACHE_VERSION = 'sbs-kiosk-v65';
 
 /* Everything the kiosk needs to run fully offline.
    The video is cached here (never base64'd into the HTML). */
@@ -109,6 +109,30 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
+  // Pages (HTML): network first, so an online device always gets the latest
+  // version; falls back to the saved copy after 4s or when offline.
+  if (req.mode === 'navigate') {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_VERSION);
+      try {
+        const res = await Promise.race([
+          fetch(req, { cache: 'no-store' }),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 4000))
+        ]);
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
+      } catch (e) {
+        const own = await caches.match(req, { ignoreSearch: true });
+        if (own) return own;
+        const shell = await caches.match(url.pathname.endsWith('supported-lodgings.html') ? './supported-lodgings.html' : './index.html');
+        if (shell) return shell;
+        throw e;
+      }
+    })());
+    return;
+  }
+
+  // Everything else (photos, video, fonts): cache first.
   event.respondWith((async () => {
     const cached = await caches.match(req);
     if (cached) return cached;
@@ -120,13 +144,6 @@ self.addEventListener('fetch', (event) => {
       }
       return res;
     } catch (e) {
-      // Offline and not cached. For navigations, fall back to the shell.
-      if (req.mode === 'navigate') {
-        const own = await caches.match(req, { ignoreSearch: true });
-        if (own) return own;
-        const shell = await caches.match(url.pathname.endsWith('supported-lodgings.html') ? './supported-lodgings.html' : './index.html');
-        if (shell) return shell;
-      }
       throw e;
     }
   })());

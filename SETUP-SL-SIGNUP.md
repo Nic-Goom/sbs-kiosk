@@ -79,7 +79,7 @@ Anything held on a device sends automatically the next time it's online with the
 - tap the bottom-right corner 5 times quickly
 - add `#staff` to the end of the address
 
-The panel shows the queue and has **Try to send now**. To see who has signed up, tap **Sign-ups & records** and enter the **staff code**.
+All of these go straight to a code screen; nothing staff-related shows without a code. Enter the **staff code** to see who has signed up. Use the **search box** to check a name or email when someone asks "did I put it in?". The code screen also shows the page version (e.g. *Version 65*), so you can check a device has the latest copy.
 
 **Two codes:**
 - **Staff code:** view who has signed up and export the CSV. It can't delete anything.
