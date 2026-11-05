@@ -980,6 +980,30 @@
   #root.narrow .chip { padding: 0 20px; font-size: 18px; min-height: 64px; }
   #root.narrow .sg-grid { grid-auto-rows: 440px; gap: 12px; }
   #root.narrow .split-choices, #root.narrow .rv-pair { flex-wrap: wrap; }
+
+  /* ═══ ROUND 3: simple home ═══ */
+  .sl-hero { position: relative; flex: 1 1 0; min-height: 560px; overflow: hidden; display: flex; align-items: flex-end; background: var(--purple); }
+  .sl-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+  .sl-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,10,46,0.94) 0%, rgba(26,10,46,0.7) 34%, rgba(26,10,46,0) 70%); }
+  .sl-hero-copy { position: relative; z-index: 2; padding: 0 56px 54px; }
+  .sl-eyebrow { display: inline-block; background: var(--yellow); color: var(--purple); font-family: var(--veneer); font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 16px; border-radius: 8px; margin-bottom: 18px; }
+  .sl-hero-h1 { font-family: var(--veneer); font-weight: normal; font-size: 104px; line-height: 0.92; color: #fff; text-transform: uppercase; margin-bottom: 18px; }
+  .sl-hero-p { font-family: var(--body); font-size: 24px; line-height: 1.5; color: rgba(255,255,255,0.92); max-width: 860px; margin-bottom: 30px; }
+  .sl-hero-btns { display: flex; gap: 18px; flex-wrap: wrap; }
+  .sl-btn { min-height: 88px; padding: 0 40px; border-radius: 9999px; font-family: var(--veneer); font-size: 32px; letter-spacing: 0.04em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; }
+  .sl-btn:active { transform: scale(0.97); }
+  .sl-btn.primary { background: var(--pink); color: #fff; border: none; box-shadow: 0 6px 22px rgba(237,40,141,0.45); }
+  .sl-btn.primary svg { width: 28px; height: 28px; stroke: #fff; stroke-width: 3; fill: none; }
+  .sl-btn.ghost { background: transparent; color: #fff; border: 3px solid rgba(255,255,255,0.75); }
+  #root .tiles.sl4, #root.short .tiles.sl4 { flex: 1 1 0; grid-template-rows: repeat(2, minmax(240px, 1fr)); }
+  .sl-donate { flex: 0 0 auto; border: none; background: var(--off-white); font-family: var(--body); font-size: 17px; color: #777; padding: 4px 20px 22px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .sl-donate span { color: var(--purple); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  #root.narrow .sl-hero { flex: 0 0 auto; min-height: 640px; }
+  #root.narrow .sl-hero-copy { padding: 0 24px 32px; }
+  #root.narrow .sl-hero-h1 { font-size: 70px; }
+  #root.narrow .sl-hero-p { font-size: 20px; }
+  #root.narrow .sl-btn { font-size: 26px; min-height: 76px; padding: 0 26px; flex: 1 1 auto; justify-content: center; }
+  #root.narrow .tiles.sl4 { flex: 0 0 auto; grid-template-rows: repeat(2, 250px); }
 </style>
 </head>
 <body>
@@ -992,78 +1016,47 @@
       <img id="header-logo" src="project/assets/logo-primary-white.png" alt="Step by Step">
     </div>
     <div class="header-spacer"></div>
-    <div class="event-badge" onclick="openSignup()">
-      <div class="eb-col">
-        <span class="eb-top" id="badge-top">Sign up to host</span>
-        <span class="eb-sub" id="badge-sub">Supported Lodgings</span>
-      </div>
-      <svg class="eb-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
-    </div>
   </header>
 
   <!-- HOME -->
   <div id="home">
 
-    <!-- VIDEO PANEL -->
-    <div class="video-panel">
-      <div class="corner-bracket tl"></div>
-      <div class="corner-bracket tr"></div>
-      <div class="corner-bracket bl"></div>
-      <div class="corner-bracket br"></div>
-      <div class="video-placeholder" id="video-placeholder">
-        <div class="pv-icon">&#9654;</div>
-        <div class="pv-label">Loop reel<br>coming soon</div>
+    <!-- HERO: one clear question, two clear choices -->
+    <div class="sl-hero">
+      <img class="sl-hero-img" src="project/assets/photo-mum-daughter.jpg" alt="A host and a young person at home">
+      <div class="sl-hero-copy">
+        <span class="sl-eyebrow">Supported Lodgings</span>
+        <h1 class="sl-hero-h1">Could you offer a spare room?</h1>
+        <p class="sl-hero-p">Give a young person aged 16 to 21 a safe, steady place to find their feet. You get training, a team behind you and around &pound;174 a week.</p>
+        <div class="sl-hero-btns">
+          <button class="sl-btn primary" onclick="openSignup()">Sign up to host <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
+          <button class="sl-btn ghost" onclick="openEnquiry()">Get the free guide</button>
+        </div>
       </div>
-      <video id="main-video" autoplay muted loop playsinline preload="auto"></video>
-      <div class="video-tap" id="video-tap"></div>
-      <div class="tap-prompt" id="tap-prompt">&#9654; TAP TO UNMUTE</div>
     </div>
 
-    <!-- SIX TILES — Supported Lodgings -->
-    <div class="tiles" id="tiles">
+    <!-- FOUR HOSTING TILES -->
+    <div class="tiles sl4" id="tiles">
       <div class="tile ask has-photo" onclick="openSL(0)">
         <img class="tile-img" src="project/assets/charlie-room.jpg" alt="Getting a room ready" style="object-position:center 45%;">
-        <div class="tile-ph"><div class="tile-title">Could you offer a room?</div></div>
+        <div class="tile-ph"><div class="tile-title">What's involved?</div></div>
       </div>
       <div class="tile num pink" onclick="openSL(0, 'sl-money')">
         <div class="num-hero">&pound;174</div>
-        <div class="num-sub">a week for hosting a young person. That's over &pound;9,000 a year</div>
+        <div class="num-sub">a week. That's over &pound;9,000 a year</div>
       </div>
       <div class="tile ask has-photo" onclick="openSL(1)">
         <img class="tile-img" src="project/assets/fern-2yp.jpg" alt="Support from Step by Step" style="object-position:center 22%;">
         <div class="tile-ph"><div class="tile-title">Could someone like me do this?</div></div>
       </div>
       <div class="tile has-photo" onclick="openDetail('dv-stories')">
-        <img class="tile-img" src="project/assets/photo-mum-daughter.jpg" alt="A host and a young person at home" style="object-position:center 30%;">
-        <div class="tile-ph"><div class="tile-title">Host stories</div></div>
-      </div>
-      <div class="tile num purple" onclick="openDetail('dv-tile5')">
-        <div class="num-hero" style="white-space:nowrap">1 in 40</div>
-        <div class="num-sub">young people in our region have nowhere safe and stable to live</div>
-      </div>
-      <div class="tile ask has-photo" onclick="openEnquiry()">
         <img class="tile-img" src="project/assets/georgie-cooking.jpg" alt="Cooking together at home" style="object-position:center 30%;">
-        <div class="tile-ph"><div class="tile-title">Get the free guide</div></div>
+        <div class="tile-ph"><div class="tile-title">Host stories</div></div>
       </div>
     </div>
 
-    <!-- BOTTOM BAND — enquiry -->
-    <div class="bottom-band">
-      <div class="draw-band">
-        <div class="dot-blob" style="color:var(--yellow); width:220px; height:220px; bottom:-60px; left:120px; opacity:0.16;"></div>
-        <div class="draw-prize"><img src="project/assets/lorraine-portrait-small.jpg" alt="Lorraine, a Step by Step host"></div>
-        <div class="draw-text">
-          <span class="draw-free">No pressure, no commitment</span>
-          <div class="draw-head">Could you be a host?</div>
-          <div class="draw-sub">Sign up for a friendly chat with our team, or just take the free guide home.</div>
-        </div>
-        <div class="band-btns">
-          <button class="draw-enter" onclick="openSignup()">Sign up <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
-          <button class="draw-enter ghost" onclick="openEnquiry()">Free guide</button>
-        </div>
-        <button class="band-donate" onclick="openGive()">Can't host right now? <b>Donate to help a young person</b> <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
-      </div>
-    </div>
+    <!-- Subtle donate line -->
+    <button class="sl-donate" onclick="openGive()">Can't host right now? You can still help. <span>Make a donation</span></button>
 
   </div><!-- /home -->
 
@@ -1236,31 +1229,6 @@
       <!-- VIEW: Host stories - rendered by initStories() -->
       <div class="detail-view" id="dv-stories"></div>
 
-      <!-- VIEW: Youth Homelessness is Real and Measurable (Tile 5) -->
-      <div class="detail-view" id="dv-tile5">
-        <div class="t5-reveal">
-          <div class="rv-pair">
-            <div class="rv-fig"><div class="rv-num">1 in 84</div><div class="rv-lbl">on the official figures</div></div>
-            <svg class="rv-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13,5 20,12 13,19"/></svg>
-            <div class="rv-fig hero"><div class="rv-num">1 in 40</div><div class="rv-lbl">once you count the hidden</div></div>
-          </div>
-          <p class="rv-context">Just under <b>8,000</b> young people aged 16–24 turned to their council as homeless or at risk in our region in a single year — and many more never show up in those figures at all, sofa-surfing or hidden. Step by Step's own analysis puts the real figure closer to <b>1 in 40</b> with no safe, stable place to live.</p>
-          <div class="rv-src">Centrepoint Youth Homelessness Databank 2023–24, layered with ONS &amp; academic hidden-homelessness evidence.</div>
-        </div>
-        <div class="t5-mythhead">
-          <h2 class="d-h2">The Difference We Make</h2>
-          <p class="d-p">True or false? Tap each one to find out.</p>
-        </div>
-        <div class="know-cards" id="know-cards"></div>
-
-        <div class="t5-support sl-cta">
-          <h2 class="d-h2">Be part of the answer</h2>
-          <p class="d-p">A spare room and a little of your time gives a young person a safe, steady place to live while they find their feet.</p>
-          <button class="btn-pill" onclick="openSL(0)">Could you offer a room? <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></button>
-          <button class="btn-ghost" style="margin-top:14px" onclick="openGive()">Or make a donation</button>
-        </div>
-        <img class="t5-photo" src="project/assets/georgie-cooking.jpg" alt="A young person supported by Step by Step">
-      </div>
     </div>
   </div>
 
@@ -1473,8 +1441,7 @@ function openSignup()  { openSL(SIGNUP_TAB); }        // full host sign-up
 let detailStack = [];
 const DETAIL_TITLES = {
   'dv-sl':      'Supported Lodgings',
-  'dv-stories': 'Host Stories',
-  'dv-tile5':   'Youth Homelessness is Real and Measurable'
+  'dv-stories': 'Host Stories'
 };
 function openDetail(viewId) {
   if (!document.getElementById(viewId)) return;   // target not built yet (e.g. Tile 4/5 exits) — do nothing
@@ -2160,7 +2127,6 @@ function initStories() {
 /* ═══════════════ INIT ═══════════════ */
 initQuizzes();
 initStories();
-initKnowCards();
 updateStaffBadge();
 if (loadQueue().length) drainQueue();
 </script>
