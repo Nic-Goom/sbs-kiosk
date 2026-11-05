@@ -1003,7 +1003,7 @@
   #root.narrow .sl-hero-p { font-size: 20px; }
   #root.narrow .sl-btn { font-size: 26px; min-height: 76px; padding: 0 26px; flex: 1 1 auto; justify-content: center; }
   /* Fit-to-screen home: hero keeps its words visible, tiles take the rest */
-  .sl-hero { flex: 1 1 auto; min-height: auto; }
+  .sl-hero { flex: 1 1 auto; min-height: auto; overflow: visible; }   /* visible so it never shrinks below its own words */
   #root .tiles.sl4 { flex: 1.4 1 0; min-height: auto; grid-template-rows: repeat(2, minmax(170px, 1fr)); }
   #root.narrow .sl-hero { flex: 1 1 auto; }
   #root.narrow .sl-hero-h1 { font-size: 66px; }
@@ -1362,19 +1362,36 @@ function scaleRoot() {
     const base = W < 700 ? 600 : 1080;                 // design width: 600 phones/small tablets, 1080 kiosk/tablet
     z = W / base; dw = base;
   }
-  const dh = H / z;
   root.classList.toggle('wide', wide);
   root.classList.toggle('narrow', !wide && W < 700);
   root.classList.remove('short');
-  root.style.width = dw + 'px';
-  root.style.height = dh + 'px';
+  applyFit(root, z, dw, fitH);
+  // Safety net for portrait screens that are shorter than expected (browser
+  // bars, squarer tablets): if the home screen doesn't fit, zoom out just
+  // enough that it does, keeping the same layout centred.
+  if (!wide) {
+    const home = document.getElementById('home');
+    const over = home.scrollHeight - home.clientHeight;
+    if (over > 1) {
+      const needed = fitH / z + over + 4;
+      applyFit(root, fitH / needed, dw, fitH);
+    }
+  }
+  root.style.height = (H / currentZoom) + 'px';     // actual height (keyboard may be open)
+}
+let currentZoom = 1;
+function applyFit(root, z, dw, h) {
+  currentZoom = z;
+  root.style.width = Math.min(dw, window.innerWidth / z) + 'px';
+  root.style.height = (h / z) + 'px';
   if ('zoom' in root.style) {
     root.style.zoom = z;
     root.style.transform = '';
   } else {                                            // very old browsers
     root.style.transform = 'scale(' + z + ')';
+    root.style.transformOrigin = 'top left';
     root.style.position = 'absolute';
-    root.style.left = '0px'; root.style.top = '0px';
+    root.style.left = ((window.innerWidth - dw * z) / 2) + 'px'; root.style.top = '0px';
   }
 }
 scaleRoot();
