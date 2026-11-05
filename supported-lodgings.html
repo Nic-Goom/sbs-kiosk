@@ -983,6 +983,36 @@
 
   .story-tile2 .st2-photo { aspect-ratio: 4 / 3; height: auto; flex: 0 0 auto; }
   .story-tile2 .st2-photo img { width: 100%; height: 100%; object-fit: cover; }
+  #records { position: absolute; inset: 0; z-index: 700; background: rgba(26,10,46,0.8); display: none; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  #records.visible { display: flex; }
+  .rec-card { position: relative; background: #fff; border-radius: 26px; padding: 50px 40px 36px; width: 100%; max-width: 900px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
+  .rec-card h2 { font-family: var(--veneer); font-size: 48px; color: var(--purple); text-transform: uppercase; margin-bottom: 12px; }
+  .rec-lead, .rec-note { font-family: var(--body); font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 18px; }
+  .rec-note { font-size: 15px; background: rgba(161,205,61,0.15); border-radius: 12px; padding: 12px 16px; }
+  #rec-code, #rec-del-code { width: 100%; height: 76px; border: 3px solid rgba(65,39,116,0.25); border-radius: 14px; font-size: 30px; text-align: center; letter-spacing: 0.3em; margin-bottom: 12px; font-family: var(--body); }
+  .rec-msg { font-family: var(--body); font-size: 16px; color: var(--pink); font-weight: 700; min-height: 22px; margin-bottom: 10px; }
+  .rec-sum { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
+  .rec-sum > div { flex: 1 1 180px; background: rgba(65,39,116,0.06); border-radius: 14px; padding: 14px 16px; font-family: var(--body); font-size: 16px; color: #444; }
+  .rec-sum b { display: block; font-family: var(--veneer); font-size: 40px; color: var(--purple); font-weight: normal; }
+  .rec-sum .warn b { color: var(--pink); }
+  .rec-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+  .rec-list { display: flex; flex-direction: column; gap: 10px; max-height: 760px; overflow-y: auto; }
+  .rec-row { border: 2px solid rgba(65,39,116,0.12); border-radius: 14px; padding: 14px 18px; font-family: var(--body); }
+  .rr-top { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--pink); }
+  .rr-when { color: #888; }
+  .rr-name { font-size: 20px; font-weight: 700; color: var(--purple); margin-top: 6px; }
+  .rr-line { font-size: 16px; color: #555; margin-top: 2px; word-break: break-word; }
+  .rr-status { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; }
+  .rr-status.sent { background: rgba(161,205,61,0.22); color: #3d5a00; }
+  .rr-status.wait { background: rgba(240,233,4,0.35); color: #5a5200; }
+  .rr-status.held { background: rgba(237,40,141,0.12); color: var(--pink); }
+  .rec-empty { font-family: var(--body); font-size: 17px; color: #888; text-align: center; padding: 30px; }
+  .rec-danger { margin-top: 22px; border-top: 2px solid #eee; padding-top: 18px; }
+  .rec-danger p { font-family: var(--body); font-size: 16px; color: #a01060; line-height: 1.5; margin: 12px 0; }
+  .rec-del { background: none; border: 2px solid #d33; color: #c22; border-radius: 9999px; padding: 12px 22px; font-family: var(--body); font-size: 15px; font-weight: 700; cursor: pointer; }
+  .rec-del.solid { background: #c22; color: #fff; }
+  #staff-detail .sd-records { border-color: var(--pink); color: var(--pink); }
+  #root.narrow .rec-card { padding: 46px 18px 26px; }
   /* ═══ ROUND 3: simple home ═══ */
   .sl-hero { position: relative; flex: 1 1 0; min-height: 560px; overflow: hidden; display: flex; align-items: flex-end; background: var(--purple); }
   .sl-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
@@ -1228,8 +1258,7 @@
       <h2>Make a donation</h2>
       <p>Every gift helps a young person find a safe, steady place to live. It costs us &pound;29.78 a day to support a young person rebuilding their life.</p>
       <div class="give-qr"><img id="give-qr" src="project/assets/qr-donate.png" alt="Scan to donate"></div>
-      <div class="give-cap">Scan with your phone camera to donate</div>
-      <a class="btn-pill give-link" id="give-link" href="#" target="_blank" rel="noopener">Donate online <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></a>
+      <div class="give-cap">Point your phone camera at the code to donate</div>
     </div>
   </div>
 
@@ -1246,9 +1275,50 @@
     <div class="sd-line" id="sd-last"></div>
     <div class="sd-line sd-held" id="sd-held"></div>
     <button onclick="drainQueue(true); event.stopPropagation();">Try to send now</button>
-    <button onclick="exportCsv(); event.stopPropagation();">Export all entries (CSV)</button>
+    <button class="sd-records" onclick="openRecords(); event.stopPropagation();">&#128274; Sign-ups &amp; records</button>
     <button class="sd-close" onclick="hideStaffDetail(); event.stopPropagation();">Close</button>
   </div>
+  <!-- STAFF RECORDS (behind the staff code) -->
+  <div id="records">
+    <div class="rec-card">
+      <button class="terms-close" onclick="closeRecords()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <!-- Locked -->
+      <div id="rec-lock">
+        <h2>Staff only</h2>
+        <p class="rec-lead">Enter the staff code to see sign-ups taken on this device.</p>
+        <input type="password" id="rec-code" inputmode="numeric" autocomplete="off" placeholder="Staff code" onkeydown="if(event.key==='Enter')unlockRecords()">
+        <div class="rec-msg" id="rec-lock-msg"></div>
+        <button class="btn-pill" style="width:100%" onclick="unlockRecords()">Unlock</button>
+      </div>
+      <!-- Unlocked -->
+      <div id="rec-open" style="display:none">
+        <h2>Sign-ups &amp; records</h2>
+        <div class="rec-sum" id="rec-sum"></div>
+        <div class="rec-note">This is the permanent record for this device. Entries stay here after they're sent, and are only removed if someone enters the staff code and presses Delete.</div>
+        <div class="rec-actions">
+          <button class="btn-pill" onclick="exportCsv()">Export CSV</button>
+          <button class="btn-ghost" onclick="drainQueue(true); setTimeout(renderRecords, 1500)">Try to send now</button>
+        </div>
+        <div class="rec-list" id="rec-list"></div>
+        <div class="rec-danger">
+          <button class="rec-del" onclick="startDelete()">Delete all records from this device</button>
+          <div id="rec-del-confirm" style="display:none">
+            <p id="rec-del-warn"></p>
+            <input type="password" id="rec-del-code" inputmode="numeric" autocomplete="off" placeholder="Enter the staff code again">
+            <div class="rec-msg" id="rec-del-msg"></div>
+            <div class="rec-actions">
+              <button class="rec-del solid" onclick="confirmDelete()">Delete permanently</button>
+              <button class="btn-ghost" onclick="cancelDelete()">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-ghost" style="width:100%; margin-top:18px" onclick="closeRecords()">Lock &amp; close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Guaranteed way in: 5 quick taps in the corner open the staff panel
        even when the badge pill is hidden. -->
   <div id="staff-hotspot" onclick="cornerTap()"></div>
@@ -1284,6 +1354,12 @@ const CONFIG = {
 
     // Full host sign-up. Lands in AC with this Source once its form is connected below.
     signupSource: 'SL Kiosk Sign-up',
+
+    // Staff code for the records screen, stored as a SHA-256 hash of
+    // 'sbs-sl-kiosk:' + code. To change it, ask Claude (or run:
+    //   printf 'sbs-sl-kiosk:NEWCODE' | sha256sum ) and paste the result here.
+    // This keeps visitors at the stand out; it is not bank-grade security.
+    staffCodeHash: '828a0852c0ded98ddd8d8662578bbeda08c0415140e188ce73e573644e4b5c03',
 
     // Donations: our Give a Little page (the QR image encodes this same link).
     donateUrl: 'https://givealittle.co/c/1SerNxqlMraXAsG8ieGQhm',
@@ -1337,7 +1413,6 @@ const LOG_KEY   = 'sbs_sl_kiosk_log_v1';   // permanent record of EVERY entry ta
 (function applyConfig() {
   const e = CONFIG.event;
   document.title = 'Step by Step — ' + e.name;
-  const gl = document.getElementById('give-link'); if (gl) gl.href = e.donateUrl;
   const gq = document.getElementById('give-qr'); if (gq && e.donateQr) gq.src = e.donateQr;
   if (!e.slEnquiryEnabled) {
     const f = document.getElementById('enq-sl'); if (f) f.style.display = 'none';
@@ -1426,6 +1501,7 @@ const VIDEO_SRC = 'New_Forest_Show_Kiosk_Video_1080p.mp4';   // Alex's loop reel
 function goHome() {
   document.getElementById('detail').classList.remove('visible');
   document.getElementById('give-modal').classList.remove('visible');
+  closeRecords();                     // idle or logo tap locks the records screen
   detailStack = [];
   resetContentState();
   clearIdleTimer();
@@ -1716,7 +1792,7 @@ function updateStaffBadge() {
   const totalEl = document.getElementById('sd-total'); if (totalEl) totalEl.textContent = loadLog().length;
   const heldN = loadQueue().filter(e => { const f = CONFIG.ac.forms[e.dest || 'kiosk']; return !(f && f.ready); }).length;
   const heldEl = document.getElementById('sd-held');
-  if (heldEl) heldEl.textContent = heldN ? heldN + ' sign-up' + (heldN === 1 ? '' : 's') + ' held on this device: export the CSV before you leave.' : '';
+  if (heldEl) heldEl.textContent = heldN ? heldN + ' sign-up' + (heldN === 1 ? '' : 's') + ' held on this device (safe in the records).' : '';
 }
 function toggleStaffDetail(ev) {
   if (ev) ev.stopPropagation();
@@ -1724,6 +1800,99 @@ function toggleStaffDetail(ev) {
   updateStaffBadge();
 }
 function hideStaffDetail() { document.getElementById('staff-detail').classList.remove('visible'); }
+
+/* ═══════════════ STAFF RECORDS (code-protected, permanent log) ═══════════════
+   LOG_KEY holds every entry ever taken on this device. Sending to
+   ActiveCampaign never removes anything from it. The only way it is
+   cleared is Delete here, with the staff code entered twice. */
+let recFails = 0, recLockedUntil = 0;
+async function hashCode(code) {
+  const data = new TextEncoder().encode('sbs-sl-kiosk:' + code);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+async function codeOk(code) {
+  if (!code) return false;
+  try { return (await hashCode(code.trim())) === CONFIG.event.staffCodeHash; } catch (e) { return false; }
+}
+function openRecords() {
+  hideStaffDetail();
+  document.getElementById('rec-lock').style.display = '';
+  document.getElementById('rec-open').style.display = 'none';
+  document.getElementById('rec-code').value = '';
+  document.getElementById('rec-lock-msg').textContent = '';
+  document.getElementById('records').classList.add('visible');
+  resetIdleTimer();
+  setTimeout(() => document.getElementById('rec-code').focus(), 50);
+}
+function closeRecords() {
+  cancelDelete();
+  document.getElementById('records').classList.remove('visible');
+  document.getElementById('rec-list').innerHTML = '';     // don't leave names in the page
+  document.getElementById('rec-code').value = '';
+}
+async function unlockRecords() {
+  const msg = document.getElementById('rec-lock-msg');
+  if (Date.now() < recLockedUntil) { msg.textContent = 'Too many tries. Wait a minute and try again.'; return; }
+  if (await codeOk(document.getElementById('rec-code').value)) {
+    recFails = 0;
+    document.getElementById('rec-lock').style.display = 'none';
+    document.getElementById('rec-open').style.display = '';
+    renderRecords();
+  } else {
+    recFails++;
+    if (recFails >= 5) { recLockedUntil = Date.now() + 60000; recFails = 0; }
+    msg.textContent = "That code isn't right.";
+    document.getElementById('rec-code').value = '';
+  }
+  resetIdleTimer();
+}
+function entryStatus(e, unsent) {
+  if (!unsent.has(e.id)) return { cls: 'sent', txt: 'Sent (check it arrived in ActiveCampaign)' };
+  const f = CONFIG.ac.forms[e.dest || 'kiosk'];
+  if (!(f && f.ready)) return { cls: 'held', txt: 'Held on this device (form not connected)' };
+  return { cls: 'wait', txt: 'Waiting to send' };
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderRecords() {
+  const log = loadLog().slice().reverse();
+  const unsent = new Set(loadQueue().map(e => e.id));
+  const signups = log.filter(e => e.dest === 'slsignup').length;
+  const guides = log.filter(e => e.source === 'SL Guide').length;
+  const notSent = log.filter(e => unsent.has(e.id)).length;
+  document.getElementById('rec-sum').innerHTML =
+    `<div><b>${signups}</b> host sign-up${signups === 1 ? '' : 's'}</div><div><b>${guides}</b> guide request${guides === 1 ? '' : 's'}</div><div class="${notSent ? 'warn' : ''}"><b>${notSent}</b> not yet in ActiveCampaign</div>`;
+  document.getElementById('rec-list').innerHTML = log.length ? log.map(e => {
+    const st = entryStatus(e, unsent);
+    const type = e.dest === 'slsignup' ? 'Host sign-up' : (e.source === 'SL Guide' ? 'Guide request' : (e.interestType || e.source || 'Entry'));
+    const extra = [e.phone, e.postcode, e.room && ('Spare room: ' + e.room), e.calltime && ('Call: ' + e.calltime)].filter(Boolean).map(esc).join(' · ');
+    return `<div class="rec-row"><div class="rr-top"><span class="rr-type">${esc(type)}</span><span class="rr-when">${esc(e.date)} ${esc(e.time)}</span></div>
+      <div class="rr-name">${esc(e.fullname)}</div><div class="rr-line">${esc(e.email)}</div>${extra ? `<div class="rr-line">${extra}</div>` : ''}
+      <div class="rr-status ${st.cls}">${st.txt}</div></div>`;
+  }).join('') : '<div class="rec-empty">No entries on this device yet.</div>';
+}
+function startDelete() {
+  const notSent = loadQueue().length;
+  document.getElementById('rec-del-warn').textContent = notSent
+    ? `Careful: ${notSent} entr${notSent === 1 ? 'y has' : 'ies have'} not reached ActiveCampaign. Export the CSV first or they will be lost.`
+    : 'This removes every entry from this device for good. Export the CSV first if you need a copy.';
+  document.getElementById('rec-del-code').value = '';
+  document.getElementById('rec-del-msg').textContent = '';
+  document.getElementById('rec-del-confirm').style.display = '';
+  resetIdleTimer();
+}
+function cancelDelete() { const c = document.getElementById('rec-del-confirm'); if (c) c.style.display = 'none'; }
+async function confirmDelete() {
+  if (!(await codeOk(document.getElementById('rec-del-code').value))) {
+    document.getElementById('rec-del-msg').textContent = "That code isn't right. Nothing was deleted.";
+    return;
+  }
+  saveLog([]); saveQueue([]);
+  sentThisSession = 0;
+  cancelDelete(); updateStaffBadge(); renderRecords();
+}
+// Ask the browser not to clear this site's storage when space runs low.
+if (navigator.storage && navigator.storage.persist) { navigator.storage.persist().catch(() => {}); }
 // Also reachable as supported-lodgings.html#staff
 if (location.hash === '#staff') setTimeout(forceStaffDetail, 300);
 
@@ -1771,7 +1940,8 @@ const IDLE_COUNTDOWN = 6;
 
 function isEngaged() {
   return document.getElementById('detail').classList.contains('visible')
-      || document.getElementById('give-modal').classList.contains('visible');
+      || document.getElementById('give-modal').classList.contains('visible')
+      || document.getElementById('records').classList.contains('visible');
 }
 function resetIdleIfActive() { if (isEngaged()) resetIdleTimer(); }
 
