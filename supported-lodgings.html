@@ -1999,7 +1999,7 @@ async function codeOk(code, which) {
   const want = which === 'admin' ? CONFIG.event.adminCodeHash : CONFIG.event.staffCodeHash;
   try { return (await hashCode(code.trim())) === want; } catch (e) { return false; }
 }
-const PAGE_VERSION = 'Version 72 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
+const PAGE_VERSION = 'Version 73 · 5 Nov 2026';   // bump with sw.js CACHE_VERSION so staff can check a device is up to date
 function openRecords() {
   hideStaffDetail();
   document.getElementById('rec-ver').textContent = PAGE_VERSION;
@@ -2456,8 +2456,8 @@ const STORIES = [
     ]
   },
   {
-    name: 'Ella & Richard', role: 'Supported Lodgings hosts', photo: 'sl-ella-richard.jpg', pseudonym: false, imgPos: 'center 30%',
-    hook: `"You're not only sharing part of your house. You will share your life."`,
+    name: 'Ella & Richard', role: 'Supported Lodgings hosts', photo: 'sl-ella-richard-card.jpg', pseudonym: false, imgPos: 'left center',   // quote card until a better photo of them both arrives
+    hook: `"You will share your life and your experience."`,
     exit: { type: 'single', text: 'Could you offer a room?', view: 'dv-sl' },
     story: [
       { t: 'pull', text: `You're not only sharing part of your house with this young person. You will share your life and your experience.` },
